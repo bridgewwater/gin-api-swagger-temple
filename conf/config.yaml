@@ -1,0 +1,26 @@
+runmode: debug               # 开发模式, debug, release, test
+
+addr: :38080                  # HTTP绑定端口
+name: temp-gin-api-self              # API Server的名字
+base_path: /v1                # api 版本
+prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的ip:port
+dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
+
+swagger_index: /swagger/index.html
+
+ssc: # API自检测
+  count: 10           # pingServer 函数try的次数
+  health: /ssc/health # ssc api health
+  disk: /ssc/disk     # ssc api disk
+  cpu: /ssc/cpu       # ssc api cpu
+  ram: /ssc/ram       # ssc api ram
+
+log:
+  writers: file,stdout
+  logger_level: DEBUG
+  logger_file: log/apiserver.log
+  log_format_text: false
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 8
+  log_backup_count: 7
