@@ -6,6 +6,16 @@ base_path: /v1                # api 版本
 prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的ip:port
 dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
 
+log:
+  writers: file,stdout
+  logger_level: DEBUG
+  logger_file: log/apiserver.log
+  log_format_text: false
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 8
+  log_backup_count: 7
+
 swagger:
   root: /swagger                    # swagger root
   index: /swagger/index.html        # swagger 路径
@@ -17,20 +27,10 @@ swagger:
   user:                             # swagger 页面用户设置
     admin: 36116f7c73bc9acb2a7a26   # admin 用户
     user: e2236a11aceac4de          # user 用户
-e2236a11aceac4de
+
 ssc: # API自检测
   count: 10           # pingServer 函数try的次数
   health: /ssc/health # ssc api health
   disk: /ssc/disk     # ssc api disk
   cpu: /ssc/cpu       # ssc api cpu
   ram: /ssc/ram       # ssc api ram
-
-log:
-  writers: file,stdout
-  logger_level: DEBUG
-  logger_file: log/apiserver.log
-  log_format_text: false
-  rollingPolicy: size
-  log_rotate_date: 1
-  log_rotate_size: 8
-  log_backup_count: 7
