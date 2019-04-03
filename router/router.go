@@ -31,17 +31,18 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		envName = "NAME_OF_ENV_VARIABLE"
 	}
 
-	if viper.GetBool("swagger_security") {
+	swaggerRoot := viper.GetString("swagger.root")
+	if viper.GetBool("swagger.security") {
 		// just use swagger as swagger_user
-		swaggerGroup := g.Group("/swagger", gin.BasicAuth(gin.Accounts{
-			"admin": viper.GetString("swagger_user.admin"),
-			"user":  viper.GetString("swagger_user.user"),
+		swaggerGroup := g.Group(swaggerRoot, gin.BasicAuth(gin.Accounts{
+			"admin": viper.GetString("swagger.user.admin"),
+			"user":  viper.GetString("swagger.user.user"),
 		}))
 		//noinspection GoTypesCompatibility
 		swaggerGroup.GET("/*any", ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, envName))
 	} else {
 		//noinspection GoTypesCompatibility
-		g.GET("/swagger/*any", ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, envName))
+		g.GET(swaggerRoot+"/*any", ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, envName))
 	}
 
 	// api base path at config base_path

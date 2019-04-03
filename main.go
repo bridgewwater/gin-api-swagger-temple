@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/config"
+	"git.sinlov.cn/bridgewwater/temp-gin-api-self/docs"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/router"
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
@@ -18,20 +19,12 @@ var (
 	cfg = pflag.StringP("config", "c", "", "api server config file path.")
 )
 
-// @title Swagger API
-// @version 1.0
-// @description This is a sample server.
 // @termsOfService http://git.sinlov.cn/
-
 // @contact.name API Support
 // @contact.url http://git.sinlov.cn/
 // @contact.email support@sinlov.cn
-
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host 127.0.0.1:38080
-// @BasePath /v1
 func main() {
 	pflag.Parse()
 
@@ -60,8 +53,15 @@ func main() {
 	var apiBase string
 	if "debug" == viper.GetString("runmode") {
 		apiBase = viper.GetString("dev_url")
-		log.Infof("In debug mode, you can use swagger link at: %v%v", apiBase, viper.GetString("swagger_index"))
-		log.Infof("swagger swagger_security status: %v", viper.GetBool("swagger_security"))
+		// set swagger info
+		docs.SwaggerInfo.Title = viper.GetString("swagger.title")
+		docs.SwaggerInfo.Description = viper.GetString("swagger.description")
+		docs.SwaggerInfo.Version = viper.GetString("swagger.version")
+		docs.SwaggerInfo.Host = viper.GetString("swagger.host")
+		docs.SwaggerInfo.BasePath = viper.GetString("base_path")
+		log.Infof("In debug mode,you can use swagger")
+		log.Infof("swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
+		log.Infof("swagger.security status: %v", viper.GetBool("swagger.security"))
 		// Ping the server to make sure the router is working.
 		go func() {
 			if err := pingServer(apiBase); err != nil {
@@ -71,7 +71,7 @@ func main() {
 		}()
 	} else if "test" == viper.GetString("runmode") {
 		apiBase = viper.GetString("test_url")
-		log.Infof("In test mode, you can use swagger link at: %v%v", apiBase, viper.GetString("swagger_index"))
+		log.Infof("In test mode, you can use swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
 	} else {
 		apiBase = viper.GetString("prod_url")
 	}

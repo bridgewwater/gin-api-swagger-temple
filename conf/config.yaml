@@ -6,12 +6,18 @@ base_path: /v1                # api 版本
 prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的ip:port
 dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
 
-swagger_index: /swagger/index.html
-swagger_security: true            # swagger 页面用户开启开关
-swagger_user:                     # swagger 页面用户设置
-  admin: 36116f7c73bc9acb2a5a76   # admin 用户
-  user: e2836a11aceac4de          # user 用户
-
+swagger:
+  root: /swagger                    # swagger root
+  index: /swagger/index.html        # swagger 路径
+  title: Swagger API                         # swagger 标题
+  description: This is a sample server celler server. # swagger 描述
+  version: 1.0                      # swagger 版本
+  host: 127.0.0.1:38080             # swagger host:port
+  security: true                    # swagger 页面用户开启开关
+  user:                             # swagger 页面用户设置
+    admin: 36116f7c73bc9acb2a7a26   # admin 用户
+    user: e2236a11aceac4de          # user 用户
+e2236a11aceac4de
 ssc: # API自检测
   count: 10           # pingServer 函数try的次数
   health: /ssc/health # ssc api health
