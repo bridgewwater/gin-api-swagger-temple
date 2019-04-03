@@ -1,8 +1,6 @@
 ### custom template
 
 build/
-main
-main.exe
 vendor/
 log/
 docs/
