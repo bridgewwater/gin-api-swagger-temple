@@ -61,6 +61,7 @@ func main() {
 	if "debug" == viper.GetString("runmode") {
 		apiBase = viper.GetString("dev_url")
 		log.Infof("In debug mode, you can use swagger link at: %v%v", apiBase, viper.GetString("swagger_index"))
+		log.Infof("swagger swagger_security status: %v", viper.GetBool("swagger_security"))
 		// Ping the server to make sure the router is working.
 		go func() {
 			if err := pingServer(apiBase); err != nil {

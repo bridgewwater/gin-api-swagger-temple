@@ -7,6 +7,10 @@ prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的i
 dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
 
 swagger_index: /swagger/index.html
+swagger_security: true            # swagger 页面用户开启开关
+swagger_user:                     # swagger 页面用户设置
+  admin: 36116f7c73bc9acb2a5a76   # admin 用户
+  user: e2836a11aceac4de          # user 用户
 
 ssc: # API自检测
   count: 10           # pingServer 函数try的次数
