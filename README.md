@@ -36,6 +36,11 @@ $ make dev
 
 # dev
 
+- swagger tools use [swag](https://github.com/swaggo/swag)
+```sh
+go get -v -u github.com/swaggo/swag/cmd/swag
+```
+
 - swagger doc see [https://swaggo.github.io/swaggo.io/declarative_comments_format/](https://swaggo.github.io/swaggo.io/declarative_comments_format/)
 
 ## evn

@@ -29,11 +29,14 @@ endif
 init: checkEnvGo
 	@echo "~> start init this project"
 	@echo "-> check version"
-	-go version
+	go version
 	@echo "-> check env golang"
-	-go env
-	@echo "-> check env dep"
-	-dep help
+	go env
+	@echo "-> check env dep fix as [ go get -v -u github.com/golang/dep/cmd/dep ]"
+	which dep
+	@echo "-> check env swag if error fix as [ go get -v -u github.com/swaggo/swag/cmd/swag && go get -v github.com/alecthomas/template]"
+	which swag
+	swag --help
 	@echo "~> you can use [ make help ] see more task"
 
 checkDepends: checkEnvGo
