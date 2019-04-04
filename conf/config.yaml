@@ -7,14 +7,14 @@ prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的i
 dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
 
 log:
-  writers: file,stdout
-  logger_level: DEBUG
-  logger_file: log/apiserver.log
-  log_format_text: false
-  rollingPolicy: size
-  log_rotate_date: 1
-  log_rotate_size: 8
-  log_backup_count: 7
+  writers: file,stdout            # file,stdout。选择file会将日志记录到`logger_file`指定的日志文件中，选择stdout会将日志输出到标准输出，当然也可以两者同时选择
+  logger_level: DEBUG             # 日志级别，DEBUG, INFO, WARN, ERROR, FATAL
+  logger_file: log/apiserver.log  # 日志文件
+  log_format_text: false          # `true`会输出成json格式，`false`会输出成非json格式
+  rollingPolicy: size             # rotate依据，可选的有：daily, size。如果选daily则根据天进行转存，如果是size则根据大小进行转存
+  log_rotate_date: 1              # rotate转存时间，配合`rollingPolicy: daily`使用
+  log_rotate_size: 8              # rotate转存大小，配合`rollingPolicy: size`使用
+  log_backup_count: 7             # 当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
 
 swagger:
   root: /swagger                    # swagger root
