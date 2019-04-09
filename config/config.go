@@ -64,9 +64,6 @@ func (c *Config) initConfig() error {
 	if err := checkMustHasString(); err != nil {
 		return err
 	}
-	if err := checkMustHasBool(); err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -75,7 +72,7 @@ func (c *Config) initConfig() error {
 //	config.mustConfigString
 func checkMustHasString() error {
 	for _, config := range mustConfigString {
-		if !viper.InConfig(config) {
+		if "" == viper.GetString(config) {
 			return errors.New(fmt.Sprintf("not has must string key [ %v ]", config))
 		}
 	}
