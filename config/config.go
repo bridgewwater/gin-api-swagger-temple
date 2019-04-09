@@ -1,6 +1,8 @@
 package config
 
 import (
+	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
@@ -8,6 +10,15 @@ import (
 	"github.com/spf13/viper"
 	"path/filepath"
 )
+
+var mustConfigString = []string{
+	"runmode",
+	"addr",
+	"name",
+	"name",
+	"base_path",
+	// project set
+}
 
 type Config struct {
 	Name string
@@ -18,17 +29,17 @@ func Init(cfg string) error {
 		Name: cfg,
 	}
 
-	// 初始化配置文件
+	// initialize configuration file
 	if err := c.initConfig(); err != nil {
 		return err
 	}
 
-	// 初始化日志包
+	// initialization log package
 	if err := c.initLog(); err != nil {
 		return err
 	}
 
-	// 监控配置文件变化并热加载程序
+	// monitor configuration changes and hot loaders
 	c.watchConfig()
 
 	return nil
@@ -50,10 +61,28 @@ func (c *Config) initConfig() error {
 		return err
 	}
 
+	if err := checkMustHasString(); err != nil {
+		return err
+	}
+	if err := checkMustHasBool(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
-// 监控配置文件变化并热加载程序
+// check config.yaml must has string key
+//	config.mustConfigString
+func checkMustHasString() error {
+	for _, config := range mustConfigString {
+		if !viper.InConfig(config) {
+			return errors.New(fmt.Sprintf("not has must string key [ %v ]", config))
+		}
+	}
+	return nil
+}
+
+// Monitor configuration changes and hot loaders
 func (c *Config) watchConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
@@ -61,7 +90,7 @@ func (c *Config) watchConfig() {
 	})
 }
 
-// 初始化日志
+// Initialization log
 func (c *Config) initLog() error {
 	passLagerCfg := log.PassLagerCfg{
 		Writers:        viper.GetString("log.writers"),

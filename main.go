@@ -30,7 +30,7 @@ func main() {
 
 	// init config
 	if err := config.Init(*cfg); err != nil {
-		fmt.Printf("Error, run serice not use -c or other config, more info: %v\n", err)
+		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
 	fmt.Printf("%s \n", "start dev app at here")
