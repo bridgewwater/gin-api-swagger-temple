@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -14,7 +13,6 @@ import (
 var mustConfigString = []string{
 	"runmode",
 	"addr",
-	"name",
 	"name",
 	"base_path",
 	// project set
@@ -73,7 +71,7 @@ func (c *Config) initConfig() error {
 func checkMustHasString() error {
 	for _, config := range mustConfigString {
 		if "" == viper.GetString(config) {
-			return errors.New(fmt.Sprintf("not has must string key [ %v ]", config))
+			return fmt.Errorf("not has must string key [ %v ]", config)
 		}
 	}
 	return nil
