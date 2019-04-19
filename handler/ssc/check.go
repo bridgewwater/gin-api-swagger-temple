@@ -21,7 +21,7 @@ const (
 // @Summary ssc/health
 // @Description HealthCheck shows OK as the ping-pong result.
 // @Tags sys
-// @Success 200 "OK" "OK"
+// @Success 200 "OK"
 // @Router /ssc/health [get]
 func HealthCheck(c *gin.Context) {
 	message := "OK"
@@ -31,9 +31,9 @@ func HealthCheck(c *gin.Context) {
 // @Summary ssc/disk
 // @Description HealthCheck DiskCheck checks the disk usage.
 // @Tags sys
-// @Success 200 "OK" "OK | >= 95 CRITICAL | >=90 WARNING"
-// @failure 429 "DISK WARNING" "need check"
-// @failure 500 "DISK CRITICAL" "must check"
+// @Success 200 "OK OK | >= 95 CRITICAL | >=90 WARNING"
+// @failure 429 "DISK WARNING need check"
+// @failure 500 "DISK CRITICAL must check"
 // @Router /ssc/disk [get]
 func DiskCheck(c *gin.Context) {
 	u, _ := disk.Usage("/")
@@ -62,9 +62,9 @@ func DiskCheck(c *gin.Context) {
 // @Summary ssc/cpu
 // @Description HealthCheck CPUCheck checks the cpu usage.
 // @Tags sys
-// @Success 200 "CPU OK" "server run ok"
-// @failure 429 "CPU WARNING" "need check"
-// @failure 500 "CPU CRITICAL" "must check"
+// @Success 200 "CPU OK server run ok"
+// @failure 429 "CPU WARNING need check"
+// @failure 500 "CPU CRITICAL must check"
 // @Router /ssc/cpu [get]
 func CPUCheck(c *gin.Context) {
 	cores, _ := cpu.Counts(false)
@@ -92,9 +92,9 @@ func CPUCheck(c *gin.Context) {
 // @Summary ssc/ram
 // @Description HealthCheck RAMCheck checks the disk usage.
 // @Tags sys
-// @Success 200 "RAM info" "OK | >= 95 CRITICAL | >=90 WARNING"
-// @failure 429 "RAM WARNING" "need check"
-// @failure 500 "RAM CRITICAL" "must check"
+// @Success 200 "RAM info OK | >= 95 CRITICAL | >=90 WARNING"
+// @failure 429 "RAM WARNING need check"
+// @failure 500 "RAM CRITICAL must check"
 // @Router /ssc/ram [get]
 func RAMCheck(c *gin.Context) {
 	u, _ := mem.VirtualMemory()
