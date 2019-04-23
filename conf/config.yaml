@@ -4,6 +4,7 @@ addr: :38080                  # HTTP绑定端口
 name: temp-gin-api-self              # API Server的名字
 base_path: /v1                # api 版本
 prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的ip:port
+test_url: http://127.0.0.1:38081   # 测试模式函数请求的API服务器的ip:port
 dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
 sslEnable: false                  # 是否打开 ssl
 
