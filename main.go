@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -36,7 +35,8 @@ func main() {
 	fmt.Printf("%s \n", "start dev app at here")
 
 	// Set gin mode.
-	gin.SetMode(viper.GetString("runmode"))
+	runMode := viper.GetString("runmode")
+	gin.SetMode(runMode)
 
 	// Create the Gin engine.
 	g := gin.New()
@@ -52,7 +52,7 @@ func main() {
 	)
 
 	var apiBase string
-	if "debug" == viper.GetString("runmode") {
+	if "debug" == runMode || "test" == runMode {
 		apiBase = viper.GetString("dev_url")
 		// set swagger info
 		docs.SwaggerInfo.Title = viper.GetString("swagger.title")
@@ -70,7 +70,7 @@ func main() {
 			}
 			log.Info("The router has been deployed successfully.")
 		}()
-	} else if "test" == viper.GetString("runmode") {
+	} else if "test" == runMode {
 		apiBase = viper.GetString("test_url")
 		log.Infof("In test mode, you can use swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
 	} else {
@@ -102,5 +102,6 @@ func pingServer(api string) error {
 		log.Warn("Waiting for the router, retry in 1 second.")
 		time.Sleep(time.Second)
 	}
-	return errors.New("Can not connect to the router.")
+	//noinspection ALL
+	return fmt.Errorf("Can not connect to the router.")
 }
