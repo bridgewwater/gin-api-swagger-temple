@@ -22,6 +22,12 @@ type Config struct {
 	Name string
 }
 
+var baseConf BaseConf
+
+type BaseConf struct {
+	BaseURL string
+}
+
 func Init(cfg string) error {
 	c := Config{
 		Name: cfg,
@@ -37,10 +43,34 @@ func Init(cfg string) error {
 		return err
 	}
 
+	// init BaseConf
+	initBaseConf()
+
+	// TODO other config
+
 	// monitor configuration changes and hot loaders
 	c.watchConfig()
 
 	return nil
+}
+
+func initBaseConf() {
+	runMode := viper.GetString("runmode")
+	var apiBase string
+	if "debug" == runMode {
+		apiBase = viper.GetString("dev_url")
+	} else if "test" == runMode {
+		apiBase = viper.GetString("test_url")
+	} else {
+		apiBase = viper.GetString("prod_url")
+	}
+	baseConf = BaseConf{
+		BaseURL: apiBase,
+	}
+}
+
+func BaseURL() string {
+	return baseConf.BaseURL
 }
 
 func (c *Config) initConfig() error {

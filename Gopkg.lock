@@ -221,13 +221,13 @@
   version = "v1.3.2"
 
 [[projects]]
+  branch = "master"
   name = "github.com/swaggo/gin-swagger"
   packages = [
     ".",
     "swaggerFiles"
   ]
-  revision = "ea4ea9de0c1dfbdab6e540e7723828953babdf4b"
-  version = "v1.1.0"
+  revision = "dbf6ef410096ed3b4a467a14040e019fd7a0f85a"
 
 [[projects]]
   name = "github.com/swaggo/swag"
@@ -309,6 +309,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "231e7a68a9891a1e3ed45eae97bb3ea09f2220cafceddcf83427636bcf399e2e"
+  inputs-digest = "a2cf287f1edfd88e61fe9e0cfe8ed0a4fca1825d408d55b1efeb87a5c6140af0"
   solver-name = "gps-cdcl"
   solver-version = 1

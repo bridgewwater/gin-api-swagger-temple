@@ -51,9 +51,8 @@ func main() {
 		middlewareList...,
 	)
 
-	var apiBase string
+	var apiBase = config.BaseURL()
 	if "debug" == runMode || "test" == runMode {
-		apiBase = viper.GetString("dev_url")
 		// set swagger info
 		docs.SwaggerInfo.Title = viper.GetString("swagger.title")
 		docs.SwaggerInfo.Description = viper.GetString("swagger.description")
@@ -71,10 +70,8 @@ func main() {
 			log.Info("The router has been deployed successfully.")
 		}()
 	} else if "test" == runMode {
-		apiBase = viper.GetString("test_url")
 		log.Infof("In test mode, you can use swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
 	} else {
-		apiBase = viper.GetString("prod_url")
 	}
 	log.Infof("Start to listening the incoming requests on http address: %v", viper.GetString("addr"))
 	log.Infof("Sever name: %v , has start!", viper.GetString("name"))
