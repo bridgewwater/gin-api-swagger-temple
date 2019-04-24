@@ -28,7 +28,7 @@ $ make dev
 + `writers`: 输出位置，有2个可选项：file,stdout。选择file会将日志记录到`logger_file`指定的日志文件中，选择stdout会将日志输出到标准输出，当然也可以两者同时选择
 + `logger_level`: 日志级别，DEBUG, INFO, WARN, ERROR, FATAL
 + `logger_file`: 日志文件
-+ `log_format_text`: 日志的输出格式，json或者plaintext，`true`会输出成json格式，`false`会输出成非json格式
++ `log_format_text`: 日志的输出格式，json或者plaintext，`false`会输出成json格式，`true`会输出成非json格式
 + `rollingPolicy`: rotate依据，可选的有：daily, size。如果选daily则根据天进行转存，如果是size则根据大小进行转存
 + `log_rotate_date`: rotate转存时间，配合`rollingPolicy: daily`使用
 + `log_rotate_size`: rotate转存大小，配合`rollingPolicy: size`使用
