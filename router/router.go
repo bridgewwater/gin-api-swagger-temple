@@ -34,8 +34,25 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	var env = viper.GetString("runmode")
 	var envName = ""
 	if env == "debug" || env == "test" {
-		envName = "NAME_OF_ENV_VARIABLE"
+		swaggerGroup(envName, g)
 	}
+
+	// The health check handlers
+	sscRouteGroup := g.Group(basePath + "/ssc")
+	{
+		sscRouteGroup.GET("/health", ssc.HealthCheck)
+		sscRouteGroup.GET("/disk", ssc.DiskCheck)
+		sscRouteGroup.GET("/cpu", ssc.CPUCheck)
+		sscRouteGroup.GET("/ram", ssc.RAMCheck)
+	}
+
+	// TODO other router
+
+	return g
+}
+
+func swaggerGroup(envName string, g *gin.Engine) {
+	envName = "NAME_OF_ENV_VARIABLE"
 	log.Infof("envName %v", envName)
 	// https://github.com/swaggo/swag/issues/194#issuecomment-475853710
 	configSwagger := &ginSwagger.Config{
@@ -55,17 +72,4 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		//g.GET(swaggerRoot+"/*any", ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, envName))
 		g.GET(swaggerRoot+"/*any", ginSwagger.CustomWrapHandler(configSwagger, swaggerFiles.Handler))
 	}
-
-	// The health check handlers
-	sscRouteGroup := g.Group(basePath + "/ssc")
-	{
-		sscRouteGroup.GET("/health", ssc.HealthCheck)
-		sscRouteGroup.GET("/disk", ssc.DiskCheck)
-		sscRouteGroup.GET("/cpu", ssc.CPUCheck)
-		sscRouteGroup.GET("/ram", ssc.RAMCheck)
-	}
-
-	// TODO other router
-
-	return g
 }
