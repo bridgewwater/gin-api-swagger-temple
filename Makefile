@@ -80,24 +80,24 @@ dev: buildMain
 
 test: checkDepends buildMain checkTestDistPath
 	cp ./build/main $(ROOT_TEST_DIST_PATH)
-	cp ./conf/config.yaml $(ROOT_TEST_DIST_PATH)
+	cp ./conf/test/config.yaml $(ROOT_TEST_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_DIST_PATH)"
 
 testOS: checkDepends buildARCH checkTestOSDistPath
 	@echo "=> Test at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
 	cp ./build/main $(ROOT_TEST_OS_DIST_PATH)
-	cp ./conf/config.yaml $(ROOT_TEST_OS_DIST_PATH)
+	cp ./conf/test/config.yaml $(ROOT_TEST_OS_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_OS_DIST_PATH)"
 
 release: checkDepends buildMain checkReleaseDistPath
 	cp ./build/main $(ROOT_REPO_DIST_PATH)
-	cp ./conf/config.yaml $(ROOT_REPO_DIST_PATH)
+	cp ./conf/release/config.yaml $(ROOT_REPO_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_REPO_DIST_PATH)"
 
 releaseOS: checkDepends buildARCH checkReleaseOSDistPath
 	@echo "=> Release at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
 	cp ./build/main $(ROOT_REPO_OS_DIST_PATH)
-	cp ./conf/config.yaml $(ROOT_REPO_OS_DIST_PATH)
+	cp ./conf/release/config.yaml $(ROOT_REPO_OS_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_REPO_OS_DIST_PATH)"
 
 help:
