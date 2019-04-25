@@ -42,6 +42,7 @@ go get -v -u github.com/swaggo/swag/cmd/swag
 ```
 
 - swagger doc see [https://swaggo.github.io/swaggo.io/declarative_comments_format/](https://swaggo.github.io/swaggo.io/declarative_comments_format/)
+- swagger example see [https://github.com/swaggo/swag/blob/master/example/basic/api/api.go](https://github.com/swaggo/swag/blob/master/example/basic/api/api.go)
 
 ## evn
 
