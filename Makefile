@@ -78,23 +78,23 @@ buildARCH: buildSwagger
 dev: buildMain
 	-./build/main -c ./conf/config.yaml
 
-test: buildMain checkTestDistPath
+test: checkDepends buildMain checkTestDistPath
 	cp ./build/main $(ROOT_TEST_DIST_PATH)
 	cp ./conf/config.yaml $(ROOT_TEST_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_DIST_PATH)"
 
-testOS: buildARCH checkTestOSDistPath
+testOS: checkDepends buildARCH checkTestOSDistPath
 	@echo "=> Test at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
 	cp ./build/main $(ROOT_TEST_OS_DIST_PATH)
 	cp ./conf/config.yaml $(ROOT_TEST_OS_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_OS_DIST_PATH)"
 
-release: buildMain checkReleaseDistPath
+release: checkDepends buildMain checkReleaseDistPath
 	cp ./build/main $(ROOT_REPO_DIST_PATH)
 	cp ./conf/config.yaml $(ROOT_REPO_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_REPO_DIST_PATH)"
 
-releaseOS: buildARCH checkReleaseOSDistPath
+releaseOS: checkDepends buildARCH checkReleaseOSDistPath
 	@echo "=> Release at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
 	cp ./build/main $(ROOT_REPO_OS_DIST_PATH)
 	cp ./conf/config.yaml $(ROOT_REPO_OS_DIST_PATH)

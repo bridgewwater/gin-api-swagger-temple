@@ -1,0 +1,38 @@
+runmode: debug               # 开发模式, debug, release, test
+
+addr: :38080                  # HTTP绑定端口
+name: temp-gin-api-self              # API Server的名字
+base_path: /v1                # api 版本
+prod_url: http://127.0.0.1:38080   # 生产模式函数请求的API服务器的ip:port
+test_url: http://127.0.0.1:38081   # 测试模式函数请求的API服务器的ip:port
+dev_url: http://127.0.0.1:38080   # 开发模式函数请求的API服务器的ip:port
+sslEnable: false                  # 是否打开 ssl
+
+log:
+  writers: file,stdout            # file,stdout。选择file会将日志记录到`logger_file`指定的日志文件中，选择stdout会将日志输出到标准输出，当然也可以两者同时选择
+  logger_level: DEBUG             # 日志级别，DEBUG, INFO, WARN, ERROR, FATAL
+  logger_file: log/apiserver.log  # 日志文件
+  log_format_text: false          # `false`会输出成json格式，`true`会输出成非json格式
+  rollingPolicy: size             # rotate依据，可选的有：daily, size。如果选daily则根据天进行转存，如果是size则根据大小进行转存
+  log_rotate_date: 1              # rotate转存时间，配合`rollingPolicy: daily`使用
+  log_rotate_size: 8              # rotate转存大小，配合`rollingPolicy: size`使用
+  log_backup_count: 7             # 当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
+
+swagger:                            # swagger 在 release 不生效
+  root: /swagger                    # swagger root
+  index: /swagger/index.html        # swagger 路径
+  title: Swagger API                         # swagger 标题
+  description: This is a sample server celler server. # swagger 描述
+  version: 1.0                      # swagger 版本
+  host: 127.0.0.1:38080             # swagger host:port
+  security: true                    # swagger 页面用户开启开关
+  user:                             # swagger 页面用户设置
+    admin: 36116f7c73bc9acb2a7a26   # admin 用户
+    user: e2236a11aceac4de          # user 用户
+
+ssc: # API自检测
+  count: 10           # pingServer 函数try的次数
+  health: /ssc/health # ssc api health
+  disk: /ssc/disk     # ssc api disk
+  cpu: /ssc/cpu       # ssc api cpu
+  ram: /ssc/ram       # ssc api ram
