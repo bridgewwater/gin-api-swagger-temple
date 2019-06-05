@@ -65,7 +65,7 @@ swag version v1.4.1
 │   ├── server.crt               # TLS配置文件
 │   └── server.key
 ├── config                       # 专门用来处理配置和配置文件的Go package
-│   └── config.go                 
+│   └── config.go
 ├── db                           # 在部署新环境时数据库使用
 │   ├── mongo.sh                 # 部署 mongo 数据库
 │   └── db.sql                   # 可以登录MySQL客户端，执行source db.sql创建数据库和表
@@ -77,7 +77,7 @@ swag version v1.4.1
 ├── handler                      # 类似MVC架构中的C，用来读取输入，并将处理流程转发给实际的处理函数，最后返回结果
 │   ├── handler.go
 │   ├── ssc                      # 健康检查handler service status check
-│   │   └── check.go 
+│   │   └── check.go
 │   └── user                     # 核心：用户业务逻辑handler
 │       ├── create.go            # 新增用户
 │       ├── delete.go            # 删除用户
@@ -109,7 +109,7 @@ swag version v1.4.1
 ├── README.md                    # 工程目录README
 ├── router                       # 路由相关处理
 │   ├── middleware               # API服务器用的是Gin Web框架，Gin中间件存放位置
-│   │   ├── auth.go 
+│   │   ├── auth.go
 │   │   ├── header.go
 │   │   ├── logging.go
 │   │   └── requestid.go
@@ -117,7 +117,7 @@ swag version v1.4.1
 ├── service                      # 实际业务处理函数存放位置
 │   └── service.go
 ├── util                         # 工具类函数存放目录
-│   ├── util.go 
+│   ├── util.go
 │   └── util_test.go
 └── vendor                         # vendor目录用来管理依赖包 这里使用 dep 管理
     ├── github.com

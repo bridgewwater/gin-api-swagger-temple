@@ -12,13 +12,17 @@ DIST_ARCH := amd64
 
 ROOT_BUILD_PATH ?= ./build
 ROOT_DIST ?= ./dist
+ROOT_REPO ?= ./z-repo
 ROOT_TEST_DIST_PATH ?= $(ROOT_DIST)/test/$(DIST_VERSION)
 ROOT_TEST_OS_DIST_PATH ?= $(ROOT_DIST)/$(DIST_OS)/test/$(DIST_VERSION)
-ROOT_REPO_DIST_PATH ?= $(ROOT_DIST)/release/$(DIST_VERSION)
-ROOT_REPO_OS_DIST_PATH ?= $(ROOT_DIST)/$(DIST_OS)/release/$(DIST_VERSION)
+ROOT_REPO_DIST_PATH ?= $(ROOT_REPO)/$(DIST_VERSION)
+ROOT_REPO_OS_DIST_PATH ?= $(ROOT_REPO)/$(DIST_OS)/$(DIST_VERSION)
 
 ROOT_LOG_PATH ?= ./log
 ROOT_SWAGGER_PATH ?= ./docs
+
+SERVER_TEST_SSH_ALIASE = aliyun-ecs
+SERVER_TEST_FOLDER = /home/work/Document/
 
 checkEnvGo:
 ifndef GOPATH
@@ -44,6 +48,9 @@ checkDepends: checkEnvGo
 
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
+
+cleanDist:
+	@if [ -d ${ROOT_DIST} ]; then rm -rf ${ROOT_DIST} && echo "~> cleaned ${ROOT_DIST}"; else echo "~> has cleaned ${ROOT_DIST}"; fi
 
 cleanLog:
 	@if [ -d ${ROOT_LOG_PATH} ]; then rm -rf ${ROOT_LOG_PATH} && echo "~> cleaned ${ROOT_LOG_PATH}"; else echo "~> has cleaned ${ROOT_LOG_PATH}"; fi
@@ -79,24 +86,28 @@ dev: buildMain
 	-./build/main -c ./conf/config.yaml
 
 test: checkDepends buildMain checkTestDistPath
-	cp ./build/main $(ROOT_TEST_DIST_PATH)
+	mv ./build/main $(ROOT_TEST_DIST_PATH)
 	cp ./conf/test/config.yaml $(ROOT_TEST_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_DIST_PATH)"
 
 testOS: checkDepends buildARCH checkTestOSDistPath
 	@echo "=> Test at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
-	cp ./build/main $(ROOT_TEST_OS_DIST_PATH)
+	mv ./build/main $(ROOT_TEST_OS_DIST_PATH)
 	cp ./conf/test/config.yaml $(ROOT_TEST_OS_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_TEST_OS_DIST_PATH)"
 
+testOSScp:
+	@echo "=> must check below config of set for testOSScp"
+	#scp -r $(ROOT_TEST_OS_DIST_PATH) $(SERVER_TEST_SSH_ALIASE):$(SERVER_TEST_FOLDER)
+
 release: checkDepends buildMain checkReleaseDistPath
-	cp ./build/main $(ROOT_REPO_DIST_PATH)
+	mv ./build/main $(ROOT_REPO_DIST_PATH)
 	cp ./conf/release/config.yaml $(ROOT_REPO_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_REPO_DIST_PATH)"
 
 releaseOS: checkDepends buildARCH checkReleaseOSDistPath
 	@echo "=> Release at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
-	cp ./build/main $(ROOT_REPO_OS_DIST_PATH)
+	mv ./build/main $(ROOT_REPO_OS_DIST_PATH)
 	cp ./conf/release/config.yaml $(ROOT_REPO_OS_DIST_PATH)
 	@echo "=> pkg at: $(ROOT_REPO_OS_DIST_PATH)"
 
@@ -104,6 +115,7 @@ help:
 	@echo "make init - check base env of this project"
 	@echo "make checkDepends - check depends of project"
 	@echo "make clean - remove binary file and log files"
+	@echo "make buildSwagger - build newest swagger for dev"
 	@echo "make test - build dist at $(ROOT_TEST_DIST_PATH)"
 	@echo "make testOS - build dist at $(ROOT_TEST_OS_DIST_PATH)"
 	@echo ""
