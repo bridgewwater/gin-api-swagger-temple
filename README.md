@@ -76,8 +76,8 @@ swag version v1.4.1
 │       └── swagger.yaml
 ├── handler                      # 类似MVC架构中的C，用来读取输入，并将处理流程转发给实际的处理函数，最后返回结果
 │   ├── handler.go
-│   ├── ssc                      # 健康检查handler service status check
-│   │   └── check.go
+│   ├── biz                      # 业务范例 handler service status check
+│   │   └── biz.go
 │   └── user                     # 核心：用户业务逻辑handler
 │       ├── create.go            # 新增用户
 │       ├── delete.go            # 删除用户

@@ -18,6 +18,18 @@ log:
   log_rotate_size: 8              # rotate转存大小，配合`rollingPolicy: size`使用
   log_backup_count: 7             # 当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
 
+monitor: # monitor 自检测
+  count: 10           # pingServer 函数try的次数
+  status: true
+  health: /status/health # api health
+  hardware: true
+  status_hardware:
+    disk: /status/hardware/disk     # hardware api disk
+    cpu: /status/hardware/cpu       # hardware api cpu
+    ram: /status/hardware/ram       # hardware api ram
+  debug: true
+  pprof: true
+
 swagger:                            # swagger 在 release 不生效
   root: /swagger                    # swagger root
   index: /swagger/index.html        # swagger 路径
@@ -30,9 +42,3 @@ swagger:                            # swagger 在 release 不生效
     admin: 36116f7c73bc9acb2a7a26   # admin 用户
     user: e2236a11aceac4de          # user 用户
 
-ssc: # API自检测
-  count: 10           # pingServer 函数try的次数
-  health: /ssc/health # ssc api health
-  disk: /ssc/disk     # ssc api disk
-  cpu: /ssc/cpu       # ssc api cpu
-  ram: /ssc/ram       # ssc api ram

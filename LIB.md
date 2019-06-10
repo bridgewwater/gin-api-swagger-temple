@@ -16,11 +16,11 @@ dep ensure -add github.com/swaggo/gin-swagger@master
 dep ensure -v
 ```
 
-# gin-contrib/pprof
+# bar-counter/monitor
 
-[gin-contrib/pprof](https://github.com/gin-contrib/pprof)
+[bar-counter/monitor](https://github.com/bar-counter/monitor)
 
 ```bash
-dep ensure -add github.com/gin-contrib/pprof@1.2.0
+dep ensure --add github.com/bar-counter/monitor@1.0.1
 dep ensure -v
 ```

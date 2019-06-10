@@ -85,13 +85,13 @@ func main() {
 
 // pingServer pings the http server to make sure the router is working.
 func pingServer(api string) error {
-	pingApi := api + viper.GetString("base_path") + viper.GetString("ssc.health")
-	log.Infof("pingServer test api as: %v", pingApi)
+	pingApi := api + viper.GetString("monitor.health")
 
-	for i := 0; i < viper.GetInt("ssc.count"); i++ {
+	for i := 0; i < viper.GetInt("monitor.count"); i++ {
 		// Ping the server by sending a GET request to `/health`.
 		resp, err := http.Get(pingApi)
 		if err == nil && resp.StatusCode == 200 {
+			log.Infof("pingServer test pass api at: %v", pingApi)
 			return nil
 		}
 
