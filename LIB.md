@@ -1,4 +1,13 @@
-# alecthomas/template
+# github.com/smartystreets/goconvey
+
+[github.com/smartystreets/goconvey](https://github.com/smartystreets/goconvey)
+
+```bash
+dep ensure --add github.com/smartystreets/goconvey@^1.6.3
+dep ensure -v
+```
+
+# github.com/alecthomas/template
 
 [github.com/alecthomas/template](https://github.com/alecthomas/template)
 
@@ -7,7 +16,7 @@ dep ensure -add github.com/alecthomas/template
 dep ensure -v
 ```
 
-# gin-swagger
+# github.com/swaggo/gin-swagger
 
 [github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
 
@@ -16,9 +25,9 @@ dep ensure -add github.com/swaggo/gin-swagger@master
 dep ensure -v
 ```
 
-# bar-counter/monitor
+# github.com/bar-counter/monitor
 
-[bar-counter/monitor](https://github.com/bar-counter/monitor)
+[github.com/bar-counter/monitor](https://github.com/bar-counter/monitor)
 
 ```bash
 dep ensure --add github.com/bar-counter/monitor@1.0.1
