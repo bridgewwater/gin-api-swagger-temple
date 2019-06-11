@@ -24,6 +24,13 @@
 #   go-tests = true
 #   unused-packages = true
 
+[prune]
+  go-tests = true
+  unused-packages = true
+
+[[constraint]]
+  name = "github.com/smartystreets/goconvey"
+  version = "1.6.3"
 
 [[constraint]]
   name = "github.com/fsnotify/fsnotify"
@@ -32,6 +39,10 @@
 [[constraint]]
   name = "github.com/gin-gonic/gin"
   version = "1.4.0"
+
+[[constraint]]
+  name = "github.com/shirou/gopsutil"
+  version = "2.19.05"
 
 [[constraint]]
   name = "github.com/bar-counter/monitor"
@@ -47,18 +58,6 @@
 
 [[constraint]]
   name = "github.com/alecthomas/template"
-
-[prune]
-  go-tests = true
-  unused-packages = true
-
-[[constraint]]
-  name = "github.com/shirou/gopsutil"
-  version = "2.19.2"
-
-[[constraint]]
-  name = "github.com/parnurzeal/gorequest"
-  version = "0.2.15"
 
 [[constraint]]
   branch = "master"

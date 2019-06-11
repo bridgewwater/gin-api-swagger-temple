@@ -18,32 +18,22 @@ type Err struct {
 	Err  error  `json:"-"`
 }
 
-// can return errdef.Err use fmt.Errorf
+// new error for use
 //	errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
-//	message string error message format
-//	args interface error message args
 // use like
-// 	errdef.NewSfp(errdef.ErrParams, "pl error, now %v", pl)
-//
-func NewSfp(errcode *ErrDef, message string, args ...interface{}) *Err {
-	if message == "" {
-		return &Err{
-			Code: errcode.Code,
-			Msg:  errcode.Msg,
-		}
-	} else {
-		return &Err{
-			Code: errcode.Code,
-			Msg:  fmt.Sprintf(message, args),
-			Err:  fmt.Errorf(message, args),
-		}
-	}
+//	errdef.NewErr(errdef.ErrParams)
+// and you can add message
+//	errdef.NewErr(errdef.ErrParams).Add("params id not found")
+func NewErr(errcode *ErrDef) *Err {
+	return &Err{Code: errcode.Code, Msg: errcode.Msg, Err: fmt.Errorf(errcode.Msg)}
 }
 
 // new error for use
 //	errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
 //	err error can use fmt.Errorf() to create
 // use like
+//	errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err))
+// and you can add message
 //	errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err)).Add("client can know error")
 //
 func New(errcode *ErrDef, err error) *Err {
@@ -69,12 +59,6 @@ func (err *Err) Error() string {
 	return fmt.Sprintf("Err - code: %d, message: %s, error: %s", err.Code, err.Msg, err.Err)
 }
 
-// asset error is ErrUserNotFound to use errdef.DecodeErr()
-func IsErrUserNotFound(err error) bool {
-	code, _ := DecodeErr(err)
-	return code == ErrUserNotFound.Code
-}
-
 // decode error
 func DecodeErr(err error) (int, string) {
 	if err == nil {
@@ -90,4 +74,10 @@ func DecodeErr(err error) (int, string) {
 	}
 
 	return InternalServerError.Code, err.Error()
+}
+
+// asset error is ErrUserNotFound to use errdef.DecodeErr()
+func IsErrUserNotFound(err error) bool {
+	code, _ := DecodeErr(err)
+	return code == ErrUserNotFound.Code
 }

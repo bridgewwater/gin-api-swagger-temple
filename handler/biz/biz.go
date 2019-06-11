@@ -1,7 +1,6 @@
 package biz
 
 import (
-	"fmt"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -52,7 +51,7 @@ func GetJSON(c *gin.Context) {
 func GetPath(c *gin.Context) {
 	id := c.Param("some_id")
 	if id == "" {
-		c.JSON(http.StatusForbidden, errdef.New(errdef.ErrParams, fmt.Errorf("id not found")))
+		c.JSON(http.StatusForbidden, errdef.NewErr(errdef.ErrParams).Add("id not found"))
 		return
 	}
 	resp := JsonBiz{
@@ -108,7 +107,7 @@ func GetQuery(c *gin.Context) {
 func PostBody(c *gin.Context) {
 	var req JsonBiz
 	if err := c.BindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrParams, err).Add("body error"))
+		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrBind, err).Add("body error"))
 		return
 	}
 	c.JSON(http.StatusOK, req)
