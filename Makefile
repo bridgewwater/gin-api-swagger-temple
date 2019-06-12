@@ -116,7 +116,7 @@ releaseOS: checkDepends buildARCH checkReleaseOSDistPath
 
 help:
 	@echo "make init - check base env of this project"
-	@echo "make checkDepends - check depends of project"
+	@echo "make dep - check depends of project"
 	@echo "make clean - remove binary file and log files"
 	@echo "make buildSwagger - build newest swagger for dev"
 	@echo "make test - build dist at $(ROOT_TEST_DIST_PATH)"
