@@ -46,6 +46,9 @@ init: checkEnvGo
 checkDepends: checkEnvGo
 	-dep ensure -v
 
+dep: checkDepends
+	@echo "just check depends info below"
+
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
 
