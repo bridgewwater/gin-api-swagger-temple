@@ -49,6 +49,15 @@ checkDepends: checkEnvGo
 dep: checkDepends
 	@echo "just check depends info below"
 
+dependenciesLinux:
+	dep status -dot | dot -T png | display
+
+dependenciesMacOS:
+	dep status -dot | dot -T png | open -f -a /Applications/Preview.app
+
+dependenciesWin:
+	dep status -dot | dot -T png -o status.png; start status.png
+
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
 
@@ -117,6 +126,9 @@ releaseOS: checkDepends buildARCH checkReleaseOSDistPath
 help:
 	@echo "make init - check base env of this project"
 	@echo "make dep - check depends of project"
+	@echo "make dependenciesLinux - see depends of project at linux, use as: apt-get install graphviz"
+	@echo "make dependenciesMacOS - see depends of project at macOS, use as: brew install graphviz"
+	@echo "make dependenciesWin - see depends of project at windows, use as: choco install graphviz.portable"
 	@echo "make clean - remove binary file and log files"
 	@echo "make buildSwagger - build newest swagger for dev"
 	@echo "make test - build dist at $(ROOT_TEST_DIST_PATH)"
