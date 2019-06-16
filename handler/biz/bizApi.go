@@ -1,6 +1,7 @@
 package biz
 
 import (
+	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -8,20 +9,13 @@ import (
 )
 
 // @Summary /biz/string
-// @Description HealthCheck shows OK as the ping-pong result.
+// @Description get string of this api.
 // @Tags biz
 // @Success 200 "OK"
 // @Router /biz/string [get]
 func GetString(c *gin.Context) {
-	message := "this is message"
+	message := "this is biz message"
 	c.String(http.StatusOK, message)
-}
-
-type JsonBiz struct {
-	Info   string `json:"info,omitempty" example:"input info here"`
-	Id     string `json:"id,omitempty"  example:"id123zqqeeadg24qasd"`
-	Offset int    `json:"offset,omitempty"  example:"0"`
-	Limit  int    `json:"limit,omitempty"  example:"10"`
 }
 
 // @Summary /biz/json
@@ -29,11 +23,11 @@ type JsonBiz struct {
 // @Tags biz
 // @Accept application/json
 // @Produce application/json
-// @Success 200 {object} biz.JsonBiz "value in biz.JsonBiz"
+// @Success 200 {object} model.Biz "value in model.Biz"
 // @Failure 403 {object} errdef.Err "error at errdef.Err"
 // @Router /biz/json [get]
 func GetJSON(c *gin.Context) {
-	resp := JsonBiz{
+	resp := model.Biz{
 		Info: "message",
 	}
 	c.JSON(http.StatusOK, resp)
@@ -45,7 +39,7 @@ func GetJSON(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param some_id     path     string     true     "some id to show"
-// @Success 200 {object} biz.JsonBiz "value in biz.JsonBiz"
+// @Success 200 {object} model.Biz "value in model.Biz"
 // @Failure 403 {object} errdef.Err "error at errdef.Err"
 // @Router /biz/path/{some_id} [get]
 func GetPath(c *gin.Context) {
@@ -54,7 +48,7 @@ func GetPath(c *gin.Context) {
 		c.JSON(http.StatusForbidden, errdef.NewErr(errdef.ErrParams).Add("id not found"))
 		return
 	}
-	resp := JsonBiz{
+	resp := model.Biz{
 		Id: id,
 	}
 	c.JSON(http.StatusOK, resp)
@@ -67,7 +61,7 @@ func GetPath(c *gin.Context) {
 // @Produce application/json
 // @Param   offset     query    int     true        "Offset"
 // @Param   limit      query    int     false       "limit"
-// @Success 200 {object} biz.JsonBiz "value in biz.JsonBiz"
+// @Success 200 {object} model.Biz "value in model.Biz"
 // @Failure 403 {object} errdef.Err "error at errdef.Err"
 // @Router /biz/query/ [get]
 func GetQuery(c *gin.Context) {
@@ -88,7 +82,7 @@ func GetQuery(c *gin.Context) {
 	} else {
 		limit = 10
 	}
-	resp := JsonBiz{
+	resp := model.Biz{
 		Offset: offset,
 		Limit:  limit,
 	}
@@ -100,12 +94,12 @@ func GetQuery(c *gin.Context) {
 // @Tags biz
 // @Accept application/json
 // @Produce application/json
-// @Param biz     body     biz.JsonBiz     true     "body biz.JsonBiz for post"
-// @Success 200 {object} biz.JsonBiz "value in biz.JsonBiz"
+// @Param biz     body     model.Biz     true     "body model.Biz for post"
+// @Success 200 {object} model.Biz "value in model.Biz"
 // @Failure 400 {object} errdef.Err "error at errdef.Err"
 // @Router /biz/body [post]
 func PostBody(c *gin.Context) {
-	var req JsonBiz
+	var req model.Biz
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrBind, err).Add("body error"))
 		return
