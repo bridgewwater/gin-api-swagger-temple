@@ -3,8 +3,9 @@ package errdef
 import "fmt"
 
 type ErrDef struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
+	Code       int    `json:"code"`
+	Msg        string `json:"msg"`
+	HttpStatus int    `json:"-"`
 }
 
 func (err ErrDef) Error() string {
