@@ -97,6 +97,9 @@ buildARCH: buildSwagger
 dev: buildMain
 	-./build/main -c ./conf/config.yaml
 
+runTest:  buildMain
+	-./build/main -c ./conf/test/config.yaml
+
 test: checkDepends buildMain checkTestDistPath
 	mv ./build/main $(ROOT_TEST_DIST_PATH)
 	cp ./conf/test/config.yaml $(ROOT_TEST_DIST_PATH)
@@ -137,4 +140,5 @@ help:
 	@echo "make release - build dist at $(ROOT_REPO_DIST_PATH)"
 	@echo "make releaseOS - build dist at $(ROOT_REPO_OS_DIST_PATH)"
 	@echo ""
+	@echo "make runTest - run server use conf/test/config.yaml"
 	@echo "make dev - run server use conf/config.yaml"

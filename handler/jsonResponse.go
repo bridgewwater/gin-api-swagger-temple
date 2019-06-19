@@ -47,7 +47,7 @@ func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsgs ...str
 // use as
 //	handler.JsonSuccess(c)
 //	return
-func JsonSuccess(c *gin.Context, data ...interface{}) {
+func JsonSuccess(c *gin.Context, data interface{}) {
 	if data != nil {
 		c.JSON(http.StatusOK, model.Response{
 			Code: 0,
@@ -65,7 +65,7 @@ func JsonSuccess(c *gin.Context, data ...interface{}) {
 // use as
 //	handler.JsonErr(c, 0)
 //	return
-func JsonErr(c *gin.Context, errCode int, data ...interface{}) {
+func JsonErr(c *gin.Context, errCode int, data interface{}) {
 	if errCode == 0 {
 		errCode = errdef.InternalServerError.Code
 	}
