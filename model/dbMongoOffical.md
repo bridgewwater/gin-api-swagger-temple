@@ -99,19 +99,17 @@ import (
 
 ```go
 import (
+	"context"
+	"fmt"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"github.com/spf13/viper"
+	"net/url"
+	"time"
 )
 
-type Database struct {
-	MongoC  *mongo.Client
-	MongoDB *mongo.Database
-}
-
-var DB *Database
-var ctx context.Context
+const defaultMongoAuthMechanism string = "SCRAM-SHA-1"
 
 // mongodb://user:password@localhost:27017/db
 //	username user name of mongodb
@@ -124,45 +122,44 @@ func openMongo(username, password, addr, dbName string, timeOutSecond int) (*mon
 	var mongoUri = fmt.Sprintf("mongodb://%v:%v@%v/%v", username, password, addr, dbName)
 	mongoUrl, err := url.Parse(mongoUri)
 	if err != nil {
-		log.Errorf(err, "Connect mongo string error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("connect mongo string error at: %v with %v", mongoUri, err.Error())
 	}
+
+	// can use other log
 	log.Infof("Try connect mongo: %v", mongoUri)
 
 	//set Auth, this is must
 	opts := &options.ClientOptions{}
 	opts.SetAuth(options.Credential{
-		AuthMechanism: "SCRAM-SHA-1",
+		AuthMechanism: defaultMongoAuthMechanism,
 		AuthSource:    dbName,
 		Username:      username,
 		Password:      password,
 	})
 	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri), opts)
 	if err != nil {
-		log.Errorf(err, "New mongo client error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("new mongo client error at: %v with %v", mongoUri, err.Error())
 	}
 
-	// cancel function ?
 	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeOutSecond)*time.Second)
+
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Errorf(err, "Connect mongoDB error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("connect mongoDB error at: %v with %v", mongoUri, err.Error())
 	}
 
 	// test ping
 	if err := client.Ping(ctx, readpref.Primary()); err != nil {
-		log.Errorf(err, "Ping mongoDB error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("ping mongoDB error at: %v with %v", mongoUri, err.Error())
 	}
 
 	database := client.Database(mongoUrl.Path[1:])
-	log.Debugf("Try open mongoDB Database at: %v", database.Name())
 
+	// can use other log
 	log.Infof("Open and ping mongoDB success at: %v", mongoUri)
-	log.Infof("If want use CLI: mongo --authenticationMechanism SCRAM-SHA-1 --authenticationDatabase %v -u %v -p %v %v",
-		dbName, username, password, addr)
+	log.Infof("If want use CLI: mongo --authenticationMechanism %v --authenticationDatabase %v -u %v -p %v %v",
+		defaultMongoAuthMechanism, dbName, username, password, addr)
+	// cancel function by ctx
 	return client, database, nil
 }
 
@@ -175,40 +172,49 @@ func openMongoNoPwd(addr, dbName string, timeOutSecond int) (*mongo.Client, *mon
 	var mongoUri = fmt.Sprintf("mongodb://%v/%v", addr, dbName)
 	mongoUrl, err := url.Parse(mongoUri)
 	if err != nil {
-		log.Errorf(err, "Connect mongo string error at: %v with %v", mongoUri, err)
-		return nil, nil, err
-	}
-	log.Infof("Try connect No password mongo: %v", mongoUri)
-	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
-	if err != nil {
-		log.Errorf(err, "New mongo No password client error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("connect mongo string error at: %v with %v", mongoUri, err.Error())
 	}
 
-	// cancel function ?
+	// can use other log
+	log.Infof("Try connect No password mongo: %v", mongoUri)
+
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongoUri))
+	if err != nil {
+		return nil, nil, fmt.Errorf("new mongo No password client error at: %v with %v", mongoUri, err.Error())
+	}
+
 	ctx, _ := context.WithTimeout(context.Background(), time.Duration(timeOutSecond)*time.Second)
+
 	err = client.Connect(ctx)
 	if err != nil {
-		log.Errorf(err, "Connect No password mongoDB error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("connect No password mongoDB error at: %v with %v", mongoUri, err.Error())
 	}
 
 	// test ping
 	if err := client.Ping(ctx, readpref.Primary()); err != nil {
-		log.Errorf(err, "Ping No password mongoDB error at: %v with %v", mongoUri, err)
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("ping No password mongoDB error at: %v with %v", mongoUri, err.Error())
 	}
 
 	database := client.Database(mongoUrl.Path[1:])
-	log.Debugf("Try open No password mongoDB Database at: %v", database.Name())
 
+	// can use other log
+	log.Debugf("Try open No password mongoDB Database at: %v", database.Name())
 	log.Infof("Open and ping No password mongoDB success at: %v", mongoUri)
 	log.Infof("If want use CLI: mongo %v/%v", addr, dbName)
+	// cancel function by context
 	return client, database, nil
 }
 
 // init mongoDB by yaml with viper
-func initMongoDB() (*mongo.Client, *mongo.Database) {
+// viper config.yaml like
+//	mongo:
+//	addr: 47.112.118.101:27018
+//	time_out: 10              # time out unit is second
+//	no_pwd: false             # true or false no need pwd
+//	db: dbName                # name of connect db
+//	user: user                # effective no_pwd is false
+//	pwd: userPwd           # effective no_pwd is false
+func initMongoDBByViper() (*mongo.Client, *mongo.Database) {
 	noPwd := viper.GetBool("mongo.no_pwd")
 	if noPwd {
 		client, db, err := openMongoNoPwd(
@@ -237,25 +243,4 @@ func initMongoDB() (*mongo.Client, *mongo.Database) {
 
 }
 
-// full DB connect
-// use at main.go
-//	model.DB.Init()
-//	defer model.DB.Close()
-// if connect test error will panic!
-func (db *Database) Init() {
-	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
-	client, database := initMongoDB()
-	DB = &Database{
-		MongoC:  client,
-		MongoDB: database,
-	}
-}
-
-// close ALL db connect
-func (db *Database) Close() {
-	err := DB.MongoC.Disconnect(ctx)
-	if err != nil {
-		log.Errorf(err, "Close mongoDB error: %v", err)
-	}
-}
 ```

@@ -33,3 +33,18 @@ dep ensure -v
 dep ensure --add github.com/bar-counter/monitor@1.0.1
 dep ensure -v
 ```
+
+#  gentleman
+
+- [gopkg.in/h2non/gentleman.v2](https://gopkg.in/h2non/gentleman.v2)
+- source [github.com/h2non/gentleman](https://github.com/h2non/gentleman)
+
+
+```bash
+dep ensure -add gopkg.in/h2non/gentleman.v2@v2.0.3
+dep ensure -v
+```
+
+```go
+import "gopkg.in/h2non/gentleman.v2"
+```
