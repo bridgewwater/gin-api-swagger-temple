@@ -43,9 +43,10 @@ func GinUnAuthCheck(c *gin.Context) error {
 		}
 	}
 
-	return fmt.Errorf("other check, please fix Auth check error")
+	return fmt.Errorf("other check, please fix auth check error")
 }
 
+// use http HEAD key to check
 func GinUnAuthHead(c *gin.Context, key, val string) error {
 	xAccessToken := c.GetHeader(key)
 	if xAccessToken == val {
