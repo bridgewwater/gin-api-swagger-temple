@@ -54,11 +54,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	// The health check handlers
 	bizRouteGroup := g.Group(basePath + "/biz")
 	{
+		bizRouteGroup.POST("/one", biz.PostOne)
 		bizRouteGroup.GET("/string", biz.GetString)
 		bizRouteGroup.GET("/json", biz.GetJSON)
 		bizRouteGroup.GET("/path/:some_id", biz.GetPath)
 		bizRouteGroup.GET("/query", biz.GetQuery)
-		bizRouteGroup.POST("/body", biz.PostBody)
 	}
 
 	// TODO other router

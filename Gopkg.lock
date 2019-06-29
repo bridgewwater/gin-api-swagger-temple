@@ -157,9 +157,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:f5a2051c55d05548d2d4fd23d244027b59fbd943217df8aa3b5e170ac2fd6e1b"
+  digest = "1:e4f630893d2bbf8c268eba14e7cc92ef8844ee259a45e21ea77cf7656544cb7e"
   name = "github.com/json-iterator/go"
-  packages = ["."]
+  packages = [
+    ".",
+    "extra",
+  ]
   pruneopts = "UT"
   revision = "0ff49de124c6f76f8494e194af75bde0f1a49a29"
   version = "v1.1.6"
@@ -448,6 +451,8 @@
     "github.com/bar-counter/monitor",
     "github.com/fsnotify/fsnotify",
     "github.com/gin-gonic/gin",
+    "github.com/json-iterator/go",
+    "github.com/json-iterator/go/extra",
     "github.com/lexkong/log",
     "github.com/smartystreets/goconvey/convey",
     "github.com/spf13/pflag",
