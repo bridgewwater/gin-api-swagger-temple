@@ -109,7 +109,7 @@ import (
 	"time"
 )
 
-const defaultMongoAuthMechanism string = "SCRAM-SHA-1"
+const defaultMongoAuthMechanism string = "SCRAM-SHA-256"
 
 // mongodb://user:password@localhost:27017/db
 //	username user name of mongodb
@@ -118,7 +118,7 @@ const defaultMongoAuthMechanism string = "SCRAM-SHA-1"
 //	dbName database name of mongodb
 //	timeOutSecond connect time out of mongodb
 // return *mongo.Client, *mongo.Database, then error
-func openMongo(username, password, addr, dbName string, timeOutSecond int) (*mongo.Client, *mongo.Database, error) {
+func openMongo(authMechanism, username, password, addr, dbName string, timeOutSecond int) (*mongo.Client, *mongo.Database, error) {
 	var mongoUri = fmt.Sprintf("mongodb://%v:%v@%v/%v", username, password, addr, dbName)
 	mongoUrl, err := url.Parse(mongoUri)
 	if err != nil {
@@ -131,7 +131,7 @@ func openMongo(username, password, addr, dbName string, timeOutSecond int) (*mon
 	//set Auth, this is must
 	opts := &options.ClientOptions{}
 	opts.SetAuth(options.Credential{
-		AuthMechanism: defaultMongoAuthMechanism,
+		AuthMechanism: authMechanism,
 		AuthSource:    dbName,
 		Username:      username,
 		Password:      password,
@@ -158,7 +158,7 @@ func openMongo(username, password, addr, dbName string, timeOutSecond int) (*mon
 	// can use other log
 	log.Infof("Open and ping mongoDB success at: %v", mongoUri)
 	log.Infof("If want use CLI: mongo --authenticationMechanism %v --authenticationDatabase %v -u %v -p %v %v",
-		defaultMongoAuthMechanism, dbName, username, password, addr)
+		authMechanism, dbName, username, password, addr)
 	// cancel function by ctx
 	return client, database, nil
 }
@@ -211,6 +211,7 @@ func openMongoNoPwd(addr, dbName string, timeOutSecond int) (*mongo.Client, *mon
 //	addr: 47.112.118.101:27018
 //	time_out: 10              # time out unit is second
 //	no_pwd: false             # true or false no need pwd
+//	auth_mechanism: SCRAM-SHA-1             # default is SCRAM-SHA-256
 //	db: dbName                # name of connect db
 //	user: user                # effective no_pwd is false
 //	pwd: userPwd           # effective no_pwd is false
@@ -228,7 +229,12 @@ func initMongoDBByViper() (*mongo.Client, *mongo.Database) {
 		return client, db
 	} else {
 
+		authMechanism := viper.GetString("mongo.auth_mechanism")
+		if authMechanism == "" {
+			authMechanism = defaultMongoAuthMechanism
+		}
 		client, db, err := openMongo(
+			authMechanism,
 			viper.GetString("mongo.user"),
 			viper.GetString("mongo.pwd"),
 			viper.GetString("mongo.addr"),
@@ -242,5 +248,4 @@ func initMongoDBByViper() (*mongo.Client, *mongo.Database) {
 	}
 
 }
-
 ```
