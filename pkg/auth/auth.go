@@ -7,20 +7,22 @@ import (
 )
 
 var urlCheckList = [...]string{
-	"/v1/board/burden",
+	"/v1/api/checked",
 }
 
 var urlMatchList = [...]string{
-	"/v1/board/record/date/.*",
+	"/v1/api/checked/id/.*",
 }
 
 var superAccessToken = "557c0689faf80e61daeee6e343"
 
+// this method use HEAD x-access-token
 func GinUnAuthCheck(c *gin.Context) error {
 	authorization := c.GetHeader("x-access-token")
 	if authorization == "" {
 		return fmt.Errorf("no head x-access-token")
 	}
+	//TODO xAccessToken := config.GetAuthCfg().SuperAccessToken
 	xAccessToken := superAccessToken
 	url := c.Request.URL.String()
 
