@@ -96,7 +96,9 @@ func GetJSON(c *gin.Context) {
 	resp := model.Biz{
 		Info: "message",
 	}
-	handler.JsonSuccess(c, resp)
+	handler.JsonSuccess(c, struct {
+		NewInfo string `json:"new_info"`
+	}{NewInfo: resp.Info})
 }
 
 // @Summary /biz/string
