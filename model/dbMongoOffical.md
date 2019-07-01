@@ -4,6 +4,7 @@
 - [github url https://github.com/mongodb/mongo-go-driver](https://github.com/mongodb/mongo-go-driver#usage)
 - [doc go.mongodb.org/mongo-driver/mongo](https://godoc.org/go.mongodb.org/mongo-driver/mongo)
 - [doc go.mongodb.org/mongo-driver/bson](https://godoc.org/go.mongodb.org/mongo-driver/bson)
+- [example.go](https://github.com/mongodb/mongo-go-driver/blob/master/examples/documentation_examples/examples.go)
 
 
 # mongo-bson
