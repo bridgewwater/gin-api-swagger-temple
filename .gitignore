@@ -3,6 +3,7 @@
 dist/
 build/
 vendor/
+.vendor_new/
 log/
 docs/
 
