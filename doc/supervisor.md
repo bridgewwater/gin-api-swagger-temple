@@ -21,7 +21,7 @@ redirect_stderr=true 如果为 true ，则stderr的日志会被写入stdout日�
 
 - 生效
 
-```sh
+```bash
 mkdir -p /root/Document/api-temp/log/
 # service supervisor restart
 supervisorctl update
