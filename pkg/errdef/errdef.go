@@ -44,7 +44,8 @@ func New(errcode *ErrDef, err error) *Err {
 // to errdef.New().add("user message")
 func (err *Err) Add(message string) error {
 	//err.Msg = fmt.Sprintf("%s %s", err.Msg, message)
-	err.Msg += " " + message
+	//err.Msg += " " + message
+	err.Msg = fmt.Sprintf("%v %v. %v", err.Msg, err.Err.Error(), message)
 	return err
 }
 
