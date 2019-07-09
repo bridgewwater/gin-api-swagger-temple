@@ -32,7 +32,7 @@ func main() {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
-	fmt.Printf("%s \n", "start dev app at here")
+	fmt.Printf("%s -> %v at time: %v\n", "start service", viper.GetString("name"), time.Now().String())
 
 	// Set gin mode.
 	runMode := viper.GetString("runmode")
