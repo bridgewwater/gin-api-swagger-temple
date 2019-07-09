@@ -67,7 +67,10 @@ cleanDist:
 cleanLog:
 	@if [ -d ${ROOT_LOG_PATH} ]; then rm -rf ${ROOT_LOG_PATH} && echo "~> cleaned ${ROOT_LOG_PATH}"; else echo "~> has cleaned ${ROOT_LOG_PATH}"; fi
 
-clean: cleanBuild cleanLog
+cleanSwaggerDoc:
+	@if [ -d ${ROOT_SWAGGER_PATH} ]; then rm -rf ${ROOT_SWAGGER_PATH} && echo "~> cleaned ${ROOT_SWAGGER_PATH}"; else echo "~> has cleaned ${ROOT_SWAGGER_PATH}"; fi
+
+clean: cleanBuild cleanLog cleanSwaggerDoc
 	@echo "~> clean finish"
 
 checkTestDistPath:

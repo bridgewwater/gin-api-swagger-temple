@@ -34,7 +34,10 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		Status:         viper.GetBool("monitor.status"),
 		StatusHardware: viper.GetBool("monitor.status_hardware"),
 		Debug:          viper.GetBool("monitor.debug"),
-		PProf:          viper.GetBool("monitor.pprof"),
+		DebugMiddleware: gin.BasicAuth(gin.Accounts{
+			"admin": viper.GetString("monitor.admin.pwd"),
+		}),
+		PProf: viper.GetBool("monitor.pprof"),
 	}
 	err := monitor.Register(g, monitorCfg)
 	if err != nil {

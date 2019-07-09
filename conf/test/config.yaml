@@ -29,6 +29,8 @@ monitor: # monitor 自检测
     ram: /status/hardware/ram       # hardware api ram
   debug: false
   pprof: false
+  admin: # 远程调试 admin 用户 和 对应密码
+    pwd: f6011b78008fd971784b2490b474cf659ffb1e
 
 swagger:                            # swagger 在 release 不生效
   root: /swagger                    # swagger root
