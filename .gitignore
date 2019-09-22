@@ -6,6 +6,7 @@ vendor/
 .vendor_new/
 log/
 docs/
+go.sum
 
 ### Go template
 # Compiled Object files, Static and Dynamic libs (Shared Objects)

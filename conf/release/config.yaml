@@ -22,16 +22,15 @@ monitor: # monitor 自检测
   count: 10           # pingServer 函数try的次数
   status: true
   health: /status/health # api health
-  hardware: true
+  hardware: false
   status_hardware:
     disk: /status/hardware/disk     # hardware api disk
     cpu: /status/hardware/cpu       # hardware api cpu
     ram: /status/hardware/ram       # hardware api ram
-  debug: true
-  pprof: true
+  debug: false
+  pprof: false
   admin: # 远程调试 admin 用户 和 对应密码
     pwd: f6011b78008fd971784b2490b474cf659ffb1e
-
 
 swagger:                            # swagger 在 release 不生效
   root: /swagger                    # swagger root
@@ -40,8 +39,7 @@ swagger:                            # swagger 在 release 不生效
   description: This is a sample server celler server. # swagger 描述
   version: 1.0                      # swagger 版本
   host: 127.0.0.1:39000             # swagger host:port
-  security: false                    # swagger 页面用户开启开关
+  security: true                    # swagger 页面用户开启开关
   user:                             # swagger 页面用户设置
     admin: 36116f7c73bc9acb2a7a26   # admin 用户
     user: e2236a11aceac4de          # user 用户
-

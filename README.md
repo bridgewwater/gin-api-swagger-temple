@@ -14,9 +14,14 @@ $ make init
 # first run just use
 $ make checkDepends
 # change conf/config.yaml
+
 # run server as dev
 $ make dev
+# run as docker contant
+$ make 
 ```
+
+most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:39000/swagger/index.html)
 
 # config
 

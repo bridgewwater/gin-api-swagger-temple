@@ -14,34 +14,34 @@ monitor: # monitor 自检测
   pprof: true         # 性能检测，按需开放
 ```
 
-- `http://127.0.0.1:38080`  根据实际情况更换
+- `http://127.0.0.1:39000`  根据实际情况更换
 
 这组 API 是为了检查服务器状态
 
 ## health
 
 ```bash
-curl http://127.0.0.1:38080/status/health \
+curl http://127.0.0.1:39000/status/health \
 	-X GET
 ```
 
 ## disk
 
 ```bash
-curl http://127.0.0.1:38080/status/hardware/disk \
+curl http://127.0.0.1:39000/status/hardware/disk \
 	-X GET
 ```
 
 ## cpu
 
 ```bash
-curl http://127.0.0.1:38080/status/hardware/cpu \
+curl http://127.0.0.1:39000/status/hardware/cpu \
 	-X GET
 ```
 
 ## ram
 
 ```bash
-curl http://127.0.0.1:38080/status/hardware/ram \
+curl http://127.0.0.1:39000/status/hardware/ram \
 	-X GET
 ```

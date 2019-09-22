@@ -2,12 +2,26 @@ package config
 
 import (
 	"fmt"
+	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
 
+	"git.sinlov.cn/bridgewwater/temp-gin-api-self/util/sys"
 	"github.com/fsnotify/fsnotify"
 	"github.com/lexkong/log"
 	"github.com/spf13/viper"
-	"path/filepath"
+)
+
+const (
+	// env prefix is web
+	defaultEnvPrefix string = "ENV_WEB"
+	// env ENV_WEB_HTTPS_ENABLE default false
+	defaultEnvHttpsEnable string = "HTTPS_ENABLE"
+	// env ENV_WEB_HOST default ""
+	defaultEnvHost string = "HOST"
+	// env ENV_AUTO_HOST default true
+	defaultEnvAutoGetHost string = "AUTO_HOST"
 )
 
 var mustConfigString = []string{
@@ -25,9 +39,16 @@ type Config struct {
 var baseConf BaseConf
 
 type BaseConf struct {
-	BaseURL string
+	BaseURL   string
+	SSLEnable bool
 }
 
+// read default config by conf/config.yaml
+// can change by CLI by `-c`
+// this config can config by ENV
+//	ENV_WEB_HTTPS_ENABLE=false
+
+//	ENV_WEB_HOST 127.0.0.1:8000
 func Init(cfg string) error {
 	c := Config{
 		Name: cfg,
@@ -55,6 +76,12 @@ func Init(cfg string) error {
 }
 
 func initBaseConf() {
+	ssLEnable := false
+	if viper.GetString(defaultEnvHttpsEnable) == "true" {
+		ssLEnable = true
+	} else {
+		ssLEnable = viper.GetBool("sslEnable")
+	}
 	runMode := viper.GetString("runmode")
 	var apiBase string
 	if "debug" == runMode {
@@ -64,8 +91,37 @@ func initBaseConf() {
 	} else {
 		apiBase = viper.GetString("prod_url")
 	}
+
+	uri, err := url.Parse(apiBase)
+	if err != nil {
+		panic(err)
+	}
+	log.Debugf("uri.Host %v", uri.Host)
+
+	baseHOSTByEnv := viper.GetString(defaultEnvHost)
+	if baseHOSTByEnv != "" {
+		uri.Host = baseHOSTByEnv
+		apiBase = uri.String()
+	} else {
+		isAutoHost := viper.GetBool(defaultEnvAutoGetHost)
+		if isAutoHost {
+			ipv4, err := sys.NetworkLocalIP()
+			if err == nil {
+				var proc string
+				if ssLEnable {
+					proc = "https"
+				} else {
+					proc = "http"
+				}
+				addrStr := viper.GetString("addr")
+				apiBase = fmt.Sprintf("%v://%v%v", proc, ipv4, addrStr)
+			}
+		}
+	}
+	log.Debugf("apiBase %v", apiBase)
 	baseConf = BaseConf{
-		BaseURL: apiBase,
+		BaseURL:   apiBase,
+		SSLEnable: ssLEnable,
 	}
 }
 
@@ -77,12 +133,18 @@ func (c *Config) initConfig() error {
 	if c.Name != "" {
 		viper.SetConfigFile(c.Name) // 如果指定了配置文件，则解析指定的配置文件
 	} else {
-		viper.AddConfigPath(filepath.Join("conf")) // 如果没有指定配置文件，则解析默认的配置文件
+		viper.AddConfigPath(filepath.Join("conf")) // 如果没有指定配置文件，则解析默认的配置文件 conf/config.go
 		viper.SetConfigName("config")
 	}
-	viper.SetConfigType("yaml")     // 设置配置文件格式为YAML
-	viper.AutomaticEnv()            // 读取匹配的环境变量
-	viper.SetEnvPrefix("APISERVER") // 读取环境变量的前缀为APISERVER
+	viper.SetConfigType("yaml")          // 设置配置文件格式为YAML
+	viper.AutomaticEnv()                 // 读取匹配的环境变量
+	viper.SetEnvPrefix(defaultEnvPrefix) // 读取环境变量的前缀为 defaultEnvPrefix
+
+	// 设置默认环境变量
+	_ = os.Setenv(defaultEnvHost, "")
+	_ = os.Setenv(defaultEnvHttpsEnable, "false")
+	_ = os.Setenv(defaultEnvAutoGetHost, "true")
+
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)
 	if err := viper.ReadInConfig(); err != nil { // viper解析配置文件
