@@ -157,6 +157,8 @@ dockerRun: buildDocker checkTestBuildPath
 	-sleep 5
 	@echo "=> container $(ROOT_NAME) now status"
 	docker inspect --format='{{ .State.Status}}' $(ROOT_NAME)
+	docker logs $(ROOT_NAME)
+	@echo "must of swagger see at http://127.0.0.1:39000/swagger/index.html"
 
 dockerStop:
 	ROOT_NAME=$(ROOT_NAME) DIST_VERSION=$(DIST_VERSION) docker-compose stop
