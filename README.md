@@ -18,7 +18,10 @@ $ make checkDepends
 # run server as dev
 $ make dev
 # run as docker contant
-$ make 
+$ make dockerRun
+# stop or remove docker
+$ make dockerStop
+$ make dockerRemove
 ```
 
 most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:39000/swagger/index.html)
