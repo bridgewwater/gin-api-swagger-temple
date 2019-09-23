@@ -57,11 +57,17 @@ checkDepends:
 	# in GOPATH just use GO111MODULE=on go mod init to init after golang 1.12
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod verify
 
-tidyDepends:
-	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod tidy
-
 dep: checkDepends
 	@echo "just check depends info below"
+
+dependsVendor:
+	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod vendor
+
+dependsTidy:
+	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod tidy
+
+dependsDownload:
+	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod download
 
 dependenciesGraph:
 	GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod graph
@@ -158,7 +164,7 @@ dockerRun: buildDocker checkTestBuildPath
 	@echo "=> container $(ROOT_NAME) now status"
 	docker inspect --format='{{ .State.Status}}' $(ROOT_NAME)
 	docker logs $(ROOT_NAME)
-	@echo "must of swagger see at http://127.0.0.1:39000/swagger/index.html"
+	@echo "most of swagger see at http://127.0.0.1:39000/swagger/index.html"
 
 dockerStop:
 	ROOT_NAME=$(ROOT_NAME) DIST_VERSION=$(DIST_VERSION) docker-compose stop
@@ -174,9 +180,9 @@ scpDockerComposeTest:
 help:
 	@echo "make init - check base env of this project"
 	@echo "make dep - check depends of project"
-	@echo ""
 	@echo "make dependenciesGraph - see depends graph of project"
-	@echo "make tidyDepends - tidy depends graph of project"
+	@echo "make dependsTidy - tidy depends graph of project"
+	@echo ""
 	@echo "make clean - remove binary file and log files"
 	@echo ""
 	@echo "-- now build name: $(ROOT_NAME) version: $(DIST_VERSION)"
