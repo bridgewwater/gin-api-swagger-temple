@@ -1,10 +1,18 @@
-# api-info
+# temp-gin-api-self info
 
-[TOC]
+## monitor-check
 
-## monitor-服务器自检
-
-用于服务器状态检测
+For server status detection
 
 doc [monitor.md](monitor.md)
+
+# other daemon process
+
+## supervisor
+
+doc [supervisor.md](supervisor.md)
+
+## systemctl
+
+doc [systemctl.md](systemctl.md)
 

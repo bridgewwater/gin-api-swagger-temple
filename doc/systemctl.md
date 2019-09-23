@@ -1,12 +1,12 @@
-# systemctl
+## systemctl
 
-## 驻守
+daemon process by systemctl
 
-/lib/systemd/system/api-temp.service
+/lib/systemd/system/temp-gin-api-self.service
 
 ```conf
 [Unit]
-Description=api-temp web service
+Description=temp-gin-api-self web service
 After=network-online.target network.target syslog.target
 Wants=network.target
 
@@ -27,33 +27,33 @@ StartLimitInterval=10
 WantedBy=multi-user.target
 ```
 
-每次更新配置后 `supervisorctl update api-temp`
+when update config use  `supervisorctl update temp-gin-api-self`
 
-- 生效
+- Effective
 
 ```sh
 # 运行日志
-journalctl -u api-temp
+journalctl -u temp-gin-api-self
 # 查看服务状态
-sudo systemctl status api-temp
+sudo systemctl status temp-gin-api-self
 
 # 修改配置后需要
 sudo systemctl daemon-reload
-sudo systemctl restart api-temp
+sudo systemctl restart temp-gin-api-self
 
 # 启动测试
-sudo systemctl start api-temp
+sudo systemctl start temp-gin-api-self
 # 停止
-sudo systemctl stop api-temp
+sudo systemctl stop temp-gin-api-self
 # 测试通过打开开机自启动
-sudo systemctl enable api-temp
+sudo systemctl enable temp-gin-api-self
 
 # update
 cd [version]
 cp config.yaml ~/api/api-swtich-subscription/
-supervisorctl stop api-temp
+supervisorctl stop temp-gin-api-self
 cp [new file] ~/api/api-swtich-subscription/
-supervisorctl update api-temp
+supervisorctl update temp-gin-api-self
 ```
 
 ## 日志设置

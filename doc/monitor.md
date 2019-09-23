@@ -1,22 +1,23 @@
 ## config
 
 ```yaml
-monitor: # monitor 自检测
-  count: 10           # pingServer 函数try的次数
-  status: true        # 存活检查接口 建议常开
-  health: /status/health # api health
-  hardware: true      # 硬件信息检查 按需开放
+monitor: # monitor
+  status: true             # api status use {monitor.health}
+  health: /status/health   # api health
+  retryCount: 10           # ping api health retry count
+  hardware: false           # hardware true or false
   status_hardware:
     disk: /status/hardware/disk     # hardware api disk
     cpu: /status/hardware/cpu       # hardware api cpu
     ram: /status/hardware/ram       # hardware api ram
-  debug: true         # 调试接口，按需开放
-  pprof: true         # 性能检测，按需开放
+  debug: false                       # debug true or false
+  pprof: false                       # security true or false
+  security: true                    # debug and security security true or false
+  securityUser:
+    admin: # admin:pwd
 ```
 
-- `http://127.0.0.1:39000`  根据实际情况更换
-
-这组 API 是为了检查服务器状态
+- `http://127.0.0.1:39000` change by actual environment
 
 ## health
 
