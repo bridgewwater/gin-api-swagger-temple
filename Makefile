@@ -57,16 +57,19 @@ checkDepends:
 	# in GOPATH just use GO111MODULE=on go mod init to init after golang 1.12
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod verify
 
-dep: checkDepends
-	@echo "just check depends info below"
-
-dependsVendor:
+dependenciesVendor:
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod vendor
 
-dependsTidy:
+dep: checkDepends dependenciesVendor
+	@echo "just check dependencies info below"
+
+dependenciesInit:
+	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod init
+
+dependenciesTidy:
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod tidy
 
-dependsDownload:
+dependenciesDownload:
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod download
 
 dependenciesGraph:
@@ -180,8 +183,8 @@ scpDockerComposeTest:
 help:
 	@echo "make init - check base env of this project"
 	@echo "make dep - check depends of project"
-	@echo "make dependenciesGraph - see depends graph of project"
-	@echo "make dependsTidy - tidy depends graph of project"
+	@echo "make dependenciesGraph - see dependencies graph of project"
+	@echo "make dependenciesTidy - tidy dependencies graph of project"
 	@echo ""
 	@echo "make clean - remove binary file and log files"
 	@echo ""
