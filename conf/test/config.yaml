@@ -35,7 +35,7 @@ monitor: # monitor 自检测
 swagger:                            # swagger 在 release 不生效
   root: /swagger                    # swagger root
   index: /swagger/index.html        # swagger 路径
-  title: Swagger API                         # swagger 标题
+  title: temp-gin-api-self                         # swagger 标题
   description: This is a sample server celler server. # swagger 描述
   version: 1.0                      # swagger 版本
   host: 127.0.0.1:39000             # swagger host:port

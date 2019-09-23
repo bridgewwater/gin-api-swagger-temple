@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/config"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/docs"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/router"
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
@@ -51,28 +50,6 @@ func main() {
 		middlewareList...,
 	)
 
-	var apiBase = config.BaseURL()
-	if "debug" == runMode || "test" == runMode {
-		// set swagger info
-		docs.SwaggerInfo.Title = viper.GetString("swagger.title")
-		docs.SwaggerInfo.Description = viper.GetString("swagger.description")
-		docs.SwaggerInfo.Version = viper.GetString("swagger.version")
-		docs.SwaggerInfo.Host = viper.GetString("swagger.host")
-		docs.SwaggerInfo.BasePath = viper.GetString("base_path")
-		log.Infof("In debug mode,you can use swagger")
-		log.Infof("swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
-		log.Infof("swagger.security status: %v", viper.GetBool("swagger.security"))
-		// Ping the server to make sure the router is working.
-		go func() {
-			if err := pingServer(apiBase); err != nil {
-				log.Error("The router has no response, or it might took too long to start up.", err)
-			}
-			log.Info("The router has been deployed successfully.")
-		}()
-	} else if "test" == runMode {
-		log.Infof("In test mode, you can use swagger.link at: %v%v", apiBase, viper.GetString("swagger.index"))
-	} else {
-	}
 	log.Infof("Start to listening the incoming requests on http address: %v", viper.GetString("addr"))
 	log.Infof("Sever name: %v , has start!", viper.GetString("name"))
 	err := http.ListenAndServe(viper.GetString("addr"), g)
@@ -81,24 +58,4 @@ func main() {
 	} else {
 		log.Infof("server run success!")
 	}
-}
-
-// pingServer pings the http server to make sure the router is working.
-func pingServer(api string) error {
-	pingApi := api + viper.GetString("monitor.health")
-
-	for i := 0; i < viper.GetInt("monitor.count"); i++ {
-		// Ping the server by sending a GET request to `/health`.
-		resp, err := http.Get(pingApi)
-		if err == nil && resp.StatusCode == 200 {
-			log.Infof("pingServer test pass api at: %v", pingApi)
-			return nil
-		}
-
-		// Sleep for a second to continue the next ping.
-		log.Warn("Waiting for the router, retry in 1 second.")
-		time.Sleep(time.Second)
-	}
-	//noinspection ALL
-	return fmt.Errorf("Can not connect to the router.")
 }

@@ -1,47 +1,47 @@
-runmode: debug               # 开发模式, debug, release, test
+runmode: debug               # run mode: debug, release, test
+addr: :39000                  # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
+name: temp-gin-api-self              # name of API Server
 
-addr: :39000                  # HTTP绑定端口
-name: temp-gin-api-self              # API Server的名字
-base_path: /v1                # api 版本
-prod_url: http://127.0.0.1:39000   # 生产模式函数请求的API服务器的ip:port
-test_url: http://127.0.0.1:39000   # 测试模式函数请求的API服务器的ip:port
-dev_url: http://127.0.0.1:39000   # 开发模式函数请求的API服务器的ip:port
-sslEnable: false                  # 是否打开 ssl
+base_path: /v1                     # api version
+prod_url: http://127.0.0.1:39000   # prod url full ip:port
+test_url: http://127.0.0.1:39000   # test url full ip:port
+dev_url: http://127.0.0.1:39000     # dev url full ip:port
+sslEnable: false                    # isEnable ssl mode this will cover by env ENV_WEB_HTTPS_ENABLE
 
 log:
-  writers: file,stdout            # file,stdout。选择file会将日志记录到`logger_file`指定的日志文件中，选择stdout会将日志输出到标准输出，当然也可以两者同时选择
-  logger_level: DEBUG             # 日志级别，DEBUG, INFO, WARN, ERROR, FATAL
-  logger_file: log/apiserver.log  # 日志文件
-  log_format_text: false          # `false`会输出成json格式，`true`会输出成非json格式
-  rollingPolicy: size             # rotate依据，可选的有：daily, size。如果选daily则根据天进行转存，如果是size则根据大小进行转存
-  log_rotate_date: 1              # rotate转存时间，配合`rollingPolicy: daily`使用
-  log_rotate_size: 8              # rotate转存大小，配合`rollingPolicy: size`使用
-  log_backup_count: 7             # 当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
+  writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
+  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
+  logger_file: log/server.log     # log file setting
+  log_format_text: false          # format `false` will format json, `true` will show abs
+  rollingPolicy: size             # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
+  log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
+  log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
+  log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
 
-monitor: # monitor 自检测
-  count: 10           # pingServer 函数try的次数
-  status: true
-  health: /status/health # api health
-  hardware: true
+monitor: # monitor
+  status: true             # api status use {monitor.health}
+  health: /status/health   # api health
+  retryCount: 10           # ping api health retry count
+  hardware: true           # hardware true or false
   status_hardware:
     disk: /status/hardware/disk     # hardware api disk
     cpu: /status/hardware/cpu       # hardware api cpu
     ram: /status/hardware/ram       # hardware api ram
-  debug: true
-  pprof: true
-  admin: # 远程调试 admin 用户 和 对应密码
-    pwd: f6011b78008fd971784b2490b474cf659ffb1e
+  debug: true                       # debug true or false
+  pprof: true                       # security true or false
+  security: false                    # debug and security security true or false
+  securityUser:
+    admin: f6011b78008fd971784b2490b474cf659ffb1e # admin:pwd
 
-
-swagger:                            # swagger 在 release 不生效
+swagger:                            # swagger not show at release
   root: /swagger                    # swagger root
-  index: /swagger/index.html        # swagger 路径
-  title: Swagger API                         # swagger 标题
-  description: This is a sample server celler server. # swagger 描述
-  version: 1.0                      # swagger 版本
+  index: /swagger/index.html        # swagger index
+  title: temp-gin-api-self          # swagger title
+  description: This is a sample server celler server. # swagger description
+  version: 1.0                      # swagger version
   host: 127.0.0.1:39000             # swagger host:port
-  security: false                    # swagger 页面用户开启开关
-  user:                             # swagger 页面用户设置
-    admin: 36116f7c73bc9acb2a7a26   # admin 用户
-    user: e2236a11aceac4de          # user 用户
+  security: false                    # swagger security true or false
+  user:                             # swagger user setting of BasicAuth
+    admin: 36116f7c73bc9acb2a7a26   # admin:pwd
+    user: e2236a11aceac4de          # user:pwd
 

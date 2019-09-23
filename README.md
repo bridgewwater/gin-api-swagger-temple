@@ -23,22 +23,6 @@ $ make
 
 most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:39000/swagger/index.html)
 
-# config
-
-- config file is `config.yaml` demo see [conf/config.yaml](conf/config.yaml)
-- upper `swagger_index` do not set!
-
-## log
-
-+ `writers`: 输出位置，有2个可选项：file,stdout。选择file会将日志记录到`logger_file`指定的日志文件中，选择stdout会将日志输出到标准输出，当然也可以两者同时选择
-+ `logger_level`: 日志级别，DEBUG, INFO, WARN, ERROR, FATAL
-+ `logger_file`: 日志文件
-+ `log_format_text`: 日志的输出格式，json或者plaintext，`false`会输出成json格式，`true`会输出成非json格式
-+ `rollingPolicy`: rotate依据，可选的有：daily, size。如果选daily则根据天进行转存，如果是size则根据大小进行转存
-+ `log_rotate_date`: rotate转存时间，配合`rollingPolicy: daily`使用
-+ `log_rotate_size`: rotate转存大小，配合`rollingPolicy: size`使用
-+ `log_backup_count`:当日志文件达到转存标准时，log系统会将该日志文件进行压缩备份，这里指定了备份文件的最大个数。
-
 # dev
 
 - swagger tools use [swag](https://github.com/swaggo/swag)
@@ -55,6 +39,24 @@ go get -v -u github.com/swaggo/swag/cmd/swag
 go version go1.11.4 darwin/amd64
 gin version 1.3.0
 swag version v1.4.1
+```
+
+# config
+
+- config file is `config.yaml` demo see [conf/config.yaml](conf/config.yaml)
+
+## log
+
+```yaml
+log:
+  writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
+  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
+  logger_file: log/server.log     # log file setting
+  log_format_text: false          # format `false` will format json, `true` will show abs
+  rollingPolicy: size             # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
+  log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
+  log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
+  log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
 ```
 
 ## folder-Def
