@@ -67,8 +67,72 @@ log:
 工程文件定义
 
 ```
-├── Gopkg.lock                   # dep 依赖锁文件
-├── Gopkg.toml                   # dep 依赖管理文件
+.
+├── LIB.md
+├── LICENCE
+├── Makefile
+├── README.md
+├── build
+│   └── main
+├── conf
+│   ├── config.yaml
+│   ├── release
+│   │   └── config.yaml
+│   └── test
+│       ├── config.yaml
+│       └── docker-compose.yml
+├── config
+│   ├── baseConf.go
+│   ├── config.go
+│   ├── logConf.go
+│   └── watchConf.go
+├── doc
+│   ├── README.md
+│   ├── monitor.md
+│   ├── supervisor.md
+│   └── systemctl.md
+├── docker-compose.yml
+├── docs
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
+├── go.mod
+├── handler
+│   ├── biz
+│   │   └── bizApi.go
+│   ├── json.go
+│   └── jsonResponse.go
+├── log
+├── main.go
+├── model
+│   ├── biz.go
+│   └── response.go
+├── pkg
+│   ├── auth
+│   │   ├── auth.go
+│   │   └── auth.md
+│   └── errdef
+│       ├── errcode.go
+│       ├── errdef.go
+│       └── errdef_test.go
+├── router
+│   ├── api.go
+│   ├── middleware
+│   │   └── header.go
+│   ├── monitor.go
+│   ├── router.go
+│   └── swagger.go
+├── util
+│   ├── sys
+│   │   └── network.go
+│   └── util.go
+└── vendor
+
+.
+├── LIB.md
+├── LICENCE
+├── Makefile
+├── README.md
 ├── admin.sh                     # 进程的start|stop|status|restart控制文件,用于 linux 集成
 ├── conf                         # 配置文件统一存放目录
 │   ├── config.yaml              # 配置文件
