@@ -72,6 +72,7 @@ dependenciesTidy:
 
 dependenciesDownload:
 	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod download
+	-GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod vendor
 
 dependenciesGraph:
 	GOPROXY="$(INFO_GO_PROXY)" GO111MODULE=on go mod graph
