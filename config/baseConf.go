@@ -6,6 +6,7 @@ import (
 	"github.com/lexkong/log"
 	"github.com/spf13/viper"
 	"net/url"
+	"strings"
 )
 
 var baseConf BaseConf
@@ -27,7 +28,7 @@ func BaseURL() string {
 //	ENV_WEB_HOST 127.0.0.1:8000
 func initBaseConf() {
 	ssLEnable := false
-	if viper.GetString(defaultEnvHttpsEnable) == "true" {
+	if viper.GetBool(defaultEnvHttpsEnable) {
 		ssLEnable = true
 	} else {
 		ssLEnable = viper.GetBool("sslEnable")
@@ -46,28 +47,34 @@ func initBaseConf() {
 	if err != nil {
 		panic(err)
 	}
-	log.Debugf("uri.Host %v", uri.Host)
 
+	log.Debugf("uri.Host %v", uri.Host)
 	baseHOSTByEnv := viper.GetString(defaultEnvHost)
 	if baseHOSTByEnv != "" {
 		uri.Host = baseHOSTByEnv
 		apiBase = uri.String()
 	} else {
 		isAutoHost := viper.GetBool(defaultEnvAutoGetHost)
+		log.Debugf("isAutoHost %v", isAutoHost)
 		if isAutoHost {
 			ipv4, err := sys.NetworkLocalIP()
 			if err == nil {
+				addrStr := viper.GetString("addr")
 				var proc string
 				if ssLEnable {
 					proc = "https"
 				} else {
 					proc = "http"
 				}
-				addrStr := viper.GetString("addr")
 				apiBase = fmt.Sprintf("%v://%v%v", proc, ipv4, addrStr)
 			}
 		}
 	}
+
+	if ssLEnable {
+		apiBase = strings.Replace(apiBase, "http://", "https://", 1)
+	}
+
 	log.Debugf("apiBase %v", apiBase)
 	baseConf = BaseConf{
 		BaseURL:   apiBase,

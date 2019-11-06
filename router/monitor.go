@@ -84,7 +84,7 @@ func pingServer(apiBaseURL, checkRouter string) error {
 		}
 
 		// Sleep for a second to continue the next ping.
-		log.Warn("Waiting for the router, retry in 1 second.")
+		log.Warnf("Waiting for the router, retry in 1 second. Check URL: %v", pingApi)
 		time.Sleep(time.Second)
 	}
 	//noinspection ALL

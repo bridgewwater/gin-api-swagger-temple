@@ -10,15 +10,15 @@ networks:
 services:
   temp-gin-api-self:
     container_name: "${ROOT_NAME}"
-    image: alpine:3.10
+    image: '${ROOT_NAME}:${DIST_TAG}' # see local docker file
     ports:
-      - "39000:39000"
+      - "39000:${ENV_WEB_PORT}"
     volumes:
-      - "./build/test/${DIST_VERSION}/:/usr/src/myapp"
-      - "./log:/usr/src/myapp/log"
+      - "$PWD:/usr/src/myapp"
     environment:
       - ENV_WEB_HTTPS_ENABLE=false
       - ENV_WEB_AUTO_HOST=false
+      - ENV_WEB_HOST=${ENV_WEB_HOST}:${ENV_WEB_PORT}
 #      - ENV_WEB_HOST=0.0.0.0:39000
     working_dir: "/usr/src/myapp"
-    command: ["./main", "-c", "./config.yaml"]
+    command: ["make", "dev"]
