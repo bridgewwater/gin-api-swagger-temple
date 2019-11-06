@@ -49,6 +49,21 @@ ifndef GOPATH
 	exit 1
 endif
 
+# check must run environment
+init:
+	@echo "~> start init this project"
+	@echo "-> check version"
+	go version
+	@echo "-> check env golang"
+	go env
+	@echo "~> you can use [ make help ] see more task"
+	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
+	which swag
+	swag --help
+	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download
+	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
+	@echo "~> you can use [ make help ] see more task"
+
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
 
@@ -79,21 +94,6 @@ checkReleaseDistPath:
 checkReleaseOSDistPath:
 	@if [ ! -d ${ROOT_REPO_OS_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_OS_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_OS_DIST_PATH}"; fi
 
-# check must run environment
-init:
-	@echo "~> start init this project"
-	@echo "-> check version"
-	go version
-	@echo "-> check env golang"
-	go env
-	@echo "~> you can use [ make help ] see more task"
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
-	which swag
-	swag --help
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
-	@echo "~> you can use [ make help ] see more task"
-
 buildSwagger:
 	which swag
 	swag --version
@@ -123,7 +123,7 @@ testBenchmem:
 dev: buildMain
 	-ENV_WEB_AUTO_HOST=true ./build/main -c ./conf/config.yaml
 
-runTest:  buildMain
+runTest: buildMain
 	-ENV_WEB_AUTO_HOST=true ./build/main -c ./conf/test/config.yaml
 
 distTest: buildMain checkTestDistPath
