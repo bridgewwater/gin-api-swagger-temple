@@ -63,6 +63,24 @@ func JsonSuccess(c *gin.Context, data interface{}) {
 }
 
 // use as
+//	handler.JsonFail(c, "fail message")
+//	return
+func JsonFail(c *gin.Context, fail string, data interface{}) {
+	if data != nil {
+		c.JSON(http.StatusOK, model.Response{
+			Code: 0,
+			Msg:  fail,
+			Data: data,
+		})
+	} else {
+		c.JSON(http.StatusOK, model.Response{
+			Code: 0,
+			Msg:  fail,
+		})
+	}
+}
+
+// use as
 //	handler.JsonErr(c, 0)
 //	return
 func JsonErr(c *gin.Context, errCode int, data interface{}) {

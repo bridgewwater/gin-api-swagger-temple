@@ -12,6 +12,7 @@ var (
 		HttpStatus: http.StatusBadRequest,
 	}
 	ErrParams = &ErrDef{Code: 10003, Msg: "Error params.", HttpStatus: http.StatusBadRequest}
+	ErrParse  = &ErrDef{Code: 10004, Msg: "Error parse.", HttpStatus: http.StatusBadRequest}
 
 	// database errors
 	ErrValidation = &ErrDef{Code: 20001, Msg: "Validation failed.", HttpStatus: http.StatusUnauthorized}

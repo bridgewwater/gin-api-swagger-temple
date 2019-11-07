@@ -12,13 +12,15 @@ $ make help
 # check base dep
 $ make init
 # first run just use
-$ make checkDepends
+$ make dep
 # change conf/config.yaml
 
 # run server as dev
 $ make dev
 # run as docker contant
-$ make dockerRun
+$ make dockerRunLinux
+# if use macOS
+$ make dockerRunDarwin
 # stop or remove docker
 $ make dockerStop
 $ make dockerRemove

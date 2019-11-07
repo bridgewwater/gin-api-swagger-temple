@@ -11,7 +11,7 @@ ROOT_DOCKER_IMAGE_NAME ?= $(ROOT_NAME)
 # can change as local set or read Makefile DIST_VERSION
 ROOT_DOCKER_IMAGE_TAG ?= $(DIST_VERSION)
 
-# For Docker dev images init
+# For Docker dev images init task
 initDockerDevImages:
 	@echo "~> start init this project in docker"
 	@echo "-> check version"
@@ -103,17 +103,17 @@ dockerPrune: dockerStop
 
 helpDockerRun:
 	@echo "Help: MakeDockerRun.mk"
-	@echo "~> make dockerStop - stop docker-compose container-name at $(ROOT_DOCKER_CONTAINER_NAME)"
-	@echo "~> make dockerPrune - stop docker-compose container-name at $(ROOT_DOCKER_CONTAINER_NAME) and try to remove"
+	@echo "~> make dockerStop      - stop docker-compose container-name at $(ROOT_DOCKER_CONTAINER_NAME)"
+	@echo "~> make dockerPrune     - stop docker-compose container-name at $(ROOT_DOCKER_CONTAINER_NAME) and try to remove"
 	@echo "Before run this project in docker must use"
 	@echo "~> make dockerLocalImageInit to init Docker image"
 	@echo "or use"
 	@echo "~> make dockerLocalImageRebuild to rebuild Docker image"
 	@echo "After build Docker image success"
-	@echo "~> make dockerRunLinux - run docker-compose server as $(ROOT_DOCKER_IMAGE_NAME):$(DIST_VERSION) \
+	@echo "~> make dockerRunLinux  - run docker-compose server as $(ROOT_DOCKER_IMAGE_NAME):$(DIST_VERSION) \
 	container-name at $(ROOT_DOCKER_CONTAINER_NAME) in dockerRunLinux"
 	@echo "~> make dockerRunDarwin - run docker-compose server as $(ROOT_DOCKER_IMAGE_NAME):$(DIST_VERSION) \
 	container-name at $(ROOT_DOCKER_CONTAINER_NAME) in macOS"
-	@echo "~> make dockerRun - run image: $(ROOT_DOCKER_IMAGE_PARENT_NAME):$(ROOT_DOCKER_IMAGE_PARENT_TAG) \
-	ROOT_DOCKER_CONTAINER_NAME=$(ROOT_DOCKER_CONTAINER_NAME)"
+	@echo "~> make dockerStop      - stop container: $(ROOT_DOCKER_IMAGE_NAME)"
+	@echo "~> make dockerPrune     - can stop container remove image, then prune resource network and volume"
 	@echo ""

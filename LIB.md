@@ -1,4 +1,6 @@
-# github.com/smartystreets/goconvey
+# test
+
+## github.com/smartystreets/goconvey
 
 [github.com/smartystreets/goconvey](https://github.com/smartystreets/goconvey)
 
@@ -7,7 +9,9 @@ GO111MODULE=on go mod edit -require=github.com/smartystreets/goconvey@^1.6.3
 GO111MODULE=on go mod vendor
 ```
 
-# github.com/bar-counter/monitor
+# depend
+
+## github.com/bar-counter/monitor
 
 [github.com/bar-counter/monitor](https://github.com/bar-counter/monitor)
 
@@ -16,7 +20,7 @@ GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@1.0.1
 GO111MODULE=on go mod vendor
 ```
 
-# github.com/alecthomas/template
+## github.com/alecthomas/template
 
 [github.com/alecthomas/template](https://github.com/alecthomas/template)
 
@@ -25,7 +29,7 @@ GO111MODULE=on go mod edit -require=github.com/alecthomas/template
 GO111MODULE=on go mod vendor
 ```
 
-# github.com/swaggo/gin-swagger
+## github.com/swaggo/gin-swagger
 
 [github.com/swaggo/gin-swagger](https://github.com/swaggo/gin-swagger)
 
@@ -33,17 +37,54 @@ GO111MODULE=on go mod vendor
 GO111MODULE=on go mod edit -require=github.com/swaggo/gin-swagger@master
 GO111MODULE=on go mod vendor
 ```
-#  gentleman
 
-- [gopkg.in/h2non/gentleman.v2](https://gopkg.in/h2non/gentleman.v2)
-- source [github.com/h2non/gentleman](https://github.com/h2non/gentleman)
+## github.com/parnurzeal/gorequest
 
+- api [https://gowalker.org/github.com/parnurzeal/gorequest](https://gowalker.org/github.com/parnurzeal/gorequest)
+[https://godoc.org/github.com/parnurzeal/gorequest](https://godoc.org/github.com/parnurzeal/gorequest)
+- source [https://github.com/parnurzeal/gorequest](https://github.com/parnurzeal/gorequest)
 
 ```bash
-GO111MODULE=on go mod edit -require=gopkg.in/h2non/gentleman.v2@v2.0.3
+GO111MODULE=on go mod edit -require=github.com/parnurzeal/gorequest@v0.2.16
 GO111MODULE=on go mod vendor
 ```
 
+- use fast
+
 ```go
-import "gopkg.in/h2non/gentleman.v2"
+request := gorequest.New()
+resp, body, errs := request.Get("http://example.com").
+  RedirectPolicy(redirectPolicyFunc).
+  Set("If-None-Match", `W/"wyzzy"`).
+  End()
+
+// PUT -> request.Put("http://example.com").End()
+// DELETE -> request.Delete("http://example.com").End()
+// HEAD -> request.Head("http://example.com").End()
+// ANYTHING -> request.CustomMethod("TRACE", "http://example.com").End()
+```
+
+- json
+
+```go
+m := map[string]interface{}{
+  "name": "backy",
+  "species": "dog",
+}
+mJson, _ := json.Marshal(m)
+contentReader := bytes.NewReader(mJson)
+req, _ := http.NewRequest("POST", "http://example.com", contentReader)
+req.Header.Set("Content-Type", "application/json")
+req.Header.Set("Notes","GoRequest is coming!")
+client := &http.Client{}
+resp, _ := client.Do(req)
+```
+
+- Callback
+
+```go
+func printStatus(resp gorequest.Response, body string, errs []error){
+  fmt.Println(resp.Status)
+}
+gorequest.New().Get("http://example.com").End(printStatus)
 ```
