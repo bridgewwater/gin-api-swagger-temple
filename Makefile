@@ -56,8 +56,7 @@ init:
 	go version
 	@echo "-> check env golang"
 	go env
-	@echo "~> you can use [ make help ] see more task"
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
+	@echo "if swag can not find can use [ GOPROXY="$(ENV_GO_PROXY)" go get -u github.com/swaggo/swag/cmd/swag ] to fix"
 	which swag
 	swag --help
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download

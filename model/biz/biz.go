@@ -1,4 +1,4 @@
-package model
+package biz
 
 type Biz struct {
 	Info   string `json:"info,omitempty" example:"input info here"`

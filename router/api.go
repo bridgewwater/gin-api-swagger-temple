@@ -14,5 +14,8 @@ func bizApi(g *gin.Engine, basePath string) {
 		bizRouteGroup.GET("/json", biz.GetJSON)
 		bizRouteGroup.GET("/path/:some_id", biz.GetPath)
 		bizRouteGroup.GET("/query", biz.GetQuery)
+
+		// form
+		bizRouteGroup.GET("/form", biz.PostForm)
 	}
 }

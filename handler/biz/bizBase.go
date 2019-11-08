@@ -2,7 +2,7 @@ package biz
 
 import (
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/handler"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model"
+	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model/biz"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,7 +15,7 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Param    some_id    path    string    true    "some id to show"
-// @Success    200    {object}    model.Biz    "value in model.Biz"
+// @Success    200    {object}    biz.Biz    "value in biz.Biz"
 // @Failure    400    {object}    errdef.Err    "error at errdef.Err"
 // @Router /biz/path/{some_id} [get]
 func GetPath(c *gin.Context) {
@@ -24,7 +24,7 @@ func GetPath(c *gin.Context) {
 		handler.JsonErrDef(c, errdef.ErrParams, "id not found")
 		return
 	}
-	resp := model.Biz{
+	resp := biz.Biz{
 		Id: id,
 	}
 	handler.JsonSuccess(c, resp)
@@ -37,7 +37,7 @@ func GetPath(c *gin.Context) {
 // @Produce application/json
 // @Param    offset    query    int    true    "Offset"
 // @Param    limit    query    int    false    "limit"
-// @Success    200    {object}    model.Biz    "value in model.Biz"
+// @Success    200    {object}    biz.Biz    "value in biz.Biz"
 // @Failure    400    {object}    errdef.Err    "error at errdef.Err"
 // @Router /biz/query/ [get]
 func GetQuery(c *gin.Context) {
@@ -58,7 +58,7 @@ func GetQuery(c *gin.Context) {
 	} else {
 		limit = 10
 	}
-	resp := model.Biz{
+	resp := biz.Biz{
 		Offset: offset,
 		Limit:  limit,
 	}

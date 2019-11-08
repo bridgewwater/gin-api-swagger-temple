@@ -5,7 +5,7 @@
 
 ## use
 
-- `need dep to management golang dependenceis`, will change to go mod
+- `need go mod to management golang dependenceis`
 
 ```sh
 $ make help
@@ -30,6 +30,10 @@ most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:3900
 
 # dev
 
+> if want auto get local IP for fast develop, you can add evn `ENV_WEB_AUTO_HOST=true`
+
+- each new swagger must rebuild swagger doc by task `make buildSwagger`
+- also use task `make dev` or `make runTest` also run task buildSwagger before.
 - swagger tools use [swag](https://github.com/swaggo/swag)
 ```sh
 go get -v -u github.com/swaggo/swag/cmd/swag

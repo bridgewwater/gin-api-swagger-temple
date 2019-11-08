@@ -2,7 +2,7 @@ package biz
 
 import (
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/handler"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model"
+	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model/biz"
 	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -13,11 +13,11 @@ import (
 // @Tags biz
 // @Accept application/json
 // @Produce application/json
-// @Success    200    {object}    model.Biz    "value in model.Biz"
+// @Success    200    {object}    biz.Biz    "value in biz.Biz"
 // @Failure    500
 // @Router /biz/json [get]
 func GetJSON(c *gin.Context) {
-	resp := model.Biz{
+	resp := biz.Biz{
 		Info: "message",
 	}
 	handler.JsonSuccess(c, struct {
@@ -30,12 +30,12 @@ func GetJSON(c *gin.Context) {
 // @Tags biz
 // @Accept application/json
 // @Produce application/json
-// @Param    biz    body    model.Biz    true    "body model.Biz for post"
-// @Success    200    {object}    model.Biz    "value in model.Biz"
+// @Param    biz    body    biz.Biz    true    "body biz.Biz for post"
+// @Success    200    {object}    biz.Biz    "value in biz.Biz"
 // @Failure    400    {object}    errdef.Err    "error at errdef.Err"
 // @Router /biz/modelBiz [post]
 func PostJsonModelBiz(c *gin.Context) {
-	var req model.Biz
+	var req biz.Biz
 	if err := c.BindJSON(&req); err != nil {
 		handler.JsonErrDefErr(c, errdef.ErrBind, err, "limit error")
 		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrBind, err).Add("body error"))

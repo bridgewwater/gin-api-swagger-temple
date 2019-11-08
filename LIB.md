@@ -16,7 +16,7 @@ GO111MODULE=on go mod vendor
 [github.com/bar-counter/monitor](https://github.com/bar-counter/monitor)
 
 ```bash
-GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@1.0.1
+GO111MODULE=on go mod edit -require=github.com/bar-counter/monitor@v1.1.0
 GO111MODULE=on go mod vendor
 ```
 
@@ -52,6 +52,10 @@ GO111MODULE=on go mod vendor
 - use fast
 
 ```go
+import (
+	"github.com/parnurzeal/gorequest"
+)
+
 request := gorequest.New()
 resp, body, errs := request.Get("http://example.com").
   RedirectPolicy(redirectPolicyFunc).
