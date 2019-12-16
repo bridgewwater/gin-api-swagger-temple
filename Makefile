@@ -173,12 +173,12 @@ helpProjectRoot:
 	@echo "~> make tarDistReleaseOS - build dist at $(ROOT_REPO_OS_DIST_PATH) as: $(DIST_OS) $(DIST_ARCH) and tar"
 	@echo ""
 	@echo "-- now build name: $(ROOT_NAME) version: $(DIST_VERSION)"
-	@echo "~> make init  - check base env of this project"
-	@echo "~> make clean - remove binary file and log files"
-	@echo "~> make test  - run test case all"
+	@echo "~> make init         - check base env of this project"
+	@echo "~> make clean        - remove binary file and log files"
+	@echo "~> make test         - run test case all"
 	@echo "~> make testBenchmem - run go test benchmem case all"
-	@echo "~> make runTest - run server use conf/test/config.yaml"
-	@echo "~> make dev     - run server use conf/config.yaml"
+	@echo "~> make runTest      - run server use conf/test/config.yaml"
+	@echo "~> make dev          - run server use conf/config.yaml"
 
 help: helpGoMod helpDockerRun helpProjectRoot
 	@echo ""
