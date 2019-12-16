@@ -175,7 +175,7 @@ helpProjectRoot:
 	@echo "-- now build name: $(ROOT_NAME) version: $(DIST_VERSION)"
 	@echo "~> make init  - check base env of this project"
 	@echo "~> make clean - remove binary file and log files"
-	@echo "~> make test  - run test case all benchmem"
+	@echo "~> make test  - run test case all"
 	@echo "~> make testBenchmem - run go test benchmem case all"
 	@echo "~> make runTest - run server use conf/test/config.yaml"
 	@echo "~> make dev     - run server use conf/config.yaml"
