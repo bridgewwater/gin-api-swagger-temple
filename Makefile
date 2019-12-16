@@ -113,7 +113,7 @@ buildDocker: dep cleanBuild
 
 test:
 	@echo "=> run test start"
-	@go test -test.v
+	@go test -test.v ./...
 
 testBenchmem:
 	@echo "=> run test benchmem start"
