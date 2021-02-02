@@ -4,12 +4,12 @@ go 1.12
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/bar-counter/monitor v1.1.0
+	github.com/bar-counter/monitor v1.2.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.7
-	github.com/gin-gonic/gin v1.4.0
+	github.com/gin-gonic/gin v1.6.3
 	github.com/go-openapi/spec v0.20.2 // indirect
-	github.com/json-iterator/go v1.1.7
+	github.com/json-iterator/go v1.1.9
 	github.com/lexkong/log v0.0.0-20180607165131-972f9cd951fc
 	github.com/onsi/ginkgo v1.10.1 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect

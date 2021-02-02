@@ -1,3 +1,5 @@
+[![golang-full](https://github.com/bridgewwater/gin-api-swagger-temple/workflows/golang-full/badge.svg?branch=main)](https://github.com/bridgewwater/gin-api-swagger-temple/actions?query=workflow%3Agolang-full)
+
 ## for what
 
 - this project used to gin api server
