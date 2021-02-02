@@ -1,7 +1,7 @@
 package router
 
 import (
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/handler/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/handler/biz"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +16,6 @@ func bizApi(g *gin.Engine, basePath string) {
 		bizRouteGroup.GET("/query", biz.GetQuery)
 
 		// form
-		bizRouteGroup.GET("/form", biz.PostForm)
+		// bizRouteGroup.GET("/form", biz.PostForm)
 	}
 }

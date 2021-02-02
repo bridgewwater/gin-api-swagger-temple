@@ -14,7 +14,7 @@ DIST_ARCH := amd64
 DIST_OS_DOCKER ?= linux
 DIST_ARCH_DOCKER ?= amd64
 
-ROOT_NAME ?= temp-gin-api-self
+ROOT_NAME ?= gin-api-swagger-temple
 
 ROOT_BUILD_PATH ?= ./build
 ROOT_DIST ?= ./dist
@@ -39,6 +39,8 @@ SERVER_REPO_FOLDER = /home/ubuntu/$(ROOT_NAME)
 # can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
 ENV_GO_PROXY ?= https://goproxy.io/
 
+ENV_GO_SWAG_VERSION ?= v1.5.1
+
 # include MakeDockerRun.mk for docker run
 include MakeGoMod.mk
 include MakeDockerRun.mk
@@ -56,12 +58,15 @@ init:
 	go version
 	@echo "-> check env golang"
 	go env
-	@echo "if swag can not find can use [ GOPROXY="$(ENV_GO_PROXY)" go get -u github.com/swaggo/swag/cmd/swag ] to fix"
+	@echo "if swag can not find can use [ make installTools ] to fix"
 	which swag
-	swag --help
+	swag --version
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
 	@echo "~> you can use [ make help ] see more task"
+
+installTools:
+	go get -u github.com/swaggo/swag/cmd/swag@${ENV_GO_SWAG_VERSION}
 
 cleanBuild:
 	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi

@@ -1,11 +1,12 @@
 package biz
 
 import (
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/handler"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model/biz"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/handler"
+	"github.com/bridgewwater/gin-api-swagger-temple/model/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/pkg/errdef"
+	"github.com/gin-gonic/gin"
 )
 
 // @Summary /biz/json

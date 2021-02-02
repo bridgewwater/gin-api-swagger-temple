@@ -8,8 +8,8 @@ networks:
 #volumes:
 #  web-data:
 services:
-  temp-gin-api-self:
-    container_name: 'temp-gin-api-self'
+  gin-api-swagger-temple:
+    container_name: 'gin-api-swagger-temple'
     image: alpine:3.10
     ports:
       - "39000:39000"

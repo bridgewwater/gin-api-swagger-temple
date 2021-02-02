@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/config"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/router"
+	"github.com/bridgewwater/gin-api-swagger-temple/config"
+	"github.com/bridgewwater/gin-api-swagger-temple/router"
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
 	"github.com/spf13/pflag"
@@ -17,10 +17,12 @@ var (
 	cfg = pflag.StringP("config", "c", "", "api server config file path.")
 )
 
-// @termsOfService http://git.sinlov.cn/
+// @termsOfService http://github.com/
+
 // @contact.name API Support
-// @contact.url http://git.sinlov.cn/
+// @contact.url http://github.com/
 // @contact.email support@sinlov.cn
+
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {

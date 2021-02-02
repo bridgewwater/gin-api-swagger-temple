@@ -8,7 +8,7 @@ networks:
 #volumes:
 #  web-data:
 services:
-  temp-gin-api-self:
+  gin-api-swagger-temple:
     container_name: "${ROOT_NAME}"
     image: '${ROOT_NAME}:${DIST_TAG}' # see local docker file
     ports:

@@ -1,7 +1,7 @@
 ## for what
 
 - this project used to gin api server
-- [ ] rename `git.sinlov.cn/bridgewwater/temp-gin-api-self` to your api package name
+- [ ] rename `github.com/bridgewwater/gin-api-swagger-temple` to your api package name
 
 ## use
 

@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/model"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/pkg/errdef"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/model"
+	"github.com/bridgewwater/gin-api-swagger-temple/pkg/errdef"
+	"github.com/gin-gonic/gin"
 )
 
 // use as

@@ -2,11 +2,12 @@ package config
 
 import (
 	"fmt"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/util/sys"
-	"github.com/lexkong/log"
-	"github.com/spf13/viper"
 	"net/url"
 	"strings"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/util/sys"
+	"github.com/lexkong/log"
+	"github.com/spf13/viper"
 )
 
 var baseConf BaseConf

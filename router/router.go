@@ -1,11 +1,12 @@
 package router
 
 import (
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/config"
-	"git.sinlov.cn/bridgewwater/temp-gin-api-self/router/middleware"
+	"net/http"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/config"
+	"github.com/bridgewwater/gin-api-swagger-temple/router/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"net/http"
 )
 
 // Load loads the middlewares, routes, handlers.

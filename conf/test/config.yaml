@@ -1,6 +1,6 @@
 runmode: test               # run mode: debug, release, test
 addr: :39000                  # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
-name: temp-gin-api-self              # name of API Server
+name: gin-api-swagger-temple              # name of API Server
 
 base_path: /v1                     # api version
 prod_url: http://127.0.0.1:39000   # prod url full ip:port
@@ -36,7 +36,7 @@ monitor: # monitor
 swagger:                            # swagger not show at release
   root: /swagger                    # swagger root
   index: /swagger/index.html        # swagger index
-  title: temp-gin-api-self          # swagger title
+  title: gin-api-swagger-temple          # swagger title
   description: This is a sample server celler server. # swagger description
   version: 1.0                      # swagger version
   host: 127.0.0.1:39000             # swagger host:port
