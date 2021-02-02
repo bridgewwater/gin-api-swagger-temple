@@ -39,7 +39,7 @@ SERVER_REPO_FOLDER = /home/ubuntu/$(ROOT_NAME)
 # can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
 ENV_GO_PROXY ?= https://goproxy.io/
 
-ENV_GO_SWAG_VERSION ?= v1.5.1
+ENV_GO_SWAG_VERSION ?= v1.6.2
 
 # include MakeDockerRun.mk for docker run
 include MakeGoMod.mk
@@ -50,6 +50,10 @@ ifndef GOPATH
 	@echo Environment variable GOPATH is not set
 	exit 1
 endif
+
+env:
+	@go version
+	@swag --version
 
 # check must run environment
 init:
@@ -108,7 +112,7 @@ buildMain: dep buildSwagger
 	@echo "-> start build local OS"
 	@go build -o build/main main.go
 
-buildARCH: dep
+buildARCH: dep buildSwagger
 	@echo "-> start build OS:$(DIST_OS) ARCH:$(DIST_ARCH)"
 	@GOOS=$(DIST_OS) GOARCH=$(DIST_ARCH) go build -o build/main main.go
 
@@ -169,6 +173,7 @@ scpDockerComposeTest:
 
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
+	@echo " need https://github.com/swaggo/swag version: ${ENV_GO_SWAG_VERSION}"
 	@echo "-- distTestOS or distReleaseOS will out abi as: $(DIST_OS) $(DIST_ARCH) --"
 	@echo "~> make distTest         - build dist at $(ROOT_TEST_DIST_PATH) in local OS"
 	@echo "~> make tarDistTest      - build dist at $(ROOT_TEST_OS_DIST_PATH) and tar"

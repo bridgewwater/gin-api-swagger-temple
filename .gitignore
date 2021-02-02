@@ -1,11 +1,12 @@
 ### custom template
 
+# docs/
+
 dist/
 build/
 vendor/
 .vendor_new/
 log/
-docs/
 go.sum
 
 ### Go template

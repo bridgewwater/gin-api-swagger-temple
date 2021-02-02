@@ -1,0 +1,155 @@
+basePath: '{{.BasePath}}'
+definitions:
+  biz.Biz:
+    properties:
+      id:
+        example: id123zqqeeadg24qasd
+        type: string
+      info:
+        example: input info here
+        type: string
+      limit:
+        example: 10
+        type: integer
+      offset:
+        example: 0
+        type: integer
+    type: object
+  errdef.Err:
+    properties:
+      code:
+        type: integer
+      msg:
+        type: string
+    type: object
+host: '{{.Host}}'
+info:
+  contact:
+    email: support@sinlov.cn
+    name: API Support
+    url: http://github.com/
+  description: '{{.Description}}'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://github.com/
+  title: '{{.Title}}'
+  version: '{{.Version}}'
+paths:
+  /biz/json:
+    get:
+      consumes:
+      - application/json
+      description: warning api in prod will hide, abs remote api for dev
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in biz.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+            type: object
+        "500":
+          description: ""
+      summary: /biz/json
+      tags:
+      - biz
+  /biz/modelBiz:
+    post:
+      consumes:
+      - application/json
+      description: warning api in prod will hide, abs remote api for dev
+      parameters:
+      - description: body biz.Biz for post
+        in: body
+        name: biz
+        required: true
+        schema:
+          $ref: '#/definitions/biz.Biz'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in biz.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+            type: object
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+            type: object
+      summary: /biz/modelBiz
+      tags:
+      - biz
+  /biz/path/{some_id}:
+    get:
+      consumes:
+      - application/json
+      description: warning api in prod will hide, abs remote api for dev
+      parameters:
+      - description: some id to show
+        in: path
+        name: some_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in biz.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+            type: object
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+            type: object
+      summary: /biz/path
+      tags:
+      - biz
+  /biz/query/:
+    get:
+      consumes:
+      - application/json
+      description: warning api in prod will hide, abs remote api for dev
+      parameters:
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in biz.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+            type: object
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+            type: object
+      summary: /biz/query
+      tags:
+      - biz
+  /biz/string:
+    get:
+      description: get string of this api.
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: ""
+      summary: /biz/string
+      tags:
+      - biz
+swagger: "2.0"

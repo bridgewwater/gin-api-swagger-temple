@@ -3,7 +3,7 @@ module github.com/bridgewwater/gin-api-swagger-temple
 go 1.12
 
 require (
-	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/bar-counter/monitor v1.1.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.7
@@ -20,8 +20,8 @@ require (
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.4.0
-	github.com/swaggo/gin-swagger v1.2.0
-	github.com/swaggo/swag v1.5.1
+	github.com/swaggo/gin-swagger v1.3.0
+	github.com/swaggo/swag v1.6.2
 	github.com/urfave/cli v1.22.5 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	golang.org/x/tools v0.1.0 // indirect

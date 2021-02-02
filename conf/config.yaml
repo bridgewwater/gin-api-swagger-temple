@@ -39,7 +39,7 @@ swagger:                            # swagger not show at release
   title: gin-api-swagger-temple          # swagger title
   description: This is a sample server celler server. # swagger description
   version: 1.0                      # swagger version
-  host: 127.0.0.1:39000             # swagger host:port
+  host: 127.0.0.1:39000             # swagger host:port will covery by set
   security: false                    # swagger security true or false
   user:                             # swagger user setting of BasicAuth
     admin: 36116f7c73bc9acb2a7a26   # admin:pwd
