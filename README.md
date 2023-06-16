@@ -19,7 +19,7 @@ $ make dep
 
 # run server as dev
 $ make dev
-# run as docker contant
+# run as docker container
 $ make dockerRunLinux
 # if use macOS
 $ make dockerRunDarwin
@@ -33,29 +33,28 @@ most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:3900
 # dev
 
 > if want auto get local IP for fast develop, you can add evn `ENV_WEB_AUTO_HOST=true`
-
+fossa
 - each new swagger must rebuild swagger doc by task `make buildSwagger`
 - also use task `make dev` or `make runTest` also run task buildSwagger before.
 - swagger tools use [swag](https://github.com/swaggo/swag)
+
 ```sh
 go get -v -u github.com/swaggo/swag/cmd/swag
 ```
 
-| lib | version |
-|:---------------------|:---|
-| github.com/swaggo/swag | v1.6.2 |
-| github.com/swaggo/gin-swagger | v1.3.0 |
+| lib                           | version |
+|:------------------------------|:--------|
+| github.com/swaggo/swag        | v1.6.2  |
+| github.com/swaggo/gin-swagger | v1.3.0  |
 
-- swagger doc see [https://swaggo.github.io/swaggo.io/declarative_comments_format/](https://swaggo.github.io/swaggo.io/declarative_comments_format/)
-- swagger example see [https://github.com/swaggo/swag/blob/master/example/basic/api/api.go](https://github.com/swaggo/swag/blob/master/example/basic/api/api.go)
+- swagger doc
+  see [https://swaggo.github.io/swaggo.io/declarative_comments_format/](https://swaggo.github.io/swaggo.io/declarative_comments_format/)
+- swagger example
+  see [https://github.com/swaggo/swag/blob/master/example/basic/api/api.go](https://github.com/swaggo/swag/blob/master/example/basic/api/api.go)
 
 ## evn
 
-```bash
-go version go1.15.6 darwin/amd64
-swag version v1.6.2
-gin version v1.4.0
-```
+- go version go1.17+
 
 # config
 
@@ -77,7 +76,7 @@ log:
 
 ## folder-Def
 
-工程文件定义
+Project file definition
 
 ```
 .

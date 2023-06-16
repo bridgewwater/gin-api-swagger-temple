@@ -34,7 +34,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		checkPingServer(config.BaseURL())
 		// set swagger info
 		swaggerInfo(config.BaseURL())
-		swaggerGroup(envName, g)
+		swaggerGroup(config.BaseURL(), envName, g)
 	}
 
 	bizApi(g, basePath)

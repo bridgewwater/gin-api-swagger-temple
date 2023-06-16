@@ -1,4 +1,4 @@
-basePath: '{{.BasePath}}'
+basePath: /api/v1
 definitions:
   biz.Biz:
     properties:
@@ -22,19 +22,21 @@ definitions:
       msg:
         type: string
     type: object
-host: '{{.Host}}'
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
 info:
   contact:
     email: support@sinlov.cn
     name: API Support
     url: http://github.com/
-  description: '{{.Description}}'
+  description: This is a sample server
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://github.com/
-  title: '{{.Title}}'
-  version: '{{.Version}}'
+  title: gin-api-swagger-temple
+  version: "1.0"
 paths:
   /biz/json:
     get:
@@ -48,9 +50,8 @@ paths:
           description: value in biz.Biz
           schema:
             $ref: '#/definitions/biz.Biz'
-            type: object
         "500":
-          description: ""
+          description: Internal Server Error
       summary: /biz/json
       tags:
       - biz
@@ -66,7 +67,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/biz.Biz'
-          type: object
       produces:
       - application/json
       responses:
@@ -74,12 +74,10 @@ paths:
           description: value in biz.Biz
           schema:
             $ref: '#/definitions/biz.Biz'
-            type: object
         "400":
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-            type: object
       summary: /biz/modelBiz
       tags:
       - biz
@@ -101,12 +99,10 @@ paths:
           description: value in biz.Biz
           schema:
             $ref: '#/definitions/biz.Biz'
-            type: object
         "400":
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-            type: object
       summary: /biz/path
       tags:
       - biz
@@ -132,12 +128,10 @@ paths:
           description: value in biz.Biz
           schema:
             $ref: '#/definitions/biz.Biz'
-            type: object
         "400":
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-            type: object
       summary: /biz/query
       tags:
       - biz
@@ -148,8 +142,16 @@ paths:
         "200":
           description: OK
         "500":
-          description: ""
+          description: Internal Server Error
       summary: /biz/string
       tags:
       - biz
+securityDefinitions:
+  BasicAuth:
+    type: basic
+  WithToken:
+    description: Please set the token of the API, note that it starts with "Bearer"
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

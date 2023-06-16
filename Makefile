@@ -1,195 +1,189 @@
 .PHONY: test check clean build dist all
+# Makefile root
+# can change this by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
+ENV_DIST_VERSION=latest
+ENV_DIST_MARK=
 
-TOP_DIR := $(shell pwd)
+ROOT_NAME?=gin-api-swagger-temple
 
-# ifeq ($(FILE), $(wildcard $(FILE)))
-# 	@ echo target file not found
-# endif
+## MakeDocker.mk settings start
+ROOT_OWNER?=bridgewwater
+ROOT_PARENT_SWITCH_TAG=1.17.13-buster
+# for image local build
+INFO_TEST_BUILD_DOCKER_PARENT_IMAGE=golang
+# for image running
+INFO_BUILD_DOCKER_FROM_IMAGE=alpine:3.17
+INFO_BUILD_DOCKER_FILE=Dockerfile
+INFO_TEST_BUILD_DOCKER_FILE=Dockerfile.s6
+## MakeDocker.mk settings end
 
-DIST_VERSION := v1.0.0
+## run info start
+ENV_RUN_INFO_HELP_ARGS= -h
+ENV_RUN_INFO_ARGS=-c ./conf/config.yaml
+## run info end
+
+## build dist env start
+# change to other build entrance
+ENV_ROOT_BUILD_ENTRANCE = main.go
+ENV_ROOT_BUILD_BIN_NAME = ${ROOT_NAME}
+ENV_ROOT_BUILD_PATH = build
+ENV_ROOT_BUILD_BIN_PATH = ${ENV_ROOT_BUILD_PATH}/${}ENV_ROOT_BUILD_BIN_NAME}
+ENV_ROOT_LOG_PATH = log/
+ENV_ROOT_SWAGGER_PATH=docs
 # linux windows darwin  list as: go tool dist list
-DIST_OS := linux
-DIST_ARCH := amd64
+ENV_DIST_GO_OS=linux
+# amd64 386
+ENV_DIST_GO_ARCH=amd64
+# mark for dist and tag helper
+ENV_ROOT_MANIFEST_PKG_JSON?=package.json
+ENV_ROOT_MAKE_FILE?=Makefile
+ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
+## build dist env end
 
-DIST_OS_DOCKER ?= linux
-DIST_ARCH_DOCKER ?= amd64
-
-ROOT_NAME ?= gin-api-swagger-temple
-
-ROOT_BUILD_PATH ?= ./build
-ROOT_DIST ?= ./dist
-ROOT_REPO ?= ./dist
-ROOT_LOG_PATH ?= ./log
-ROOT_SWAGGER_PATH ?= ./docs
-
-ROOT_TEST_BUILD_PATH ?= $(ROOT_BUILD_PATH)/test/$(DIST_VERSION)
-ROOT_TEST_DIST_PATH ?= $(ROOT_DIST)/test/$(DIST_VERSION)
-ROOT_TEST_OS_DIST_PATH ?= $(ROOT_DIST)/$(DIST_OS)/test/$(DIST_VERSION)
-ROOT_REPO_DIST_PATH ?= $(ROOT_REPO)/$(DIST_VERSION)
-ROOT_REPO_OS_DIST_PATH ?= $(ROOT_REPO)/$(DIST_OS)/release/$(DIST_VERSION)
-
-ROOT_LOCAL_IP_V4_LINUX = $$(ifconfig enp8s0 | grep inet | grep -v inet6 | cut -d ':' -f2 | cut -d ' ' -f1)
-ROOT_LOCAL_IP_V4_DARWIN = $$(ifconfig en0 | grep inet | grep -v inet6 | cut -d ' ' -f2)
-
-SERVER_TEST_SSH_ALIASE = aliyun-ecs
-SERVER_TEST_FOLDER = /home/work/Document/
-SERVER_REPO_SSH_ALIASE = temp-gin-web
-SERVER_REPO_FOLDER = /home/ubuntu/$(ROOT_NAME)
-
-# can use as https://goproxy.io/ https://gocenter.io https://mirrors.aliyun.com/goproxy/
-ENV_GO_PROXY ?= https://goproxy.cn/
-
-ENV_GO_SWAG_VERSION ?= v1.6.2
-
-# include MakeDockerRun.mk for docker run
-include MakeGoMod.mk
-include MakeDockerRun.mk
-
-checkEnvGo:
-ifndef GOPATH
-	@echo Environment variable GOPATH is not set
-	exit 1
+## go test MakeGoTest.mk start
+# ignore used not matching mode
+# set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
+ENV_ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot"
+ifeq ($(OS),Windows_NT)
+ENV_ROOT_TEST_LIST?=./...
+else
+ENV_ROOT_TEST_LIST?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
 endif
+# test max time
+ENV_ROOT_TEST_MAX_TIME:=1m
+## go test MakeGoTest.mk end
 
-env:
-	@go version
-	@swag --version
+include z-MakefileUtils/MakeBasicEnv.mk
+include z-MakefileUtils/MakeDistTools.mk
+include z-MakefileUtils/MakeGoMod.mk
+include z-MakefileUtils/MakeGoTest.mk
+include z-MakefileUtils/MakeGoDist.mk
+include z-MakefileUtils/MakeDocker.mk
 
-# check must run environment
+all: env
+
+env: envBasic
+	@echo "== project env info start =="
+	@echo ""
+	@echo "ENV_DIST_VERSION                          ${ENV_DIST_VERSION}"
+	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
+	@echo ""
+	@echo "== project env info end =="
+
+cleanBuild:
+	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
+	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
+
+cleanLog:
+	-@$(RM) -r ${ENV_ROOT_LOG_PATH}
+	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
+
+cleanSwaggerDoc:
+	-@$(RM) -r ${ENV_ROOT_SWAGGER_PATH}
+	@echo "~> finish clean path: ${ENV_ROOT_SWAGGER_PATH}"
+
+cleanTestData:
+	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+	@$(RM) coverage.txt
+	@$(RM) -r **/testdata
+	@$(RM) -r **/**/testdata
+	@$(RM) -r **/**/**/testdata
+	@$(RM) -r **/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/**/testdata
+	$(info -> finish clean folder [ testdata ])
+
+clean: cleanTestData cleanBuild cleanLog
+	@echo "~> clean finish"
+
+cleanAll: clean cleanAllDist
+	@echo "~> clean all finish"
+
 init:
 	@echo "~> start init this project"
 	@echo "-> check version"
 	go version
 	@echo "-> check env golang"
 	go env
-	@echo "if swag can not find can use [ make installTools ] to fix"
-	which swag
-	swag --version
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod download
-	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
 	@echo "~> you can use [ make help ] see more task"
+	-go mod verify
 
-installTools:
-	go get -u github.com/swaggo/swag/cmd/swag@${ENV_GO_SWAG_VERSION}
-
-cleanBuild:
-	@if [ -d ${ROOT_BUILD_PATH} ]; then rm -rf ${ROOT_BUILD_PATH} && echo "~> cleaned ${ROOT_BUILD_PATH}"; else echo "~> has cleaned ${ROOT_BUILD_PATH}"; fi
-
-cleanDist:
-	@if [ -d ${ROOT_DIST} ]; then rm -rf ${ROOT_DIST} && echo "~> cleaned ${ROOT_DIST}"; else echo "~> has cleaned ${ROOT_DIST}"; fi
-
-cleanLog:
-	@if [ -d ${ROOT_LOG_PATH} ]; then rm -rf ${ROOT_LOG_PATH} && echo "~> cleaned ${ROOT_LOG_PATH}"; else echo "~> has cleaned ${ROOT_LOG_PATH}"; fi
-
-cleanSwaggerDoc:
-	@if [ -d ${ROOT_SWAGGER_PATH} ]; then rm -rf ${ROOT_SWAGGER_PATH} && echo "~> cleaned ${ROOT_SWAGGER_PATH}"; else echo "~> has cleaned ${ROOT_SWAGGER_PATH}"; fi
-
-clean: cleanBuild cleanLog cleanSwaggerDoc
-	@echo "~> clean finish"
-
-checkTestBuildPath:
-	@if [ ! -d ${ROOT_TEST_BUILD_PATH} ]; then mkdir -p ${ROOT_TEST_BUILD_PATH} && echo "~> mkdir ${ROOT_TEST_BUILD_PATH}"; fi
-
-checkTestDistPath:
-	@if [ ! -d ${ROOT_TEST_DIST_PATH} ]; then mkdir -p ${ROOT_TEST_DIST_PATH} && echo "~> mkdir ${ROOT_TEST_DIST_PATH}"; fi
-
-checkTestOSDistPath:
-	@if [ ! -d ${ROOT_TEST_OS_DIST_PATH} ]; then mkdir -p ${ROOT_TEST_OS_DIST_PATH} && echo "~> mkdir ${ROOT_TEST_OS_DIST_PATH}"; fi
-
-checkReleaseDistPath:
-	@if [ ! -d ${ROOT_REPO_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_DIST_PATH}"; fi
-
-checkReleaseOSDistPath:
-	@if [ ! -d ${ROOT_REPO_OS_DIST_PATH} ]; then mkdir -p ${ROOT_REPO_OS_DIST_PATH} && echo "~> mkdir ${ROOT_REPO_OS_DIST_PATH}"; fi
-
-buildSwagger:
-	which swag
+swagger: cleanSwaggerDoc
 	swag --version
-	@if [ -d ${ROOT_SWAGGER_PATH} ]; then rm -rf ${ROOT_SWAGGER_PATH} && echo "~> cleaned ${ROOT_SWAGGER_PATH}"; else echo "~> has cleaned ${ROOT_SWAGGER_PATH}"; fi
+	$(info -> or you can use: swag init --parseDependency --parseInternal)
 	swag init
 
-buildMain: dep buildSwagger
+dep: swagger modVerify modDownload modTidy modVendor
+	@echo "-> just check depends below"
+
+ci: modTidy modVerify modFmt modVet modLintRun test
+
+buildMain: swagger
 	@echo "-> start build local OS"
-	@go build -o build/main main.go
+ifeq ($(OS),Windows_NT)
+	@go build -o $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_ROOT_BUILD_ENTRANCE}
+	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
+else
+	@go build -o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
+	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
+endif
 
-buildARCH: dep buildSwagger
-	@echo "-> start build OS:$(DIST_OS) ARCH:$(DIST_ARCH)"
-	@GOOS=$(DIST_OS) GOARCH=$(DIST_ARCH) go build -o build/main main.go
+buildCross: swagger
+	@echo "-> start build OS:${ENV_DIST_GO_OS} ARCH:${ENV_DIST_GO_ARCH}"
+ifeq ($(ENV_DIST_GO_OS),windows)
+	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
+	-a \
+	-tags netgo \
+	-ldflags '-w -s --extldflags "-static -fpic"' \
+	-o $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_ROOT_BUILD_ENTRANCE}
+	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
+else
+	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
+	-a \
+	-tags netgo \
+	-ldflags '-w -s --extldflags "-static -fpic"' \
+	-o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
+	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
+endif
 
-buildDocker: dep cleanBuild
-	@echo "-> start build OS:$(DIST_OS_DOCKER) ARCH:$(DIST_ARCH_DOCKER)"
-	@GOOS=$(DIST_OS_DOCKER) GOARCH=$(DIST_ARCH_DOCKER) go build -o build/main main.go
+dev: export ENV_WEB_AUTO_HOST=true
+dev: cleanBuild buildMain
+ifeq ($(OS),windows)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
+else
+	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
+endif
 
-test:
-	@echo "=> run test start"
-	@go test -test.v ./...
+run: export ENV_WEB_AUTO_HOST=false
+run: cleanBuild buildMain
+	@echo "=> run start"
+ifeq ($(OS),windows)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
+else
+	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
+endif
 
-testBenchmem:
-	@echo "=> run test benchmem start"
-	@go test -test.benchmem
-
-dev: buildMain
-	-ENV_WEB_AUTO_HOST=true ./build/main -c ./conf/config.yaml
-
-runTest: buildMain
-	-ENV_WEB_AUTO_HOST=true ./build/main -c ./conf/test/config.yaml
-
-distTest: buildMain checkTestDistPath
-	mv ./build/main $(ROOT_TEST_DIST_PATH)
-	cp ./conf/test/config.yaml $(ROOT_TEST_DIST_PATH)
-	@echo "=> pkg at: $(ROOT_TEST_DIST_PATH)"
-
-tarDistTest: distTest
-	cd $(ROOT_DIST)/test && tar zcvf $(ROOT_NAME)-test-$(DIST_VERSION).tar.gz $(DIST_VERSION)
-
-distTestOS: buildARCH checkTestOSDistPath
-	@echo "=> Test at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
-	mv ./build/main $(ROOT_TEST_OS_DIST_PATH)
-	cp ./conf/test/config.yaml $(ROOT_TEST_OS_DIST_PATH)
-	@echo "=> pkg at: $(ROOT_TEST_OS_DIST_PATH)"
-
-distRelease: buildMain checkReleaseDistPath
-	mv ./build/main $(ROOT_REPO_DIST_PATH)
-	cp ./conf/release/config.yaml $(ROOT_REPO_DIST_PATH)
-	@echo "=> pkg at: $(ROOT_REPO_DIST_PATH)"
-
-distReleaseOS: buildARCH checkReleaseOSDistPath
-	@echo "=> Release at: $(DIST_OS) ARCH as: $(DIST_ARCH)"
-	mv ./build/main $(ROOT_REPO_OS_DIST_PATH)
-	cp ./conf/release/config.yaml $(ROOT_REPO_OS_DIST_PATH)
-	@echo "=> pkg at: $(ROOT_REPO_OS_DIST_PATH)"
-
-tarDistReleaseOS: distReleaseOS
-	@echo "=> start tar release as os $(DIST_OS) $(DIST_ARCH)"
-	tar zcvf $(ROOT_DIST)/$(DIST_OS)/release/$(ROOT_NAME)-$(DIST_OS)-$(DIST_ARCH)-$(DIST_VERSION).tar.gz $(ROOT_REPO_OS_DIST_PATH)
-
-scpTestOS:
-	@echo "=> must check below config of set for testOSScp"
-	#scp -r $(ROOT_TEST_OS_DIST_PATH) $(SERVER_TEST_SSH_ALIASE):$(SERVER_TEST_FOLDER)
-
-scpDockerComposeTest:
-	scp ./conf/test/docker-compose.yml $(SERVER_TEST_SSH_ALIASE):$(SERVER_TEST_FOLDER)
-	@echo "=> finish update docker compose at test"
+cloc:
+	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
+	cloc --exclude-list-file=.clocignore .
 
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
-	@echo " need https://github.com/swaggo/swag version: ${ENV_GO_SWAG_VERSION}"
-	@echo "-- distTestOS or distReleaseOS will out abi as: $(DIST_OS) $(DIST_ARCH) --"
-	@echo "~> make distTest         - build dist at $(ROOT_TEST_DIST_PATH) in local OS"
-	@echo "~> make tarDistTest      - build dist at $(ROOT_TEST_OS_DIST_PATH) and tar"
-	@echo "~> make distTestOS       - build dist at $(ROOT_TEST_OS_DIST_PATH) as: $(DIST_OS) $(DIST_ARCH)"
-	@echo "~> make distRelease      - build dist at $(ROOT_REPO_DIST_PATH) in local OS"
-	@echo "~> make distReleaseOS    - build dist at $(ROOT_REPO_OS_DIST_PATH) as: $(DIST_OS) $(DIST_ARCH)"
-	@echo "~> make tarDistReleaseOS - build dist at $(ROOT_REPO_OS_DIST_PATH) as: $(DIST_OS) $(DIST_ARCH) and tar"
+	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
+	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
-	@echo "-- now build name: $(ROOT_NAME) version: $(DIST_VERSION)"
-	@echo "~> make init         - check base env of this project"
-	@echo "~> make clean        - remove binary file and log files"
-	@echo "~> make test         - run test case all"
-	@echo "~> make testBenchmem - run go test benchmem case all"
-	@echo "~> make runTest      - run server use conf/test/config.yaml"
-	@echo "~> make dev          - run server use conf/config.yaml"
+	@echo "~> make env                 - print env of this project"
+	@echo "~> make init                - check base env of this project"
+	@echo "~> make dep                 - check and install by go mod"
+	@echo "~> make clean               - remove build binary file, log files, and testdata"
+	@echo "~> make test                - run test case ignore --invert-match by config"
+	@echo "~> make testCoverage        - run test coverage case ignore --invert-match by config"
+	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
+	@echo "~> make testBenchmark       - run go test benchmark case all"
+	@echo "~> make ci                  - run CI tools tasks"
+	@echo "~> make dev                 - run as develop mode"
+	@echo "~> make run                 - run as ordinary mode"
 
-help: helpGoMod helpDockerRun helpProjectRoot
+help: helpGoMod helperGoTest helpDocker helpDist helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeDockerRun.mk --"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoDist --"

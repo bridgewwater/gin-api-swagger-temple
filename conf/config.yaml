@@ -2,18 +2,18 @@ runmode: debug               # run mode: debug, release, test
 addr: :39000                  # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
 name: gin-api-swagger-temple              # name of API Server
 
-base_path: /v1                     # api version
+base_path: /api/v1                 # api version
 prod_url: http://127.0.0.1:39000   # prod url full ip:port
 test_url: http://127.0.0.1:39000   # test url full ip:port
-dev_url: http://127.0.0.1:39000     # dev url full ip:port
-sslEnable: false                    # isEnable ssl mode this will cover by env ENV_WEB_HTTPS_ENABLE
+dev_url: http://127.0.0.1:39000    # dev url full ip:port
+sslEnable: false                   # isEnable ssl mode this will cover by env ENV_WEB_HTTPS_ENABLE
 
 log:
   writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
   logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
-  logger_file: log/server.log     # log file setting
-  log_format_text: false          # format `false` will format json, `true` will show abs
-  rollingPolicy: size             # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
+  logger_file: logs/server.log    # log file setting
+  log_format_text: true           # format `false` will format json, `true` will show std
+  rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
   log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
   log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
   log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
@@ -35,10 +35,11 @@ monitor: # monitor
 
 swagger:                            # swagger not show at release
   root: /swagger                    # swagger root
-  index: /swagger/index.html        # swagger index
+  ui_root: /editor                  # swagger ui root
+  index: /swagger/editor/index.html # swagger index as ${root}${ui_root}/index.html
   title: gin-api-swagger-temple          # swagger title
   description: This is a sample server celler server. # swagger description
-  version: 1.0                      # swagger version
+  version: 2.0                      # swagger version
   host: 127.0.0.1:39000             # swagger host:port will covery by set
   security: false                    # swagger security true or false
   user:                             # swagger user setting of BasicAuth
