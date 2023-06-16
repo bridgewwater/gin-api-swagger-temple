@@ -19,28 +19,31 @@ type Err struct {
 	Err  error  `json:"-"`
 }
 
+// NewErr
 // new error for use
-//	errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
+// errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
 // use like
-//	errdef.NewErr(errdef.ErrParams)
+// errdef.NewErr(errdef.ErrParams)
 // and you can add message
+//
 //	errdef.NewErr(errdef.ErrParams).Add("params id not found")
 func NewErr(errcode *ErrDef) *Err {
 	return &Err{Code: errcode.Code, Msg: errcode.Msg, Err: fmt.Errorf(errcode.Msg)}
 }
 
+// New
 // new error for use
-//	errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
-//	err error can use fmt.Errorf() to create
+// errcode errdef.ErrDef in $project/pkg/errdef/ file errcode.go, you can add more!
+// err error can use fmt.Errorf() to create
 // use like
-//	errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err))
+// errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err))
 // and you can add message
-//	errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err)).Add("client can know error")
-//
+// errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err)).Add("client can know error")
 func New(errcode *ErrDef, err error) *Err {
 	return &Err{Code: errcode.Code, Msg: errcode.Msg, Err: err}
 }
 
+// Add
 // to errdef.New().add("user message")
 func (err *Err) Add(message string) error {
 	//err.Msg = fmt.Sprintf("%s %s", err.Msg, message)
@@ -49,6 +52,7 @@ func (err *Err) Add(message string) error {
 	return err
 }
 
+// Addf
 // to errdef.New().addf("user message %v", args)
 func (err *Err) Addf(format string, args ...interface{}) error {
 	//return err.Msg = fmt.Sprintf("%s %s", err.Msg, fmt.Sprintf(format, args...))
@@ -56,11 +60,13 @@ func (err *Err) Addf(format string, args ...interface{}) error {
 	return err
 }
 
+// Error
 // errdef.New().Error() to print error message
 func (err *Err) Error() string {
 	return fmt.Sprintf("Err - code: %d, message: %s, error: %s", err.Code, err.Msg, err.Err)
 }
 
+// DecodeErr
 // decode error
 func DecodeErr(err error) (int, string) {
 	if err == nil {
@@ -78,6 +84,7 @@ func DecodeErr(err error) (int, string) {
 	return InternalServerError.Code, err.Error()
 }
 
+// IsErrUserNotFound
 // asset error is ErrUserNotFound to use errdef.DecodeErr()
 func IsErrUserNotFound(err error) bool {
 	code, _ := DecodeErr(err)

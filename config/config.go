@@ -32,12 +32,13 @@ type Config struct {
 	Name string
 }
 
+// Init
 // read default config by conf/config.yaml
 // can change by CLI by `-c`
 // this config can config by ENV
-//	ENV_WEB_HTTPS_ENABLE=false
-//	ENV_AUTO_HOST=true
-//	ENV_WEB_HOST 127.0.0.1:8000
+// ENV_WEB_HTTPS_ENABLE=false
+// ENV_AUTO_HOST=true
+// ENV_WEB_HOST 127.0.0.1:8000
 func Init(cfg string) error {
 	c := Config{
 		Name: cfg,
@@ -93,8 +94,10 @@ func (c *Config) initConfig() error {
 	return nil
 }
 
-// check config.yaml must has string key
-//	config.mustConfigString
+// checkMustHasString
+// check config.yaml must have string key
+//
+// config.mustConfigString
 func checkMustHasString() error {
 	for _, config := range mustConfigString {
 		if "" == viper.GetString(config) {

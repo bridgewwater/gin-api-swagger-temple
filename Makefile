@@ -116,7 +116,9 @@ swagger: cleanSwaggerDoc
 dep: swagger modVerify modDownload modTidy modVendor
 	@echo "-> just check depends below"
 
-ci: modTidy modVerify modFmt modVet modLintRun test
+style: modTidy modVerify modFmt modLintRun
+
+ci: modTidy modVerify modFmt modLintRun modVet test
 
 buildMain: swagger
 	@echo "-> start build local OS"

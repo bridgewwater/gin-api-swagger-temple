@@ -9,12 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// JsonErrDef
 // use as
-//	handler.JsonErrDef(c, errdef.ErrParams)
-//	return
+// handler.JsonErrDef(c, errdef.ErrParams)
+// return
 // or use add messages, sep of message use string "; "
-//	handler.JsonErrDef(c, errdef.ErrParams, "id", "not found, set id and retry")
-//	return
+// handler.JsonErrDef(c, errdef.ErrParams, "id", "not found, set id and retry")
+// return
 func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
 	err := errdef.NewErr(def)
 	if len(errMsgs) == 0 {
@@ -27,11 +28,12 @@ func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
 
 }
 
+// JsonErrDefErr
 // use as
-//	handler.JsonErrDefErr(c, errdef.ErrDatabase, err)
-//	return
+// handler.JsonErrDefErr(c, errdef.ErrDatabase, err)
+// return
 // or use add messages, sep of message use string "; "
-//	handler.JsonErrDefErr(c, errdef.ErrDatabase, err, "can not found")
+// handler.JsonErrDefErr(c, errdef.ErrDatabase, err, "can not found")
 // return
 func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsgs ...string) {
 	errResp := errdef.New(def, err)
@@ -45,9 +47,10 @@ func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsgs ...str
 
 }
 
+// JsonSuccess
 // use as
-//	handler.JsonSuccess(c)
-//	return
+// handler.JsonSuccess(c)
+// return
 func JsonSuccess(c *gin.Context, data interface{}) {
 	if data != nil {
 		c.JSON(http.StatusOK, model.Response{
@@ -63,9 +66,10 @@ func JsonSuccess(c *gin.Context, data interface{}) {
 	}
 }
 
+// JsonFail
 // use as
-//	handler.JsonFail(c, "fail message")
-//	return
+// handler.JsonFail(c, "fail message")
+// return
 func JsonFail(c *gin.Context, fail string, data interface{}) {
 	if data != nil {
 		c.JSON(http.StatusOK, model.Response{
@@ -81,9 +85,10 @@ func JsonFail(c *gin.Context, fail string, data interface{}) {
 	}
 }
 
+// JsonErr
 // use as
-//	handler.JsonErr(c, 0)
-//	return
+// handler.JsonErr(c, 0)
+// return
 func JsonErr(c *gin.Context, errCode int, data interface{}) {
 	if errCode == 0 {
 		errCode = errdef.InternalServerError.Code

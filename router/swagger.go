@@ -40,7 +40,6 @@ func swaggerInfo(baseURL string) {
 }
 
 func swaggerGroup(baseURL, envName string, g *gin.Engine) {
-	envName = "NAME_OF_ENV_VARIABLE"
 	slog.Infof("envName %v", envName)
 	// https://github.com/swaggo/swag/issues/194#issuecomment-475853710
 	swaggerRoot := viper.GetString("swagger.root")

@@ -5,6 +5,7 @@ import (
 	"github.com/json-iterator/go/extra"
 )
 
+//nolint:golint,unused
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 func init() {
