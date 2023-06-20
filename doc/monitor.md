@@ -1,5 +1,7 @@
 ## config
 
+- [https://github.com/bar-counter/monitor](https://github.com/bar-counter/monitor)
+
 ```yaml
 monitor: # monitor
   status: true             # api status use {monitor.health}

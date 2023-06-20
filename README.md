@@ -2,6 +2,7 @@
 [![license](https://img.shields.io/github/license/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple)
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/gin-api-swagger-temple?label=go.mod)](https://github.com/bridgewwater/gin-api-swagger-temple)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/gin-api-swagger-temple)](https://goreportcard.com/report/github.com/bridgewwater/gin-api-swagger-temple)
+[![codecov](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple)
 [![github release](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple?style=social)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
 
 ## for what
@@ -97,6 +98,8 @@ Project file definition
 
 ```
 .
+├── LICENCE                     # licence
+├── .golangci.yaml              # golangci-lint config
 ├── Dockerfile                  # ci build
 ├── Dockerfile.s6               # local docker build
 ├── z-MakefileUtils             # Makefile tool library
@@ -143,6 +146,7 @@ Project file definition
 ├── go.mod
 ├── logs                        # log directory not in git management list
 ├── main.go                     # app program entrance
+├── main_test.go                # app integration test entrance
 ├── pkg                         # referenced package
 │   └── pkgJson
 └── util                        # tool directory
@@ -166,4 +170,4 @@ Project file definition
     - Arguments `i -g main.go -dir api/v1 --instanceName v1`
     - Working directory `$ProjectFileDir$`
 
-- ![](doc/img/goland-swag-auto-v1.png)
+![](https://github.com/bridgewwater/gin-api-swagger-temple/raw/main/doc/img/goland-swag-auto-v1.png)

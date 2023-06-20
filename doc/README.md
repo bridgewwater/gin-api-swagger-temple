@@ -1,4 +1,4 @@
-# temp-gin-api-self info
+# gin-api-swagger-temple info
 
 ## monitor-check
 

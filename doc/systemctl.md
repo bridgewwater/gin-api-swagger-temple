@@ -2,11 +2,11 @@
 
 daemon process by systemctl
 
-/lib/systemd/system/temp-gin-api-self.service
+/lib/systemd/system/gin-api-swagger-temple.service
 
 ```conf
 [Unit]
-Description=temp-gin-api-self web service
+Description=gin-api-swagger-temple web service
 After=network-online.target network.target syslog.target
 Wants=network.target
 
@@ -27,33 +27,33 @@ StartLimitInterval=10
 WantedBy=multi-user.target
 ```
 
-when update config use  `supervisorctl update temp-gin-api-self`
+when update config use  `supervisorctl update gin-api-swagger-temple`
 
 - Effective
 
 ```sh
 # 运行日志
-journalctl -u temp-gin-api-self
+journalctl -u gin-api-swagger-temple
 # 查看服务状态
-sudo systemctl status temp-gin-api-self
+sudo systemctl status gin-api-swagger-temple
 
 # 修改配置后需要
 sudo systemctl daemon-reload
-sudo systemctl restart temp-gin-api-self
+sudo systemctl restart gin-api-swagger-temple
 
 # 启动测试
-sudo systemctl start temp-gin-api-self
+sudo systemctl start gin-api-swagger-temple
 # 停止
-sudo systemctl stop temp-gin-api-self
+sudo systemctl stop gin-api-swagger-temple
 # 测试通过打开开机自启动
-sudo systemctl enable temp-gin-api-self
+sudo systemctl enable gin-api-swagger-temple
 
 # update
 cd [version]
 cp config.yaml ~/api/api-swtich-subscription/
-supervisorctl stop temp-gin-api-self
+supervisorctl stop gin-api-swagger-temple
 cp [new file] ~/api/api-swtich-subscription/
-supervisorctl update temp-gin-api-self
+supervisorctl update gin-api-swagger-temple
 ```
 
 ## 日志设置
