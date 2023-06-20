@@ -1,14 +1,15 @@
 package biz
 
 import (
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/errdef"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model/biz"
 	"net/http"
 
-	"github.com/bridgewwater/gin-api-swagger-temple/handler"
-	"github.com/bridgewwater/gin-api-swagger-temple/model/biz"
-	"github.com/bridgewwater/gin-api-swagger-temple/pkg/errdef"
 	"github.com/gin-gonic/gin"
 )
 
+// GetJSON
 // @Summary /biz/json
 // @Description warning api in prod will hide, abs remote api for dev
 // @Tags biz
@@ -26,6 +27,7 @@ func GetJSON(c *gin.Context) {
 	}{NewInfo: resp.Info})
 }
 
+// PostJsonModelBiz
 // @Summary /biz/modelBiz
 // @Description warning api in prod will hide, abs remote api for dev
 // @Tags biz

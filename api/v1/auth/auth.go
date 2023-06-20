@@ -16,7 +16,9 @@ var urlMatchList = [...]string{
 
 var superAccessToken = "557c0689faf80e61daeee6e343"
 
-// this method use HEAD x-access-token
+// GinUnAuthCheck
+//
+//	this method use HEAD x-access-token
 func GinUnAuthCheck(c *gin.Context) error {
 	authorization := c.GetHeader("x-access-token")
 	if authorization == "" {
@@ -46,7 +48,9 @@ func GinUnAuthCheck(c *gin.Context) error {
 	return fmt.Errorf("other check, please fix auth check error")
 }
 
-// use http HEAD key to check
+// GinUnAuthHead
+//
+//	use http HEAD key to check
 func GinUnAuthHead(c *gin.Context, key, val string) error {
 	xAccessToken := c.GetHeader(key)
 	if xAccessToken == val {

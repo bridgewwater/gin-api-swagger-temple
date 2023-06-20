@@ -2,7 +2,7 @@ package errdef
 
 import "net/http"
 
-// Common errors, each error must has HttpStatus!
+// Common errors, each error must have HttpStatus!
 var (
 	OK                  = &ErrDef{Code: 0, Msg: "OK", HttpStatus: http.StatusOK}
 	InternalServerError = &ErrDef{Code: 10001, Msg: "Internal server error.", HttpStatus: http.StatusForbidden}
@@ -15,7 +15,7 @@ var (
 
 	ErrParse = &ErrDef{Code: 10004, Msg: "Error parse.", HttpStatus: http.StatusBadRequest}
 
-	// database errors
+	// ErrValidation database errors
 	ErrValidation = &ErrDef{Code: 20001, Msg: "Validation failed.", HttpStatus: http.StatusUnauthorized}
 	ErrDatabase   = &ErrDef{Code: 20002, Msg: "Database error.", HttpStatus: http.StatusForbidden}
 	ErrToken      = &ErrDef{Code: 20003,

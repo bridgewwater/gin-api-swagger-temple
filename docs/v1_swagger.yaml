@@ -36,7 +36,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://github.com/
   title: gin-api-swagger-temple
-  version: "1.0"
+  version: v1.x.x
 paths:
   /biz/json:
     get:

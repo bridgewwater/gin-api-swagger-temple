@@ -1,7 +1,7 @@
-package router
+package v1
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/handler/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler/biz"
 	"github.com/gin-gonic/gin"
 )
 

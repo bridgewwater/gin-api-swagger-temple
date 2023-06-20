@@ -12,12 +12,18 @@ import (
 const (
 	// env prefix is web
 	defaultEnvPrefix string = "ENV_WEB"
-	// env ENV_WEB_HTTPS_ENABLE default false
-	defaultEnvHttpsEnable string = "HTTPS_ENABLE"
-	// env ENV_WEB_HOST default ""
-	defaultEnvHost string = "HOST"
-	// env ENV_AUTO_HOST default true
-	defaultEnvAutoGetHost string = "AUTO_HOST"
+	// EnvLogLevel
+	//	env ENV_WEB_LOG_LEVEL default ""
+	EnvLogLevel string = "LOG_LEVEL"
+	// EnvHttpsEnable
+	//	env ENV_WEB_HTTPS_ENABLE default false
+	EnvHttpsEnable string = "HTTPS_ENABLE"
+	// EnvHost
+	//	env ENV_WEB_HOST default ""
+	EnvHost string = "HOST"
+	// EnvAutoGetHost
+	//	env ENV_AUTO_HOST default true, will use local ipv4
+	EnvAutoGetHost string = "AUTO_HOST"
 )
 
 var mustConfigString = []string{
@@ -76,10 +82,10 @@ func (c *Config) initConfig() error {
 	viper.AutomaticEnv()                 // 读取匹配的环境变量
 	viper.SetEnvPrefix(defaultEnvPrefix) // 读取环境变量的前缀为 defaultEnvPrefix
 
-	// 设置默认环境变量
-	_ = os.Setenv(defaultEnvHost, "")
-	_ = os.Setenv(defaultEnvHttpsEnable, "false")
-	_ = os.Setenv(defaultEnvAutoGetHost, "true")
+	// 设置 默认环境变量
+	_ = os.Setenv(EnvHost, "")
+	_ = os.Setenv(EnvHttpsEnable, "false")
+	_ = os.Setenv(EnvAutoGetHost, "false")
 
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)

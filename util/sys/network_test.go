@@ -1,20 +1,21 @@
 package sys
 
 import (
-	"github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestNetworkLocalIP(t *testing.T) {
-	convey.Convey("TestNetworkLocalIP", t, func() {
-		// mock
-		// do
-		ipv4, err := NetworkLocalIP()
-		if err != nil {
-			t.Fatalf("TestNetworkLocalIP test error: %v", err)
-		}
-		// verify
-		t.Logf("NetworkLocalIP get: %v", ipv4)
-		convey.So(ipv4, convey.ShouldNotBeNil)
-	})
+	// mock NetworkLocalIP
+
+	t.Logf("~> mock NetworkLocalIP")
+	// do NetworkLocalIP
+	ipv4, err := NetworkLocalIP()
+	if err != nil {
+		t.Fatalf("TestNetworkLocalIP test error: %v", err)
+	}
+	t.Logf("~> do NetworkLocalIP")
+	t.Logf("NetworkLocalIP get: %v", ipv4)
+	// verify NetworkLocalIP
+	assert.NotNil(t, ipv4)
 }

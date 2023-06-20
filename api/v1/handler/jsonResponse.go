@@ -1,11 +1,11 @@
 package handler
 
 import (
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/errdef"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model"
 	"net/http"
 	"strings"
 
-	"github.com/bridgewwater/gin-api-swagger-temple/model"
-	"github.com/bridgewwater/gin-api-swagger-temple/pkg/errdef"
 	"github.com/gin-gonic/gin"
 )
 

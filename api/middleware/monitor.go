@@ -1,4 +1,4 @@
-package router
+package middleware
 
 import (
 	"fmt"
@@ -11,8 +11,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-// use monitor https://github.com/bar-counter/monitor/v2
-// config.yml like
+// monitorAPI
+//
+//	use monitor https://github.com/bar-counter/monitor/v2
+//
+//	config.yml like
 //
 //	monitor: # monitor
 //		status: true             # api status use {monitor.health}
@@ -23,11 +26,11 @@ import (
 //			disk: /status/hardware/disk     # hardware api disk
 //			cpu: /status/hardware/cpu       # hardware api cpu
 //			ram: /status/hardware/ram       # hardware api ram
-//		debug: true                       # debug true or false
-//		pprof: true                       # security true or false
-//		security: false                    # debug and security security true or false
+//		debug: true                         # debug true or false
+//		pprof: true                         # security true or false
+//		security: false                     # debug and security true or false
 //		securityUser:
-//			admin: f6011b78008fd971784b2490b474cf659ffb1e # admin:pwd
+//			admin: pwd # admin:pwd
 func monitorAPI(g *gin.Engine) {
 	var monitorCfg *monitor.Cfg
 	isSecurity := viper.GetBool("monitor.security")
@@ -56,11 +59,17 @@ func monitorAPI(g *gin.Engine) {
 	}
 }
 
-// ping the server to make sure the router is working.
-// use config.yml as
+// checkPingServer
+//
+//	ping the server to make sure the router is working.
+//	use config.yml as
+//
+//	apiBaseURL load by github.com/spf13/viper
+//
+// viper config.yml
 //
 //	monitor: # monitor
-//		status: true
+//		status: true             # api status use {monitor.health}
 //		health: /status/health   # api health
 //		retryCount: 10           # ping api health retry count
 func checkPingServer(apiBaseURL string) {
@@ -73,7 +82,18 @@ func checkPingServer(apiBaseURL string) {
 	}()
 }
 
-// ping server pings the http server.
+// PingServer
+//
+//	ping server pings the http server
+//
+//	apiBaseURL load by github.com/spf13/viper
+//	checkRouter monitor.health by github.com/spf13/viper
+//
+//	viper config.yml
+//	monitor: # monitor
+//		status: true             # api status use {monitor.health}
+//		health: /status/health   # api health
+//		retryCount: 10           # ping api health retry count
 func pingServer(apiBaseURL, checkRouter string) error {
 	pingApi := apiBaseURL + checkRouter
 	slog.Infof("pingServer test api : %v", pingApi)
@@ -85,7 +105,7 @@ func pingServer(apiBaseURL, checkRouter string) error {
 			return nil
 		}
 
-		// Sleep for a second to continue the next ping.
+		// sleep for a second to continue the next ping.
 		slog.Warnf("Waiting for the router, retry in 1 second. Check URL: %v", pingApi)
 		time.Sleep(time.Second)
 	}

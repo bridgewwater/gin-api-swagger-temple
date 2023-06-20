@@ -1,17 +1,15 @@
-runmode: debug               # run mode: debug, release, test
-addr: :39000                  # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
-name: gin-api-swagger-temple              # name of API Server
+runmode: debug                          # run mode: debug, release, test. this will cover by env: GIN_MODE
+addr: :39000                            # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
+name: gin-api-swagger-temple            # name of API Server
 
-base_path: /api/v1                 # api version
-prod_url: http://127.0.0.1:39000   # prod url full ip:port
-test_url: http://127.0.0.1:39000   # test url full ip:port
-dev_url: http://127.0.0.1:39000    # dev url full ip:port
-sslEnable: false                   # isEnable ssl mode this will cover by env ENV_WEB_HTTPS_ENABLE
+base_path: /api/v1                 # /v1 is api MAJOR version as https://semver.org/
+api_base: http://127.0.0.1:39000   # url full ip:port,  this will cover by env: ENV_WEB_AUTO_HOST=true, if in docker do not open this env
+sslEnable: false                   # isEnable ssl mode, this will cover by env: ENV_WEB_HTTPS_ENABLE
 
 log:
+  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL, this will cover by env:  ENV_WEB_LOG_LEVEL
   writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
-  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
-  logger_file: logs/server.log    # log file setting
+  logger_file: logs/debug_access.log    # log file setting
   log_format_text: true           # format `false` will format json, `true` will show std
   rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
   log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
@@ -28,20 +26,17 @@ monitor: # monitor
     cpu: /status/hardware/cpu       # hardware api cpu
     ram: /status/hardware/ram       # hardware api ram
   debug: true                       # debug true or false
-  pprof: true                       # security true or false
-  security: false                    # debug and security security true or false
+  pprof: true                       # pprof true or false
+  security: false                   # debug and security security true or false
   securityUser:
     admin: f6011b78008fd971784b2490b474cf659ffb1e # admin:pwd
 
 swagger:                            # swagger not show at release
+  api_major_version: v1             # api MAJOR version as https://semver.org/
   root: /swagger                    # swagger root
   ui_root: /editor                  # swagger ui root
   index: /swagger/editor/index.html # swagger index as ${root}${ui_root}/index.html
-  title: gin-api-swagger-temple          # swagger title
-  description: This is a sample server celler server. # swagger description
-  version: 2.0                      # swagger version
-  host: 127.0.0.1:39000             # swagger host:port will covery by set
-  security: false                    # swagger security true or false
+  security: false                   # swagger security true or false
   user:                             # swagger user setting of BasicAuth
     admin: 36116f7c73bc9acb2a7a26   # admin:pwd
     user: e2236a11aceac4de          # user:pwd

@@ -1,4 +1,4 @@
-### custom
+### custom ignore
 
 *.log
 logs/
@@ -47,7 +47,6 @@ _cgo_export.*
 _testmain.go
 
 *.exe
-*.test
 *.prof
 
 

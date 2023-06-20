@@ -1,0 +1,16 @@
+{
+  "name": "gin-api-swagger-temple",
+  "version": "v0.1.2",
+  "description": "golang web api as gin",
+  "directories": {
+    "doc": "doc"
+  },
+  "keywords": [
+    "gin",
+    "go",
+    "make",
+    "docker"
+  ],
+  "author": "sinlov",
+  "license": "Apache-2.0"
+}

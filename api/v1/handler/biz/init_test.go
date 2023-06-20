@@ -8,7 +8,7 @@ import (
 var baseURL string
 
 func mockTestByEnv() {
-	baseURL = "http://192.168.111.214:39000"
+	baseURL = "http://127.0.0.1:39000"
 }
 
 func TestMain(m *testing.M) {

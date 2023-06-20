@@ -3,65 +3,50 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"github.com/bar-counter/slog"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
+	"github.com/bridgewwater/gin-api-swagger-temple/pkg/pkgJson"
 	"net/http"
 	"time"
 
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1"
 	"github.com/bridgewwater/gin-api-swagger-temple/config"
-	"github.com/bridgewwater/gin-api-swagger-temple/router"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
+//go:embed package.json
+var packageJson string
+
 var (
 	cfg = pflag.StringP("config", "c", "", "api server config file path.")
 )
 
-// @title gin-api-swagger-temple
-// @version         1.0
-// @description This is a sample server
-// @termsOfService http://github.com/
-
-// @contact.name API Support
-// @contact.url http://github.com/
-// @contact.email support@sinlov.cn
-
-// @BasePath  /api/v1
-
-// @securityDefinitions.basic BasicAuth
-
-//	@securityDefinitions.apikey		WithToken
-//	@in								header
-//	@name							Authorization
-//	@description					Please set the token of the API, note that it starts with "Bearer"
-
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
-
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	pflag.Parse()
+	pkgJson.InitPkgJsonContent(packageJson)
 
 	// init config
 	if err := config.Init(*cfg); err != nil {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
-	fmt.Printf("%s -> %v at time: %v\n", "start service", viper.GetString("name"), time.Now().String())
-
-	// Set gin mode.
-	runMode := viper.GetString("runmode")
-	gin.SetMode(runMode)
+	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ]\n", pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle())
+	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())
 
 	// Create the Gin engine.
 	g := gin.New()
 
 	var middlewareList []gin.HandlerFunc
+
+	// usage middleware.
+	middleware.Usage(g, middlewareList...)
+
 	// Routes.
-	router.Load(
+	v1.Register(
 		// Cores.
 		g,
 
@@ -69,8 +54,7 @@ func main() {
 		middlewareList...,
 	)
 
-	slog.Infof("Start to listening the incoming requests on http address: %v", viper.GetString("addr"))
-	slog.Infof("Sever name: %v , has start!", viper.GetString("name"))
+	slog.Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), viper.GetString("addr"))
 	err := http.ListenAndServe(viper.GetString("addr"), g)
 	if err != nil {
 		slog.Errorf(err, "server run error %v", err)

@@ -1,15 +1,16 @@
 package biz
 
 import (
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/errdef"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model/biz"
 	"net/http"
 	"strconv"
 
-	"github.com/bridgewwater/gin-api-swagger-temple/handler"
-	"github.com/bridgewwater/gin-api-swagger-temple/model/biz"
-	"github.com/bridgewwater/gin-api-swagger-temple/pkg/errdef"
 	"github.com/gin-gonic/gin"
 )
 
+// GetPath
 // @Summary /biz/path
 // @Description warning api in prod will hide, abs remote api for dev
 // @Tags biz
@@ -31,6 +32,7 @@ func GetPath(c *gin.Context) {
 	handler.JsonSuccess(c, resp)
 }
 
+// GetQuery
 // @Summary /biz/query
 // @Description warning api in prod will hide, abs remote api for dev
 // @Tags biz
@@ -66,6 +68,7 @@ func GetQuery(c *gin.Context) {
 	handler.JsonSuccess(c, resp)
 }
 
+// GetString
 // @Summary /biz/string
 // @Description get string of this api.
 // @Tags biz
