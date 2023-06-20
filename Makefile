@@ -90,6 +90,8 @@ cleanSwaggerDoc:
 cleanTestData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
 	@$(RM) coverage.txt
+	@$(RM) coverage.out
+	@$(RM) profile.txt
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
