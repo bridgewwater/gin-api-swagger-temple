@@ -5,7 +5,10 @@ import (
 	"net"
 )
 
-// get local IP addr
+// NetworkLocalIP
+//
+//	get local IP addr
+//	return: address ipv4 ipv6
 func NetworkLocalIP() (ipv4 string, err error) {
 	var (
 		addrs   []net.Addr
@@ -19,7 +22,7 @@ func NetworkLocalIP() (ipv4 string, err error) {
 	}
 	// 取第一个非lo的网卡IP
 	for _, addr = range addrs {
-		// 这个网络地址是IP地址: ipv4, ipv6
+		// this network address is the ip address ipv4 ipv6
 		if ipNet, isIpNet = addr.(*net.IPNet); isIpNet && !ipNet.IP.IsLoopback() {
 			// 跳过IPV6
 			if ipNet.IP.To4() != nil {
