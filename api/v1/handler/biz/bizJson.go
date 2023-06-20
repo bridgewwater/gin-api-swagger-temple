@@ -10,14 +10,16 @@ import (
 )
 
 // GetJSON
-// @Summary /biz/json
-// @Description warning api in prod will hide, abs remote api for dev
-// @Tags biz
-// @Accept application/json
-// @Produce application/json
-// @Success    200    {object}    biz.Biz    "value in biz.Biz"
-// @Failure    500
-// @Router /biz/json [get]
+//
+//	@Summary		api demo json
+//	@Description	warning api in prod will hide, abs remote api for dev
+//	@Tags			biz
+//	@Accept			application/json
+//	@Produce		application/json
+//
+//	@Success		200		{object}		biz.Biz			"value in biz.Biz"
+//	@Failure		500										""
+//	@Router			/biz/json								[get]
 func GetJSON(c *gin.Context) {
 	resp := biz.Biz{
 		Info: "message",
@@ -28,15 +30,18 @@ func GetJSON(c *gin.Context) {
 }
 
 // PostJsonModelBiz
-// @Summary /biz/modelBiz
-// @Description warning api in prod will hide, abs remote api for dev
-// @Tags biz
-// @Accept application/json
-// @Produce application/json
-// @Param    biz    body    biz.Biz    true    "body biz.Biz for post"
-// @Success    200    {object}    biz.Biz    "value in biz.Biz"
-// @Failure    400    {object}    errdef.Err    "error at errdef.Err"
-// @Router /biz/modelBiz [post]
+//
+//	@Summary		api json struct biz.Biz
+//	@Description	warning api in prod will hide, abs remote api for dev
+//	@Tags			biz
+//	@Accept			application/json
+//	@Produce		application/json
+//
+//	@Param			biz		body			biz.Biz			true	"body biz.Biz for post"
+//	@Success		200		{object}		biz.Biz			"value in biz.Biz"
+//
+//	@Failure		400		{object}		errdef.Err		"error at errdef.Err"
+//	@Router			/biz/modelBiz							[post]
 func PostJsonModelBiz(c *gin.Context) {
 	var req biz.Biz
 	if err := c.BindJSON(&req); err != nil {
@@ -44,5 +49,36 @@ func PostJsonModelBiz(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrBind, err).Add("body error"))
 		return
 	}
+	c.JSON(http.StatusOK, req)
+}
+
+// PostQueryJsonMode
+//
+//	@Summary		api post query with json struct biz.Biz
+//	@Description	warning api in prod will hide, abs remote api for dev
+//	@Tags			biz
+//	@Accept			application/json
+//	@Produce		application/json
+//
+//	@Param			offset	query			int			true	"Offset"
+//	@Param			limit	query			int			false	"limit"
+//	@Param			biz		body			biz.Biz		true	"body biz.Biz for post"
+//
+//	@Success		200		{object}		biz.Biz		"value in biz.Biz"
+//	@Failure		400		{object}		errdef.Err	"error at errdef.Err"
+//	@Router			/biz/modelBizQuery					[post]
+func PostQueryJsonMode(c *gin.Context) {
+	offset, limit, err := handler.ParseQueryCommonOffsetAndLimit(c)
+	if err != nil {
+		handler.JsonErrDefErr(c, errdef.ErrParams, err)
+		return
+	}
+	var req biz.Biz
+	if errBind := c.BindJSON(&req); errBind != nil {
+		handler.JsonErrDefErr(c, errdef.ErrBind, errBind)
+		return
+	}
+	req.Offset = offset
+	req.Limit = limit
 	c.JSON(http.StatusOK, req)
 }

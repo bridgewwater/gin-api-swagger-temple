@@ -35,13 +35,13 @@ func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
 // or use add messages, sep of message use string "; "
 // handler.JsonErrDefErr(c, errdef.ErrDatabase, err, "can not found")
 // return
-func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsgs ...string) {
+func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsg ...string) {
 	errResp := errdef.New(def, err)
-	if len(errMsgs) == 0 {
+	if len(errMsg) == 0 {
 		c.JSON(def.HttpStatus, errResp)
 		return
 	} else {
-		message := strings.Join(errMsgs, "; ")
+		message := strings.Join(errMsg, "; ")
 		c.JSON(def.HttpStatus, errResp.Add(message))
 	}
 

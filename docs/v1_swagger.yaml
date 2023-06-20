@@ -38,6 +38,42 @@ info:
   title: gin-api-swagger-temple
   version: v1.x.x
 paths:
+  /biz/form:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: warning api in prod will hide, abs remote api for dev
+      parameters:
+      - example: id123zqqeeadg24qasd
+        in: formData
+        name: id
+        type: string
+      - example: input info here
+        in: formData
+        name: info
+        type: string
+      - example: 10
+        in: formData
+        name: limit
+        type: integer
+      - example: 0
+        in: formData
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in model.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: 'api demo form with: x-www-form-urlencoded'
+      tags:
+      - biz
   /biz/json:
     get:
       consumes:
@@ -51,8 +87,8 @@ paths:
           schema:
             $ref: '#/definitions/biz.Biz'
         "500":
-          description: Internal Server Error
-      summary: /biz/json
+          description: ""
+      summary: api demo json
       tags:
       - biz
   /biz/modelBiz:
@@ -78,13 +114,48 @@ paths:
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-      summary: /biz/modelBiz
+      summary: api json struct biz.Biz
+      tags:
+      - biz
+  /biz/modelBizQuery:
+    post:
+      consumes:
+      - application/json
+      description: warning api in prod will hide, abs remote api for dev
+      parameters:
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: body biz.Biz for post
+        in: body
+        name: biz
+        required: true
+        schema:
+          $ref: '#/definitions/biz.Biz'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in biz.Biz
+          schema:
+            $ref: '#/definitions/biz.Biz'
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: api post query with json struct biz.Biz
       tags:
       - biz
   /biz/path/{some_id}:
     get:
       consumes:
-      - application/json
+      - multipart/form-data
       description: warning api in prod will hide, abs remote api for dev
       parameters:
       - description: some id to show
@@ -103,7 +174,7 @@ paths:
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-      summary: /biz/path
+      summary: api path demo for route path
       tags:
       - biz
   /biz/query/:
@@ -132,18 +203,54 @@ paths:
           description: error at errdef.Err
           schema:
             $ref: '#/definitions/errdef.Err'
-      summary: /biz/query
+      summary: api demo for query.
       tags:
       - biz
   /biz/string:
     get:
-      description: get string of this api.
+      consumes:
+      - application/json
+      description: get string of this api. warning api in prod will hide, abs remote
+        api for dev
+      produces:
+      - text/plain
       responses:
         "200":
           description: OK
         "500":
-          description: Internal Server Error
-      summary: /biz/string
+          description: ""
+      summary: sample demo string
+      tags:
+      - biz
+  /file/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload file. warning api in prod will hide, abs remote api for
+        dev
+      operationId: file.upload
+      parameters:
+      - description: this is a test file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/errdef.Err'
+        "404":
+          description: Can not find ID
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: Upload file for count file size
       tags:
       - biz
 securityDefinitions:
