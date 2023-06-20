@@ -1,4 +1,8 @@
-[![golang-full](https://github.com/bridgewwater/gin-api-swagger-temple/workflows/golang-full/badge.svg?branch=main)](https://github.com/bridgewwater/gin-api-swagger-temple/actions?query=workflow%3Agolang-full)
+[![golang-ci](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/golang-ci.yml/badge.svg)](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/golang-ci.yml)
+[![license](https://img.shields.io/github/license/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple)
+[![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/gin-api-swagger-temple?label=go.mod)](https://github.com/bridgewwater/gin-api-swagger-temple)
+[![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/gin-api-swagger-temple)](https://goreportcard.com/report/github.com/bridgewwater/gin-api-swagger-temple)
+[![github release](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple?style=social)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
 
 ## for what
 
