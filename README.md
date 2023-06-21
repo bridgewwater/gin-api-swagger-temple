@@ -10,6 +10,28 @@
 - this project used to gin api server
 - [ ] rename `github.com/bridgewwater/gin-api-swagger-temple` to your api package name
 
+## Contributing
+
+[![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4-ff69b4.svg)](.github/CONTRIBUTING_DOC/CODE_OF_CONDUCT.md)
+[![GitHub contributors](https://img.shields.io/github/contributors/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/graphs/contributors)
+
+We welcome community contributions to this project.
+
+Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
+
+## Features
+
+- [ ] more perfect test case coverage
+- [ ] more perfect benchmark case
+
+## usage
+
+- use this template, replace list below
+  - `github.com/bridgewwater/gin-api-swagger-temple` to your package name
+  - `bridgewwater` to your owner name
+  - `gin-api-swagger-temple` to your project name
+  - `go 1.18`, `^1.18`, `1.18.10` to new go version for dev
+
 ## evn
 
 - minimum go version: go 1.18
