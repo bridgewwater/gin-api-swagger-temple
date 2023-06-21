@@ -46,7 +46,7 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 | https://github.com/spf13/pflag                    | v1.0.5     |
 | https://github.com/spf13/viper                    | v1.16.0    |
 | https://github.com/json-iterator/go               | v1.1.12    |
-| https://github.com/bar-counter/slog               | v1.1.0     |
+| https://github.com/bar-counter/slog               | v1.3.0     |
 | https://github.com/bar-counter/monitor            | v2.1.0     | 
 | https://github.com/bar-counter/gin-correlation-id | v1.1.0     | 
 
@@ -107,7 +107,8 @@ log:
   writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
   logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
   logger_file: log/server.log     # log file setting
-  log_format_text: false          # format `false` will format json, `true` will show abs
+  log_hide_lineno: false # `true` will hide code line number, `false` will show code line number, default is false
+  log_format_text: true # format_text `false` will format json, `true` will out stdout
   rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
   log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
   log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`

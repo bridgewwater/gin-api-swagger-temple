@@ -9,8 +9,9 @@ sslEnable: false                   # isEnable ssl mode, this will cover by env: 
 log:
   logger_level: INFO              # log level: DEBUG, INFO, WARN, ERROR, FATAL, this will cover by env:  ENV_WEB_LOG_LEVEL
   writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
-  logger_file: logs/test_access.log    # log file setting
-  log_format_text: true           # format `false` will format json, `true` will show std
+  logger_file: logs/test_access.log    # "" is not writer log file, and this will cover by env: CHASSIS_HOME
+  log_hide_lineno: false # `true` will hide code line number, `false` will show code line number, default is false
+  log_format_text: true # format_text `false` will format json, `true` will out stdout
   rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
   log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
   log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`

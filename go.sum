@@ -44,8 +44,8 @@ github.com/bar-counter/gin-correlation-id v1.1.0 h1:rXcTk9fEIwXVOcCAL93PvzyIbkAO
 github.com/bar-counter/gin-correlation-id v1.1.0/go.mod h1:LdjnA8T1uyVTuGspLUNLJXX+viQjm3cXT3CK+wxyrKg=
 github.com/bar-counter/monitor/v2 v2.1.0 h1:t5YwDtjI7CZ/SgeHpR2uWBryqdEqh5LGRnpDjH+dsSI=
 github.com/bar-counter/monitor/v2 v2.1.0/go.mod h1:hb2S6B3hlOhlO52WaGEZJGRsJkQRuA3AKcE/5kdmXEc=
-github.com/bar-counter/slog v1.1.0 h1:AQQ/ikJWazn6j2SUZI9L1x/hpzwP5bv6RihhN+n0cEc=
-github.com/bar-counter/slog v1.1.0/go.mod h1:TiYwRv1WtM4UYmJevNjc0piQmGypo0RDegcboE0NrP4=
+github.com/bar-counter/slog v1.3.0 h1:0kMiQpjNXPPY0NQJkvqqkAvcachkKmo0Eu++vnXkuo4=
+github.com/bar-counter/slog v1.3.0/go.mod h1:TiYwRv1WtM4UYmJevNjc0piQmGypo0RDegcboE0NrP4=
 github.com/bwmarrin/snowflake v0.3.0 h1:xm67bEhkKh6ij1790JB83OujPR5CzNe8QuQqAgISZN0=
 github.com/bwmarrin/snowflake v0.3.0/go.mod h1:NdZxfVWX+oR6y2K0o6qAYv6gIOP9rjG0/E9WsDpxqwE=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=

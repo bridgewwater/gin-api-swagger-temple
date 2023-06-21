@@ -22,6 +22,7 @@ func (c *Config) initLog() error {
 		Writers:        viper.GetString("log.writers"),
 		LoggerFile:     viper.GetString("log.logger_file"),
 		LogFormatText:  viper.GetBool("log.log_format_text"),
+		LogHideLineno:  viper.GetBool("log.log_hide_lineno"),
 		RollingPolicy:  viper.GetString("log.rolling_policy"),
 		LogRotateDate:  viper.GetInt("log.log_rotate_date"),
 		LogRotateSize:  viper.GetInt("log.log_rotate_size"),
