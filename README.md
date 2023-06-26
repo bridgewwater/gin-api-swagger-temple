@@ -21,6 +21,7 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
+- [X] server handler Exit Signal by `ctrl+c` or `kill -15 [pid]` return code 0, for safe exit.
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 
