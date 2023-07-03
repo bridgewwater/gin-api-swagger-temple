@@ -7,6 +7,7 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/bar-counter/slog"
+	"github.com/bridgewwater/gin-api-swagger-temple"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
 	"github.com/bridgewwater/gin-api-swagger-temple/pkg/pkgJson"
 	"net/http"
@@ -22,9 +23,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-//go:embed package.json
-var packageJson string
-
 var (
 	cfg = pflag.StringP("config", "c", "", "api server config file path.")
 
@@ -39,7 +37,7 @@ var (
 
 func main() {
 	pflag.Parse()
-	pkgJson.InitPkgJsonContent(packageJson)
+	pkgJson.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
 
 	// init config
 	if err := config.Init(*cfg); err != nil {

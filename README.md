@@ -31,11 +31,11 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
   - `github.com/bridgewwater/gin-api-swagger-temple` to your package name
   - `bridgewwater` to your owner name
   - `gin-api-swagger-temple` to your project name
-  - `go 1.18`, `^1.18`, `1.18.10` to new go version for dev
 
-## evn
+## env
 
 - minimum go version: go 1.18
+- change `go 1.18`, `^1.18`, `1.18.10` to new go version
 
 ### libs
 
@@ -47,9 +47,9 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 | https://github.com/spf13/pflag                    | v1.0.5     |
 | https://github.com/spf13/viper                    | v1.16.0    |
 | https://github.com/json-iterator/go               | v1.1.12    |
-| https://github.com/bar-counter/slog               | v1.3.0     |
-| https://github.com/bar-counter/monitor            | v2.1.0     | 
-| https://github.com/bar-counter/gin-correlation-id | v1.1.0     | 
+| https://github.com/bar-counter/slog               | v1.4.0     |
+| https://github.com/bar-counter/monitor            | v2.2.0     | 
+| https://github.com/bar-counter/gin-correlation-id | v1.2.0     | 
 
 ## run
 
@@ -129,27 +129,32 @@ Project file definition
 ├── z-MakefileUtils             # Makefile tool library
 ├── Makefile                    # Makefile file, using make as a compilation tool
 ├── README.md
-├── api
-│   ├── middleware              # api middleware directory
-│   │   ├── app_version.go      # app version tracking middleware, use package.json to manage api version, header: X-App-Version
-│   │   ├── header.go           # header middleware, include: options secure noCache etc.
-│   │   ├── monitor.go          # monitor middleware, use https://github.com/bar-counter/monitor
-│   │   └── usage.go            # usage middleware for Gin engine.
+├── api                         # api management
+│   ├── middleware                # api middleware directory
+│   │   ├── app_version.go          # app version tracking middleware, use package.json to manage api version, header: X-App-Version
+│   │   ├── header.go                 # header middleware, include: options secure noCache etc.
+│   │   ├── monitor.go                # monitor middleware, use https://github.com/bar-counter/monitor
+│   │   └── usage.go                  # usage middleware for Gin engine.
 │   │
 │   │                           # Each major version of api will be distinguished here, so in this directory, there will be multiple implementations of the same function.
-│   └── v1                      # api /v1 directory
-│       ├── main.go             # 
-│       ├── auth                # under api/v1 auth api, The authentication method of each major version is inconsistent.
-│       ├── errdef              # under api/v1 err define api, The error code of each major version is inconsistent.
-│       ├── handler             # under api/v1 api, Similar to C in MVC architecture, it is used to read input, forward the processing flow to the actual processing function, and finally return the result.
-│       │   ├── biz             # api group folder for /biz
-│       │   ├── json.go         # json parse
-│       │   └── jsonResponse.go # universal response structure, The authentication method of each major version is inconsistent.
-│       └── main.go             # swag generated file entrance, swag base info update here
+│   └── v1                        # api /v1 directory
+│       ├── auth                    # under api/v1 auth api, The authentication method of each major version is inconsistent.
+│       ├── errdef                  # under api/v1 err define api, The error code of each major version is inconsistent.
+│       ├── handler                 # under api/v1 api, Similar to C in MVC architecture, it is used to read input, forward the processing flow to the actual processing function, and finally return the result.
+│       │   ├── biz                    # api group folder for /biz
+│       │   ├── json.go                # json parse
+│       │   └── jsonResponse.go        # universal response structure, The authentication method of each major version is inconsistent.
+│       ├── model                   # under api/v1 model define api, The model of each major version is inconsistent.
+│       └── main.go                 # swag generated file entrance, swag base info update here
+├── cmd                         # cmd folder
+│   └── gin-api-swagger-temple    # package of this web app
+│       ├── main.go                 # app program entrance
+│       └── main_test.go            # app integration test entrance
+
 ├── conf                        # Configuration files are stored in a unified directory
 │   ├── config.yaml
-│   ├── release                 # release configuration file
-│   └── test                    # test configuration file
+│   ├── release                   # release configuration file
+│   └── test                      # test configuration file
 ├── config                      # Dedicated to handling configuration and configuration files Go package
 │   ├── baseConf.go
 │   ├── config.go
@@ -167,12 +172,11 @@ Project file definition
 │   ├── docs.go
 │   ├── swagger.json
 │   └── swagger.yaml
-├── go.mod
+├── go.mod                      # go.mod file
 ├── logs                        # log directory not in git management list
-├── main.go                     # app program entrance
-├── main_test.go                # app integration test entrance
 ├── pkg                         # referenced package
 │   └── pkgJson
+├── resource.go                 # embed file, such as: html, js, css, image, json, etc.
 └── util                        # tool directory
     ├── folder
     ├── parsehttp

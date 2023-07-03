@@ -3,9 +3,9 @@ module github.com/bridgewwater/gin-api-swagger-temple
 go 1.18
 
 require (
-	github.com/bar-counter/gin-correlation-id v1.1.0
-	github.com/bar-counter/monitor/v2 v2.1.0
-	github.com/bar-counter/slog v1.3.0
+	github.com/bar-counter/gin-correlation-id v1.2.0
+	github.com/bar-counter/monitor/v2 v2.2.0
+	github.com/bar-counter/slog v1.4.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/json-iterator/go v1.1.12

@@ -24,7 +24,7 @@ ENV_RUN_INFO_ARGS=-c ./conf/config.yaml
 
 ## build dist env start
 # change to other build entrance
-ENV_ROOT_BUILD_ENTRANCE=main.go
+ENV_ROOT_BUILD_ENTRANCE=cmd/gin-api-swagger-temple/main.go
 ENV_ROOT_BUILD_BIN_NAME=${ROOT_NAME}
 ENV_ROOT_BUILD_PATH = build
 ENV_ROOT_BUILD_BIN_PATH=${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
@@ -119,7 +119,8 @@ swagger: cleanSwaggerDoc
 	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3)
 	@swag --version
 	$(info -> generate swagger doc v1 at path api/v1/main.go)
-	swag i -g ${ENV_ROOT_BUILD_ENTRANCE} -dir api/v1 --instanceName v1
+	$(info swag i -g main.go -dir api/v1 --instanceName v1)
+	swag i -dir api/v1 --instanceName v1
 
 dep: swagger modVerify modDownload modTidy modVendor
 	@echo "-> just check depends below"
