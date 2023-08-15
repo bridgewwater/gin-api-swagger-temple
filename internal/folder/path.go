@@ -22,7 +22,7 @@ func PathExists(path string) (bool, error) {
 // PathExistsFast path exists fast
 //
 //nolint:golint,unused
-func pathExistsFast(path string) bool {
+func PathExistsFast(path string) bool {
 	exists, _ := PathExists(path)
 	return exists
 }
@@ -30,7 +30,7 @@ func pathExistsFast(path string) bool {
 // PathIsDir path is dir
 //
 //nolint:golint,unused
-func pathIsDir(path string) bool {
+func PathIsDir(path string) bool {
 	s, err := os.Stat(path)
 	if err != nil {
 		return false

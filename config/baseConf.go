@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/bridgewwater/gin-api-swagger-temple/util/sys"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/sys"
 	"github.com/spf13/viper"
 )
 

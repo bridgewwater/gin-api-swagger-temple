@@ -9,10 +9,11 @@ import (
 	"github.com/bar-counter/slog"
 	"github.com/bridgewwater/gin-api-swagger-temple"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
-	"github.com/bridgewwater/gin-api-swagger-temple/pkg/pkgJson"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
@@ -45,6 +46,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ]\n", pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle())
+	fmt.Printf("-> by: %s, run on %s %s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())
 
 	// Create the Gin engine.

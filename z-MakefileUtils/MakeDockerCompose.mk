@@ -1,5 +1,5 @@
 # this file must use as base Makefile
-# include z-MakefileUtils/MakeDocker.mk
+# include z-MakefileUtils/MakeDockerCompose.mk
 # need var:
 # ROOT_NAME is this project name
 # ROOT_OWNER is this project owner
@@ -11,6 +11,8 @@
 # ROOT_PARENT_SWITCH_TAG is change parent image tag
 
 # ENV_INFO_BUILD_DOCKER_TAG=latest
+ENV_INFO_DOCKER_CONTAINER_PORT=${ROOT_DOCKER_CONTAINER_PORT}
+ENV_INFO_DOCKER_COMPOSE_FILE=${INFO_DOCKER_COMPOSE_DEFAULT_FILE}
 ENV_INFO_BUILD_DOCKER_TAG = ${ENV_DIST_VERSION}
 ENV_INFO_DOCKER_REPOSITORY=${ROOT_NAME}
 ENV_INFO_DOCKER_OWNER=${ROOT_OWNER}
@@ -83,6 +85,51 @@ dockerRmContainerParentBuild:
 dockerPruneContainerParentBuild: dockerRmContainerParentBuild
 	-docker rmi -f ${ENV_INFO_TEST_BUILD_DOCKER_PARENT_IMAGE}
 
+dockerComposeUp: export ENV_WEB_HOST=0.0.0.0
+dockerComposeUp: export ENV_WEB_PORT=${ENV_INFO_DOCKER_CONTAINER_PORT}
+dockerComposeUp: export ENV_CONTAINER_NAME=${ENV_INFO_DOCKER_REPOSITORY}
+dockerComposeUp: export ENV_INFO_DOCKER_TAG=${ENV_INFO_BUILD_DOCKER_TAG}
+dockerComposeUp: export ENV_DOCKER_IMAGE_REGISTRY=${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}
+dockerComposeUp:
+	@echo "-> docker compose up as: ${ENV_INFO_DOCKER_COMPOSE_FILE}"
+	docker-compose -f ${ENV_INFO_DOCKER_COMPOSE_FILE} up -d --force-recreate
+
+dockerComposePs: export ENV_WEB_HOST=0.0.0.0
+dockerComposePs: export ENV_WEB_PORT=${ENV_INFO_DOCKER_CONTAINER_PORT}
+dockerComposePs: export ENV_CONTAINER_NAME=${ENV_INFO_DOCKER_REPOSITORY}
+dockerComposePs: export ENV_INFO_DOCKER_TAG=${ENV_INFO_BUILD_DOCKER_TAG}
+dockerComposePs: export ENV_DOCKER_IMAGE_REGISTRY=${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}
+dockerComposePs:
+	@echo "-> docker compose ps as: ${ENV_INFO_DOCKER_COMPOSE_FILE}"
+	docker-compose -f ${ENV_INFO_DOCKER_COMPOSE_FILE} ps
+
+dockerComposeLogs: export ENV_WEB_HOST=0.0.0.0
+dockerComposeLogs: export ENV_WEB_PORT=${ENV_INFO_DOCKER_CONTAINER_PORT}
+dockerComposeLogs: export ENV_CONTAINER_NAME=${ENV_INFO_DOCKER_REPOSITORY}
+dockerComposeLogs: export ENV_INFO_DOCKER_TAG=${ENV_INFO_BUILD_DOCKER_TAG}
+dockerComposeLogs: export ENV_DOCKER_IMAGE_REGISTRY=${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}
+dockerComposeLogs:
+	@echo "-> docker compose logs as: ${ENV_INFO_DOCKER_COMPOSE_FILE}"
+	docker-compose -f ${ENV_INFO_DOCKER_COMPOSE_FILE} logs
+
+dockerComposeRestart: export ENV_WEB_HOST=0.0.0.0
+dockerComposeRestart: export ENV_WEB_PORT=${ENV_INFO_DOCKER_CONTAINER_PORT}
+dockerComposeRestart: export ENV_CONTAINER_NAME=${ENV_INFO_DOCKER_REPOSITORY}
+dockerComposeRestart: export ENV_INFO_DOCKER_TAG=${ENV_INFO_BUILD_DOCKER_TAG}
+dockerComposeRestart: export ENV_DOCKER_IMAGE_REGISTRY=${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}
+dockerComposeRestart:
+	@echo "-> docker compose restart as: ${ENV_INFO_DOCKER_COMPOSE_FILE}"
+	docker-compose -f ${ENV_INFO_DOCKER_COMPOSE_FILE} restart
+
+dockerComposeDown: export ENV_WEB_HOST=0.0.0.0
+dockerComposeDown: export ENV_WEB_PORT=${ENV_INFO_DOCKER_CONTAINER_PORT}
+dockerComposeDown: export ENV_CONTAINER_NAME=${ENV_INFO_DOCKER_REPOSITORY}
+dockerComposeDown: export ENV_INFO_DOCKER_TAG=${ENV_INFO_BUILD_DOCKER_TAG}
+dockerComposeDown: export ENV_DOCKER_IMAGE_REGISTRY=${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}
+dockerComposeDown:
+	@echo "-> docker compose down as: ${ENV_INFO_DOCKER_COMPOSE_FILE}"
+	docker-compose -f ${ENV_INFO_DOCKER_COMPOSE_FILE} down
+
 dockerTestBuildLatest:
 	docker build --rm=true --tag ${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG} --file ${ENV_INFO_TEST_BUILD_DOCKER_FILE} .
 
@@ -105,10 +152,13 @@ dockerTestRmLatest:
 dockerTestRmiLatest:
 	-docker rmi -f ${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG}
 
-dockerTestRestartLatest: dockerTestRmLatest dockerTestRmiLatest dockerTestBuildLatest dockerTestRunLatest
+dockerTestBuildCheck: dockerTestRmLatest dockerTestRmiLatest dockerTestBuildLatest
+	$(info -> finish build check ${ENV_INFO_TEST_TAG_BUILD_DOCKER_CONTAINER_NAME} ${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG})
+
+dockerTestRestartLatest: dockerTestBuildCheck dockerTestRunLatest
 	@echo "restart ${ENV_INFO_TEST_TAG_BUILD_DOCKER_CONTAINER_NAME} ${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG}"
 
-dockerTestStopLatest: dockerTestRmLatest dockerTestRmiLatest
+dockerTestStopLatest: dockerComposeDown dockerTestRmLatest dockerTestRmiLatest
 	@echo "stop and remove ${ENV_INFO_TEST_TAG_BUILD_DOCKER_CONTAINER_NAME} ${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG}"
 
 dockerTestPruneLatest: dockerTestStopLatest
@@ -131,8 +181,9 @@ dockerPushBuild: dockerBeforePush
 	docker push ${ENV_INFO_PRIVATE_DOCKER_REGISTRY}${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG}
 	@echo "=> push ${ENV_INFO_PRIVATE_DOCKER_REGISTRY}${ENV_INFO_BUILD_DOCKER_SOURCE_IMAGE}:${ENV_INFO_BUILD_DOCKER_TAG}"
 
+
 helpDocker:
-	@echo "=== this make file can include MakeDocker.mk then use"
+	@echo "=== this make file can include z-MakefileUtils/MakeDockerCompose.mk then use"
 	@echo "- must has file: [ ${ENV_INFO_BUILD_DOCKER_FILE} ${ENV_INFO_TEST_BUILD_DOCKER_FILE}" ]
 	@echo "- then change tag as:                       INFO_BUILD_DOCKER_TAG"
 	@echo "- then change repository as:                INFO_REPOSITORY"
@@ -140,20 +191,25 @@ helpDocker:
 	@echo "- then change private docker repository as: INFO_PRIVATE_DOCKER_REGISTRY"
 	@echo "- then change build parent image as:        INFO_TEST_BUILD_PARENT_IMAGE"
 	@echo "- then change build image as:               INFO_BUILD_FROM_IMAGE"
-	@echo "- check by task"
+	@echo ""
+	@echo "#- check run docker by task"
 	@echo "$$ make dockerEnv"
 	@echo ""
-	@echo "- first use can pull images"
+	@echo "# - first use can pull images"
 	@echo "$$ make dockerAllPull"
 	@echo ""
-	@echo "- then use to show how to build docker parent image"
+	@echo "# - then use to show how to build docker parent image"
 	@echo "$$ make dockerRunContainerParentBuild"
-	@echo "- and prune resource at parent image"
+	@echo "# - and prune resource at parent image"
 	@echo "$$ make dockerPruneContainerParentBuild"
 	@echo ""
-	@echo "- test run container use ./${ENV_INFO_TEST_BUILD_DOCKER_FILE}"
-	@echo "$$ make dockerTestRestartLatest"
-	@echo "- prune test container and image"
+	@echo "# - test run container use ./${ENV_INFO_TEST_BUILD_DOCKER_FILE}"
+	@echo "$$ make dockerTestBuildCheck"
+	@echo ""
+	@echo "# - can run as docker-compose"
+	@echo "$$ make dockerComposeUp"
+	@echo ""
+	@echo "# - prune test container and image"
 	@echo "$$ make dockerTestPruneLatest"
 	@echo ""
 	@echo "- build and tag as use ./${ENV_INFO_BUILD_DOCKER_FILE}"

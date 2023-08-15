@@ -6,16 +6,18 @@ ENV_DIST_MARK=
 
 ROOT_NAME?=gin-api-swagger-temple
 
-## MakeDocker.mk settings start
-ROOT_OWNER?=bridgewwater
-ROOT_PARENT_SWITCH_TAG=1.18.10-buster
+## MakeDockerCompose.mk settings start
+ROOT_DOCKER_CONTAINER_PORT =39000
+ROOT_OWNER ?=bridgewwater
+ROOT_PARENT_SWITCH_TAG ?=1.18.10-buster
 # for image local build
-INFO_TEST_BUILD_DOCKER_PARENT_IMAGE=golang
+INFO_TEST_BUILD_DOCKER_PARENT_IMAGE ?=golang
 # for image running
-INFO_BUILD_DOCKER_FROM_IMAGE=alpine:3.17
-INFO_BUILD_DOCKER_FILE=Dockerfile
-INFO_TEST_BUILD_DOCKER_FILE=Dockerfile.s6
-## MakeDocker.mk settings end
+INFO_BUILD_DOCKER_FROM_IMAGE ?=alpine:3.17
+INFO_BUILD_DOCKER_FILE ?=Dockerfile
+INFO_TEST_BUILD_DOCKER_FILE ?=build.dockerfile
+INFO_DOCKER_COMPOSE_DEFAULT_FILE ?=docker-compose.yml
+## MakeDockerCompose.mk settings end
 
 ## run info start
 ENV_RUN_INFO_HELP_ARGS=-h
@@ -61,8 +63,8 @@ include z-MakefileUtils/MakeGoTest.mk
 include z-MakefileUtils/MakeGoTestIntegration.mk
 include z-MakefileUtils/MakeGoDist.mk
 include z-MakefileUtils/MakeGoDistScp.mk
-# include MakeDockerRun.mk for docker run
-include z-MakefileUtils/MakeDocker.mk
+# include MakeDockerCompose.mk for docker run
+include z-MakefileUtils/MakeDockerCompose.mk
 include z-MakefileUtils/MakeGoAction.mk
 
 all: env
@@ -219,10 +221,10 @@ endif
 	@echo "~> make testBenchmark       - run go test benchmark case all"
 	@echo "~> make ci                  - run CI tools tasks"
 	@echo "~> make style               - run local code fmt and style check"
-	@echo "~> make dev                 - run as develop mode"
-	@echo "~> make run                 - run as test mode"
 	@echo "~> make runRelease          - run as release mode"
+	@echo "~> make run                 - run as test mode"
+	@echo "~> make dev                 - run as develop mode"
 
-help: helpGoMod helperGoTest helpDocker helpDist helpProjectRoot
+help: helpGoMod helpGoTest helpGoDist helpDocker helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoTestIntegration.mk MakeGoDist.mk MakeDocker.mk --"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoTestIntegration.mk MakeGoDist.mk MakeDockerCompose.mk --"

@@ -1,7 +1,7 @@
 # copy right
 # Licenses http://www.apache.org/licenses/LICENSE-2.0
 # more info see https://docs.docker.com/compose/compose-file/ or https://docker.github.io/compose/compose-file/
-version: '3.7'
+version: '3.8'
 
 networks:
   default:
@@ -9,16 +9,20 @@ networks:
 #  web-data:
 services:
   gin-api-swagger-temple:
-    container_name: "${ROOT_NAME}"
-    image: '${ROOT_NAME}:${DIST_TAG}' # see local docker file
+    container_name: "${ENV_CONTAINER_NAME}"
+    image: '${ENV_DOCKER_IMAGE_REGISTRY}:${ENV_INFO_DOCKER_TAG}'
+    build:
+      context: ./
+      dockerfile : build.dockerfile
     ports:
       - "39000:${ENV_WEB_PORT}"
     volumes:
-      - "$PWD:/usr/src/myapp"
+      - "./conf/config.yaml:/app/conf/config.yaml"
     environment:
       - ENV_WEB_HTTPS_ENABLE=false
       - ENV_WEB_AUTO_HOST=false
       - ENV_WEB_HOST=${ENV_WEB_HOST}:${ENV_WEB_PORT}
-#      - ENV_WEB_HOST=0.0.0.0:39000
-    working_dir: "/usr/src/myapp"
-    command: ["make", "dev"]
+      # - ENV_WEB_HOST=0.0.0.0:39000
+    working_dir: "/app"
+    # command: ["make", "dev"]
+    restart: on-failure:3 # can set always | on-failure:3 | unless-stopped

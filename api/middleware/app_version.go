@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/pkg/pkgJson"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
 	"github.com/gin-gonic/gin"
 	"strings"
 )

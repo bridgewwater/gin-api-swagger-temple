@@ -2,10 +2,12 @@
 
 *.log
 logs/
+.env
 
 ### build temple
 build/
 dist/
+gosec.json
 
 ### go mod
 
