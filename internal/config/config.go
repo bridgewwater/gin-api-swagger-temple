@@ -18,9 +18,12 @@ const (
 	// EnvHttpsEnable
 	//	env ENV_WEB_HTTPS_ENABLE default false
 	EnvHttpsEnable string = "HTTPS_ENABLE"
-	// EnvHost
-	//	env ENV_WEB_HOST default ""
-	EnvHost string = "HOST"
+	// EnvHostName
+	//	env ENV_WEB_HOSTNAME default ""
+	EnvHostName string = "HOSTNAME"
+	// EnvHostPort
+	//	env ENV_WEB_HOST_PORT default ""
+	EnvHostPort string = "HOST_PORT"
 	// EnvAutoGetHost
 	//	env ENV_AUTO_HOST default true, will use local ipv4
 	EnvAutoGetHost string = "AUTO_HOST"
@@ -28,8 +31,9 @@ const (
 
 var mustConfigString = []string{
 	"runmode",
-	"addr",
+	"port",
 	"name",
+	"api_base",
 	"base_path",
 	// project set
 }
@@ -83,7 +87,8 @@ func (c *Config) initConfig() error {
 	viper.SetEnvPrefix(defaultEnvPrefix) // 读取环境变量的前缀为 defaultEnvPrefix
 
 	// 设置 默认环境变量
-	_ = os.Setenv(EnvHost, "")
+	_ = os.Setenv(EnvHostName, "")
+	_ = os.Setenv(EnvHostPort, "34567")
 	_ = os.Setenv(EnvHttpsEnable, "false")
 	_ = os.Setenv(EnvAutoGetHost, "false")
 

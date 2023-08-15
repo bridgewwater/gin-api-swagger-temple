@@ -15,8 +15,16 @@ import (
 var baseConf BaseConf
 
 type BaseConf struct {
+	Addr      string
 	BaseURL   string
 	SSLEnable bool
+}
+
+// Addr
+//
+//	get Addr
+func Addr() string {
+	return baseConf.Addr
 }
 
 // BaseURL
@@ -53,7 +61,10 @@ func GinRunMode() string {
 //
 //	ENV_WEB_HTTPS_ENABLE=false
 //	ENV_AUTO_HOST=true
-//	ENV_WEB_HOST 127.0.0.1:8000
+//	ENV_WEB_HOST_PORT 34567
+//	ENV_WEB_HOSTNAME  0.0.0.0
+//
+// this function will check base config
 func initBaseConf() {
 	gin.SetMode(GinRunMode())
 
@@ -66,30 +77,38 @@ func initBaseConf() {
 
 	apiBase := viper.GetString("api_base")
 
-	uri, err := url.Parse(apiBase)
+	apiBaseUrl, err := url.Parse(apiBase)
 	if err != nil {
 		panic(err)
 	}
 
-	slog.Debugf("uri.Host %v", uri.Host)
-	baseHOSTByEnv := viper.GetString(EnvHost)
-	if baseHOSTByEnv != "" {
-		uri.Host = baseHOSTByEnv
-		apiBase = uri.String()
+	slog.Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
+	slog.Debugf("api_base.Port %v", apiBaseUrl.Port())
+
+	runPort := viper.GetString("port")
+	if viper.GetString(EnvHostPort) != "" {
+		runPort = viper.GetString(EnvHostPort)
+		slog.Debugf("port change by env as: %s", runPort)
+	}
+	baseHostNameByEnv := viper.GetString(EnvHostName)
+
+	if baseHostNameByEnv != "" {
+		apiBaseUrl.Host = fmt.Sprintf("%s:%s", baseHostNameByEnv, runPort)
+		apiBase = apiBaseUrl.String()
 	} else {
 		isAutoHost := viper.GetBool(EnvAutoGetHost)
 		slog.Debugf("isAutoHost %v", isAutoHost)
 		if isAutoHost {
-			ipv4, err := sys.NetworkLocalIP()
-			if err == nil {
-				addrStr := viper.GetString("addr")
+			ipv4, errLocalIp := sys.NetworkLocalIP()
+			if errLocalIp == nil {
 				var proc string
 				if ssLEnable {
 					proc = "https"
 				} else {
 					proc = "http"
 				}
-				apiBase = fmt.Sprintf("%v://%v%v", proc, ipv4, addrStr)
+				apiBase = fmt.Sprintf("%s://%s:%s", proc, ipv4, runPort)
+				apiBaseUrl.Host = fmt.Sprintf("%s:%s", ipv4, runPort)
 			}
 		}
 	}
@@ -98,8 +117,9 @@ func initBaseConf() {
 		apiBase = strings.Replace(apiBase, "http://", "https://", 1)
 	}
 
-	slog.Debugf("apiBase %v", apiBase)
+	slog.Debugf("run as apiBase: %s", apiBase)
 	baseConf = BaseConf{
+		Addr:      apiBaseUrl.Host,
 		BaseURL:   apiBase,
 		SSLEnable: ssLEnable,
 	}

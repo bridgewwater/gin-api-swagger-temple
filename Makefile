@@ -7,7 +7,7 @@ ENV_DIST_MARK=
 ROOT_NAME?=gin-api-swagger-temple
 
 ## MakeDockerCompose.mk settings start
-ROOT_DOCKER_CONTAINER_PORT =39000
+ROOT_DOCKER_CONTAINER_PORT =34567
 ROOT_OWNER ?=bridgewwater
 ROOT_PARENT_SWITCH_TAG ?=1.18.10-buster
 # for image local build

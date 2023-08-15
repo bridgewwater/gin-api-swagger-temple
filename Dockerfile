@@ -49,5 +49,7 @@ WORKDIR /app
 
 COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/${GO_ENV_ROOT_BUILD_BIN_PATH} .
 COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/conf/config.yaml ./conf/config.yaml
+COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.json ./docs/
+COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.yaml ./docs/
 ENTRYPOINT [ "/app/gin-api-swagger-temple" ]
 # CMD ["/app/gin-api-swagger-temple", "--help"]

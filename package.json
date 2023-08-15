@@ -11,6 +11,10 @@
     "make",
     "docker"
   ],
-  "author": "sinlov",
+  "author": {
+    "name": "bridgewwater",
+    "email": "",
+    "url": ""
+  },
   "license": "Apache-2.0"
 }

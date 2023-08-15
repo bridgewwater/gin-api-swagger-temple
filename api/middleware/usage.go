@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/bar-counter/gin-correlation-id/gin_correlation_id_snowflake"
-	"github.com/bridgewwater/gin-api-swagger-temple/config"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

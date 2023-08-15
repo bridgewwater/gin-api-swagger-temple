@@ -99,11 +99,16 @@ $ make dockerTestBuildCheck
 
 # - then can run as docker-compose
 $ make dockerComposeUp
+# - then see log as docker-compose
+$ make dockerComposeFollowLogs
+# - down as docker-compose
+$ make dockerComposeDown
+
 # - prune test container and image
 $ make dockerTestPruneLatest
 ```
 
-most of doc at [http://127.0.0.1:39000/swagger/index.html](http://127.0.0.1:39000/swagger/index.html)
+most of doc at [http://127.0.0.1:34567/swagger/index.html](http://127.0.0.1:34567/swagger/index.html)
 
 ## config
 
@@ -161,16 +166,11 @@ Project file definition
 │   └── gin-api-swagger-temple    # package of this web app
 │       ├── main.go                 # app program entrance
 │       └── main_test.go            # app integration test entrance
-
+│
 ├── conf                        # Configuration files are stored in a unified directory
 │   ├── config.yaml
 │   ├── release                   # release configuration file
 │   └── test                      # test configuration file
-├── config                      # Dedicated to handling configuration and configuration files Go package
-│   ├── baseConf.go
-│   ├── config.go
-│   ├── logConf.go
-│   └── watchConf.go
 ├── build                       # build directory, which is not in the git list
 ├── dist                        # Publish the directory, which is not in the git list
 ├── doc                         # API document directory
@@ -186,6 +186,11 @@ Project file definition
 ├── logs                        # log directory not in git management list
 ├── resource.go                 # embed file entrance, such as: html, js, css, image, json, etc.
 └── internal                    # internal tool directory
+    ├── config                    # Dedicated to handling configuration and configuration files Go package
+    │   ├── baseConf.go
+    │   ├── config.go
+    │   ├── logConf.go
+    │   └── watchConf.go
     ├── folder                    # OS path tools
     ├── parsehttp                 # parse http request
     ├── pkg                       # referenced package

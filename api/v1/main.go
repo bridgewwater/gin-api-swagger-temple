@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/config"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )

@@ -9,6 +9,7 @@ import (
 	"github.com/bar-counter/slog"
 	"github.com/bridgewwater/gin-api-swagger-temple"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
 	"net/http"
 	"os"
@@ -18,7 +19,6 @@ import (
 	"time"
 
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1"
-	"github.com/bridgewwater/gin-api-swagger-temple/config"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -45,7 +45,7 @@ func main() {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
-	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ]\n", pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle())
+	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ]\n", pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false))
 	fmt.Printf("-> by: %s, run on %s %s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())
 
@@ -66,9 +66,9 @@ func main() {
 		middlewareList...,
 	)
 
-	slog.Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), viper.GetString("addr"))
+	slog.Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), config.Addr())
 	server := &http.Server{
-		Addr:    viper.GetString("addr"),
+		Addr:    config.Addr(),
 		Handler: g,
 	}
 	go handleExitSignal(server)

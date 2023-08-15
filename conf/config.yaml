@@ -1,10 +1,10 @@
 runmode: debug                          # run mode: debug, release, test. this will cover by env: GIN_MODE
-addr: :39000                            # HTTP port will cover by env ENV_AUTO_HOST and most in docker use env ENV_WEB_HOST
-name: gin-api-swagger-temple            # name of API Server
+port: 34567                             # HTTP port will cover by env ENV_WEB_HOST_PORT and most in docker use env ENV_WEB_HOST_PORT
 
-base_path: /api/v1                 # /v1 is api MAJOR version as https://semver.org/
-api_base: http://127.0.0.1:39000   # url full ip:port,  this will cover by env: ENV_WEB_AUTO_HOST=true, if in docker do not open this env
-sslEnable: false                   # isEnable ssl mode, this will cover by env: ENV_WEB_HTTPS_ENABLE
+name: gin-api-swagger-temple            # name of API Server
+api_base: http://127.0.0.1:34567        # url full ip:port, this will cover by env: ENV_WEB_AUTO_HOST=true, if in docker do not open this env
+base_path: /api/v1                      # /v1 is api MAJOR version as https://semver.org/
+sslEnable: false                        # isEnable ssl mode, this will cover by env: ENV_WEB_HTTPS_ENABLE
 
 log:
   logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL, this will cover by env:  ENV_WEB_LOG_LEVEL
@@ -30,7 +30,7 @@ monitor: # monitor
   pprof: true                       # pprof true or false
   security: false                   # debug and security security true or false
   securityUser:
-    admin: f6011b78008fd971784b2490b474cf659ffb1e # admin:pwd
+    admin: f6011b78008fd971784bNEEDCHANGE # admin:pwd
 
 swagger:                            # swagger not show at release
   api_major_version: v1             # api MAJOR version as https://semver.org/

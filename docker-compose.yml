@@ -9,20 +9,18 @@ networks:
 #  web-data:
 services:
   gin-api-swagger-temple:
-    container_name: "${ENV_CONTAINER_NAME}"
-    image: '${ENV_DOCKER_IMAGE_REGISTRY}:${ENV_INFO_DOCKER_TAG}'
     build:
       context: ./
       dockerfile : build.dockerfile
     ports:
-      - "39000:${ENV_WEB_PORT}"
+      - "${ENV_WEB_PORT}:34567"
     volumes:
       - "./conf/config.yaml:/app/conf/config.yaml"
     environment:
       - ENV_WEB_HTTPS_ENABLE=false
       - ENV_WEB_AUTO_HOST=false
-      - ENV_WEB_HOST=${ENV_WEB_HOST}:${ENV_WEB_PORT}
-      # - ENV_WEB_HOST=0.0.0.0:39000
+      - ENV_WEB_HOST_PORT=${ENV_WEB_PORT}
+      - ENV_WEB_HOSTNAME=${ENV_WEB_HOST}
     working_dir: "/app"
     # command: ["make", "dev"]
     restart: on-failure:3 # can set always | on-failure:3 | unless-stopped
