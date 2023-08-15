@@ -54,18 +54,18 @@ jobs:
     with:
       verison_name: latest
 
-  docker-image-latest:
-    name: docker-image-latest
-    needs:
-     - version
-     - golang-ci
-    uses: ./.github/workflows/docker-image-latest.yml
-    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
-    secrets: inherit
-    with:
-      docker_hub_user: 'bridgewwater'
-      docker_image_name: 'bridgewwater/gin-api-swagger-temple'
-      build_branch_name: 'main'
+#  docker-image-latest:
+#    name: docker-image-latest
+#    needs:
+#     - version
+#     - golang-ci
+#    uses: ./.github/workflows/docker-image-latest.yml
+#    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
+#    secrets: inherit
+#    with:
+#      docker_hub_user: 'bridgewwater'
+#      docker_image_name: 'bridgewwater/gin-api-swagger-temple'
+#      build_branch_name: 'main'
 
   docker-image-tag:
     name: docker-image-tag

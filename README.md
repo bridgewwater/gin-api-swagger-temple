@@ -1,9 +1,13 @@
-[![golang-ci](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/golang-ci.yml/badge.svg)](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/golang-ci.yml)
-[![license](https://img.shields.io/github/license/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple)
+[![ci](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/ci.yml/badge.svg)](https://github.com/bridgewwater/gin-api-swagger-temple/actions/workflows/ci.yml)
+
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/gin-api-swagger-temple?label=go.mod)](https://github.com/bridgewwater/gin-api-swagger-temple)
-[![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/gin-api-swagger-temple)](https://goreportcard.com/report/github.com/bridgewwater/gin-api-swagger-temple)
+[![GoDoc](https://godoc.org/github.com/bridgewwater/gin-api-swagger-temple?status.png)](https://godoc.org/github.com/bridgewwater/gin-api-swagger-temple)
+[![goreportcard](https://goreportcard.com/badge/github.com/bridgewwater/gin-api-swagger-temple)](https://goreportcard.com/report/github.com/bridgewwater/gin-api-swagger-temple)
+
+[![GitHub license](https://img.shields.io/github/license/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple)
 [![codecov](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple)
-[![github release](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple?style=social)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/tags)
+[![GitHub release)](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
 
 ## for what
 
@@ -18,6 +22,8 @@
 We welcome community contributions to this project.
 
 Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
+
+请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息
 
 ## Features
 
