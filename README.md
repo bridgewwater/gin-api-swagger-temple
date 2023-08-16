@@ -27,7 +27,20 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## Features
 
+- [X] config file as [viper](https://github.com/spf13/viper)
+- [X] api tracking and version control by [convention-change-log](https://github.com/convention-change/convention-change-log)
+    - [X] embed file `package.json` by `convention-change-log` kit
+    - [X] middleware `AppVersion` will add api version for Tracking
+    - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server each api request
+- [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
+- [X] `major version` api support
+    - [X] `api/v1` this first version of major api 
+- [X] generate swagger doc by [swag](https://github.com/swaggo/swag), and will auto remove at `runmode=release`
 - [X] server handler Exit Signal by `ctrl+c` or `kill -15 [pid]` return code 0, for safe exit.
+- [X] gin unit test case example, support [golden data test](https://github.com/sebdah/goldie), you can use `-update` test flag to update golden data.
+- [X] local build management by [make](https://www.gnu.org/software/make/), also support windows, please see `make helpProjectRoot` to install windows need kit.
+- [X] docker build support, see `make helpDocker`, Of course, it is more recommended to use docker-compose to build a local development environment.
+- [X] github action CI workflow check.
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 
@@ -87,9 +100,13 @@ $ make init
 # first run just use
 $ make dep
 # change conf/config.yaml
-
 # run server as dev
 $ make dev
+
+# check before push to CI build
+$ make dep ci
+
+## docker build support
 
 # - first use can pull images
 $ make dockerAllPull
