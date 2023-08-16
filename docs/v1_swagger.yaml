@@ -3,15 +3,19 @@ definitions:
   biz.Biz:
     properties:
       id:
+        default: id123zqqeeadg24qasd
         example: id123zqqeeadg24qasd
         type: string
       info:
+        default: info
         example: input info here
         type: string
       limit:
+        default: 10
         example: 10
         type: integer
       offset:
+        default: 0
         example: 0
         type: integer
     type: object
@@ -44,19 +48,23 @@ paths:
       - application/x-www-form-urlencoded
       description: warning api in prod will hide, abs remote api for dev
       parameters:
-      - example: id123zqqeeadg24qasd
+      - default: id123zqqeeadg24qasd
+        example: id123zqqeeadg24qasd
         in: formData
         name: id
         type: string
-      - example: input info here
+      - default: info
+        example: input info here
         in: formData
         name: info
         type: string
-      - example: 10
+      - default: 10
+        example: 10
         in: formData
         name: limit
         type: integer
-      - example: 0
+      - default: 0
+        example: 0
         in: formData
         name: offset
         type: integer

@@ -7,7 +7,6 @@
 ld: library not found for -lcrt0.o
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
-
 env
 
 ```log
@@ -17,6 +16,9 @@ ProductName:            macOS
 ProductVersion:         13.5
 BuildVersion:           22G74
 ```
+
+- [https://github.com/golang/go/issues/50662](https://github.com/golang/go/issues/50662)
+- [https://github.com/golang/go/issues/50669](https://github.com/golang/go/issues/50669)
 
 macOS doesn't support it. also, that's not a Go issue
 
