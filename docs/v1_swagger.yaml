@@ -177,7 +177,7 @@ paths:
       summary: api path demo for route path
       tags:
       - biz
-  /biz/query/:
+  /biz/query:
     get:
       consumes:
       - application/json

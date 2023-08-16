@@ -10,6 +10,7 @@
 *.sum  test eol=lf
 *.go  test eol=lf
 *.json  test eol=lf
+*.yaml  test eol=lf
 *.golden  test eol=lf
 
 ###############################################################################
@@ -19,7 +20,7 @@
 # default for csharp files.
 # Note: This is only used by command line
 ###############################################################################
-*.mod    merge=union
+*.mod merge=union
 *.sum merge=union
 
 ###############################################################################
