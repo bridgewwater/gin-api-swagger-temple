@@ -162,7 +162,7 @@ Project file definition
 
 ```
 .
-├── LICENCE                     # licence
+├── LICENSE                     # license
 ├── .golangci.yaml              # golangci-lint config
 ├── Dockerfile                  # ci build
 ├── docker-compose.yml          # local development docker-compose
