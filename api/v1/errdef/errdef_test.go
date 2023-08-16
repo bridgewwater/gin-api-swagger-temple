@@ -35,7 +35,7 @@ func TestNew(t *testing.T) {
 	errInfo := err.Error()
 	// verify New
 	assert.Equal(t, 10003, code)
-	assert.Equal(t, "Err - code: 10003, message: Error params., error: error params", errInfo)
+	assert.Equal(t, "Err - code: 10003, message: Error params. error params, error: error params", errInfo)
 }
 
 func TestErr_Add(t *testing.T) {
@@ -52,7 +52,7 @@ func TestErr_Add(t *testing.T) {
 	msg := err.Msg
 	// verify Err_Add
 	assert.Equal(t, 10003, code)
-	assert.Equal(t, "Error params. error params. add message", msg)
+	assert.Equal(t, "Error params. error params error params. add message", msg)
 }
 
 func TestIsErrUserNotFound(t *testing.T) {

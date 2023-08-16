@@ -46,7 +46,7 @@ func GetPath(c *gin.Context) {
 //
 //	@Success		200			{object}	biz.Biz			"value in biz.Biz"
 //	@Failure		400			{object}	errdef.Err		"error at errdef.Err"
-//	@Router			/biz/query/								[get]
+//	@Router			/biz/query								[get]
 func GetQuery(c *gin.Context) {
 	offset, limit, err := handler.ParseQueryCommonOffsetAndLimit(c)
 	if err != nil {

@@ -40,7 +40,9 @@ func NewErr(errcode *ErrDef) *Err {
 // and you can add message
 // errdef.New(errdef.InternalServerError, fmt.Errorf("server error, err: %v", err)).Add("client can know error")
 func New(errcode *ErrDef, err error) *Err {
-	return &Err{Code: errcode.Code, Msg: errcode.Msg, Err: err}
+	errDef := Err{Code: errcode.Code, Msg: errcode.Msg, Err: err}
+	errDef.Msg = fmt.Sprintf("%s %s", errcode.Msg, err.Error())
+	return &errDef
 }
 
 // Add

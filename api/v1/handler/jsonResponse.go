@@ -36,7 +36,12 @@ func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
 // handler.JsonErrDefErr(c, errdef.ErrDatabase, err, "can not found")
 // return
 func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsg ...string) {
-	errResp := errdef.New(def, err)
+	var errResp *errdef.Err
+	if err != nil {
+		errResp = errdef.New(def, err)
+	} else {
+		errResp = errdef.NewErr(def)
+	}
 	if len(errMsg) == 0 {
 		c.JSON(def.HttpStatus, errResp)
 		return
