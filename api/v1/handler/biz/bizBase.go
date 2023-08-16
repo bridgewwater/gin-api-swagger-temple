@@ -41,8 +41,8 @@ func GetPath(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //
-//	@Param			offset		query		int				true	"Offset"
-//	@Param			limit		query		int				false	"limit"
+//	@Param			offset		query		int				true	"Offset"	minimum(0) default(0)
+//	@Param			limit		query		int				false	"limit"		default(10)
 //
 //	@Success		200			{object}	biz.Biz			"value in biz.Biz"
 //	@Failure		400			{object}	errdef.Err		"error at errdef.Err"
