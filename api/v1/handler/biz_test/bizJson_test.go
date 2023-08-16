@@ -98,3 +98,50 @@ func TestPostJsonModelBiz(t *testing.T) {
 		})
 	}
 }
+
+func TestPostQueryJsonMode(t *testing.T) {
+	// mock gin at package test init()
+	ginEngine := basicRouter
+	// mock PostQueryJsonMode
+	tests := []struct {
+		name     string
+		path     string
+		header   map[string]string
+		query    interface{}
+		body     interface{}
+		respCode int
+		wantErr  bool
+	}{
+		{
+			name: "sample", // testdata/TestPostQueryJsonMode/sample.golden
+			path: basePath + "/biz/modelBizQuery",
+			query: biz.Biz{
+				Offset: 1,
+				Limit:  10,
+			},
+			body: biz.Biz{
+				Info: "input info here",
+				Id:   "foo",
+			},
+			respCode: http.StatusOK,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			g := goldie.New(t,
+				goldie.WithDiffEngine(goldie.ClassicDiff),
+			)
+
+			// do PostQueryJsonMode
+			recorder, _ := MockJsonQueryPost(t, ginEngine, tc.path, tc.header, tc.query, tc.body)
+			assert.False(t, tc.wantErr)
+			if tc.wantErr {
+				t.Logf("want err close check case %s", t.Name())
+				return
+			}
+			// verify PostQueryJsonMode
+			assert.Equal(t, tc.respCode, recorder.Code)
+			g.Assert(t, t.Name(), recorder.Body.Bytes())
+		})
+	}
+}

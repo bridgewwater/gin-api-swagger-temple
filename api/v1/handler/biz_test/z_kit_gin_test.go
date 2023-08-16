@@ -129,6 +129,35 @@ func makeRequest(method, mime, api string, param interface{}) (request *http.Req
 	return
 }
 
+func MockJsonQueryPost(t *testing.T, router *gin.Engine, url string, header map[string]string, query interface{}, body interface{}) (*httptest.ResponseRecorder, *http.Request) {
+	var (
+		contentBuffer *bytes.Buffer
+		jsonBytes     []byte
+	)
+	api := url
+	if query != nil {
+		api = fmt.Sprintf("%s?%s", url, MockQueryStrFrom(query))
+	}
+	jsonBytes, err := json.Marshal(body)
+	if err != nil {
+		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+	}
+	contentBuffer = bytes.NewBuffer(jsonBytes)
+	newRequest, err := http.NewRequest(http.MethodPost, api, contentBuffer)
+	if err != nil {
+		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+	}
+	newRequest.Header.Set("Content-Type", "application/json;charset=utf-8")
+	if len(header) > 0 {
+		for k, v := range header {
+			newRequest.Header.Add(k, v)
+		}
+	}
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, newRequest)
+	return recorder, newRequest
+}
+
 // make request which contains uploading file
 func MockFileRequest(method, api, fileName, fieldName string, param interface{}) (request *http.Request, err error) {
 	method = strings.ToUpper(method)
