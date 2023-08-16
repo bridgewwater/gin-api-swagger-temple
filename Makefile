@@ -30,7 +30,7 @@ ENV_ROOT_BUILD_ENTRANCE=cmd/gin-api-swagger-temple/main.go
 ENV_ROOT_BUILD_BIN_NAME=${ROOT_NAME}
 ENV_ROOT_BUILD_PATH = build
 ENV_ROOT_BUILD_BIN_PATH=${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
-ENV_ROOT_LOG_PATH=log/
+ENV_ROOT_LOG_PATH=logs/
 ENV_ROOT_SWAGGER_PATH=docs/
 # linux windows darwin  list as: go tool dist list
 ENV_DIST_GO_OS=linux
@@ -89,18 +89,22 @@ cleanSwaggerDoc:
 	@$(RM) -r ${ENV_ROOT_SWAGGER_PATH}
 	@echo "~> finish clean swagger gen path: ${ENV_ROOT_SWAGGER_PATH}"
 
-cleanTestData:
+cleanTestGoldenData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
-	@$(RM) coverage.txt
-	@$(RM) coverage.out
-	@$(RM) profile.txt
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
 	@$(RM) -r **/**/**/**/testdata
 	@$(RM) -r **/**/**/**/**/testdata
 	@$(RM) -r **/**/**/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/**/**/testdata
+	@$(RM) -r **/**/**/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
+
+cleanTestData:
+	@$(RM) coverage.txt
+	@$(RM) coverage.out
+	@$(RM) profile.txt
 
 clean: cleanTestData cleanBuild cleanLog
 	@echo "~> clean finish"

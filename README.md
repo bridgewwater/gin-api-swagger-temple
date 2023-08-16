@@ -12,7 +12,10 @@
 ## for what
 
 - this project used to gin api server
+- use this template, replace list below
 - [ ] rename `github.com/bridgewwater/gin-api-swagger-temple` to your api package name
+    - [ ] rename `bridgewwater` to your project owner name
+    - [ ] rename `gin-api-swagger-temple` to your project name
 
 ## Contributing
 
@@ -28,28 +31,26 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 ## Features
 
 - [X] config file as [viper](https://github.com/spf13/viper)
-- [X] api tracking and version control by [convention-change-log](https://github.com/convention-change/convention-change-log)
+- [X] api tracking and version control
+  by [convention-change-log](https://github.com/convention-change/convention-change-log)
     - [X] embed file `package.json` by `convention-change-log` kit
     - [X] middleware `AppVersion` will add api version for Tracking
-    - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server each api request
+    - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server
+      each api request
 - [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
 - [X] `major version` api support
-    - [X] `api/v1` this first version of major api 
+    - [X] `api/v1` this first version of major api
 - [X] generate swagger doc by [swag](https://github.com/swaggo/swag), and will auto remove at `runmode=release`
 - [X] server handler Exit Signal by `ctrl+c` or `kill -15 [pid]` return code 0, for safe exit.
-- [X] gin unit test case example, support [golden data test](https://github.com/sebdah/goldie), you can use `-update` test flag to update golden data.
-- [X] local build management by [make](https://www.gnu.org/software/make/), also support windows, please see `make helpProjectRoot` to install windows need kit.
-- [X] docker build support, see `make helpDocker`, Of course, it is more recommended to use docker-compose to build a local development environment.
+- [X] gin unit test case example, support [golden data test](https://github.com/sebdah/goldie), you can use `-update`
+  test flag to update golden data.
+- [X] local build management by [make](https://www.gnu.org/software/make/), also support windows, please
+  see `make helpProjectRoot` to install windows need kit.
+- [X] docker build support, see `make helpDocker`, Of course, it is more recommended to use docker-compose to build a
+  local development environment.
 - [X] github action CI workflow check.
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
-
-## usage
-
-- use this template, replace list below
-  - `github.com/bridgewwater/gin-api-swagger-temple` to your package name
-  - `bridgewwater` to your owner name
-  - `gin-api-swagger-temple` to your project name
 
 ## env
 
@@ -66,9 +67,11 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 | https://github.com/spf13/pflag                    | v1.0.5     |
 | https://github.com/spf13/viper                    | v1.16.0    |
 | https://github.com/json-iterator/go               | v1.1.12    |
+| https://github.com/bar-counter/monitor            | v2.2.0     |
+| https://github.com/bar-counter/gin-correlation-id | v1.2.0     |
 | https://github.com/bar-counter/slog               | v1.4.0     |
-| https://github.com/bar-counter/monitor            | v2.2.0     | 
-| https://github.com/bar-counter/gin-correlation-id | v1.2.0     | 
+
+more libs see [go.mod](go.mod)
 
 ## run
 
@@ -94,16 +97,21 @@ $ go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3
 - `need go mod to management golang dependenceis`
 
 ```sh
+# see project root help
+$ make helpProjectRoot
+# see full help
 $ make help
-# check base dep
-$ make init
-# first run just use
+
+# check this project dep
 $ make dep
-# change conf/config.yaml
+# run all test case
+$ make test
+# run test case with coverage and see report by browser
+$ make testCoverageBrowser
 # run server as dev
 $ make dev
 
-# check before push to CI build
+# check before, then push to CI build
 $ make dep ci
 
 ## docker build support
@@ -114,11 +122,11 @@ $ make dockerAllPull
 # - test run container use ./build.dockerfile
 $ make dockerTestBuildCheck
 
-# - then can run as docker-compose
+# - then can run as docker-compose build image and up
 $ make dockerComposeUp
 # - then see log as docker-compose
 $ make dockerComposeFollowLogs
-# - down as docker-compose
+# - down as docker-compose will auto remove local image
 $ make dockerComposeDown
 
 # - prune test container and image
@@ -220,13 +228,13 @@ Project file definition
 
 - open `Settings` -> `Tools` -> `File Watchers` -> `+` -> `Custom`
 - new `File Watcher` as `swag api/v1`
-  - Files to Watch 
-    - name `swag api/v1`
-    - file type `Go files`
-    - scope `Project Files`
-  - Tools to Run on Changes
-    - Program `$GOPATH$/bin/swag`
-    - Arguments `i -g main.go -dir api/v1 --instanceName v1`
-    - Working directory `$ProjectFileDir$`
+    - Files to Watch
+        - name `swag api/v1`
+        - file type `Go files`
+        - scope `Project Files`
+    - Tools to Run on Changes
+        - Program `$GOPATH$/bin/swag`
+        - Arguments `i -g main.go -dir api/v1 --instanceName v1`
+        - Working directory `$ProjectFileDir$`
 
 ![](https://github.com/bridgewwater/gin-api-swagger-temple/raw/main/doc/img/goland-swag-auto-v1.png)

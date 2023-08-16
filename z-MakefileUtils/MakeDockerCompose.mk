@@ -174,7 +174,7 @@ dockerPushBuild: dockerBeforePush
 
 helpDocker:
 	@echo "=== this make file can include z-MakefileUtils/MakeDockerCompose.mk then use"
-	@echo "- must has file: [ ${ENV_INFO_BUILD_DOCKER_FILE} ${ENV_INFO_TEST_BUILD_DOCKER_FILE}" ]
+	@echo "- must has file: [ ${ENV_INFO_BUILD_DOCKER_FILE} ${ENV_INFO_TEST_BUILD_DOCKER_FILE} ${ENV_INFO_DOCKER_COMPOSE_FILE} ]"
 	@echo "- then change tag as:                       INFO_BUILD_DOCKER_TAG"
 	@echo "- then change repository as:                INFO_REPOSITORY"
 	@echo "- then change owner as:                     INFO_OWNER"
@@ -196,11 +196,11 @@ helpDocker:
 	@echo "# - test run container use ./${ENV_INFO_TEST_BUILD_DOCKER_FILE}"
 	@echo "$$ make dockerTestBuildCheck"
 	@echo ""
-	@echo "# - can run as docker-compose"
+	@echo "# - then can run as docker-compose build image and up"
 	@echo "$$ make dockerComposeUp"
 	@echo "# - then see log as docker-compose"
 	@echo "$$ make dockerComposeFollowLogs"
-	@echo "# - down as docker-compose"
+	@echo "# - down as docker-compose will auto remove local image"
 	@echo "$$ make dockerComposeDown"
 	@echo ""
 	@echo "# - prune test container and image"
