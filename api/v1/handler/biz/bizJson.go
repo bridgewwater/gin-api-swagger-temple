@@ -45,8 +45,11 @@ func GetJSON(c *gin.Context) {
 func PostJsonModelBiz(c *gin.Context) {
 	var req biz.Biz
 	if err := c.BindJSON(&req); err != nil {
-		handler.JsonErrDefErr(c, errdef.ErrBind, err, "limit error")
-		c.JSON(http.StatusBadRequest, errdef.New(errdef.ErrBind, err).Add("body error"))
+		handler.JsonErrDefErr(c, errdef.ErrBind, err)
+		return
+	}
+	if req.Id == "" {
+		handler.JsonErrDef(c, errdef.ErrBind, "id", "not found, set id and retry")
 		return
 	}
 	c.JSON(http.StatusOK, req)

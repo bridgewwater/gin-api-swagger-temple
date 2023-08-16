@@ -21,7 +21,7 @@ func TestPostForm(t *testing.T) {
 		wantErr  bool
 	}{
 		{
-			name: "sample", // TODO: testdata/TestPostForm/sample.golden
+			name: "sample", // testdata/TestPostForm/sample.golden
 			path: basePath + "/biz/form",
 			body: biz.Biz{
 				Info:   "input info here",
