@@ -19,32 +19,32 @@ monitor: # monitor
     admin: # admin:pwd
 ```
 
-- `http://127.0.0.1:34567` change by actual environment
+- `http://127.0.0.1:34565` change by actual environment
 
 ## health
 
 ```bash
-curl http://127.0.0.1:34567/status/health \
+curl http://127.0.0.1:34565/status/health \
 	-X GET
 ```
 
 ## disk
 
 ```bash
-curl http://127.0.0.1:34567/status/hardware/disk \
+curl http://127.0.0.1:34565/status/hardware/disk \
 	-X GET
 ```
 
 ## cpu
 
 ```bash
-curl http://127.0.0.1:34567/status/hardware/cpu \
+curl http://127.0.0.1:34565/status/hardware/cpu \
 	-X GET
 ```
 
 ## ram
 
 ```bash
-curl http://127.0.0.1:34567/status/hardware/ram \
+curl http://127.0.0.1:34565/status/hardware/ram \
 	-X GET
 ```

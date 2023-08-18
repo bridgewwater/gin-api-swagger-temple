@@ -13,7 +13,7 @@ services:
       context: ./
       dockerfile : build.dockerfile
     ports:
-      - "${ENV_WEB_PORT}:34567"
+      - "${ENV_WEB_PORT}:34565"
     volumes:
       - "./conf/config.yaml:/app/conf/config.yaml"
     environment:

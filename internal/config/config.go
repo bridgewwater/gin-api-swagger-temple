@@ -88,7 +88,7 @@ func (c *Config) initConfig() error {
 
 	// 设置 默认环境变量
 	_ = os.Setenv(EnvHostName, "")
-	_ = os.Setenv(EnvHostPort, "34567")
+	_ = os.Setenv(EnvHostPort, "34565")
 	_ = os.Setenv(EnvHttpsEnable, "false")
 	_ = os.Setenv(EnvAutoGetHost, "false")
 

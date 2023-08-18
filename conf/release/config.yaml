@@ -1,8 +1,8 @@
 runmode: test                           # run mode: debug, release, test. this will cover by env: GIN_MODE
-port: 34567                             # HTTP port will cover by env ENV_WEB_HOST_PORT and most in docker use env ENV_WEB_HOST_PORT
+port: 34565                             # HTTP port will cover by env ENV_WEB_HOST_PORT and most in docker use env ENV_WEB_HOST_PORT
 
 name: gin-api-swagger-temple            # name of API Server
-api_base: http://127.0.0.1:34567        # url full ip:port, this will cover by env: ENV_WEB_AUTO_HOST=true, if in docker do not open this env
+api_base: http://127.0.0.1:34565        # url full ip:port, this will cover by env: ENV_WEB_AUTO_HOST=true, if in docker do not open this env
 base_path: /api/v1                      # /v1 is api MAJOR version as https://semver.org/
 sslEnable: false                        # isEnable ssl mode, this will cover by env: ENV_WEB_HTTPS_ENABLE
 

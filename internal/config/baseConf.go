@@ -61,7 +61,7 @@ func GinRunMode() string {
 //
 //	ENV_WEB_HTTPS_ENABLE=false
 //	ENV_AUTO_HOST=true
-//	ENV_WEB_HOST_PORT 34567
+//	ENV_WEB_HOST_PORT 34565
 //	ENV_WEB_HOSTNAME  0.0.0.0
 //
 // this function will check base config

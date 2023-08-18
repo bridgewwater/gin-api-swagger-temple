@@ -5,7 +5,6 @@
 [![goreportcard](https://goreportcard.com/badge/github.com/bridgewwater/gin-api-swagger-temple)](https://goreportcard.com/report/github.com/bridgewwater/gin-api-swagger-temple)
 
 [![GitHub license](https://img.shields.io/github/license/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple)
-[![codecov](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/gin-api-swagger-temple)
 [![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/tags)
 [![GitHub release)](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
 
@@ -16,6 +15,7 @@
 - [ ] rename `github.com/bridgewwater/gin-api-swagger-temple` to your api package name
     - [ ] rename `bridgewwater` to your project owner name
     - [ ] rename `gin-api-swagger-temple` to your project name
+    - [ ] rename `34565` to your service port
 
 ## Contributing
 
@@ -133,7 +133,7 @@ $ make dockerComposeDown
 $ make dockerTestPruneLatest
 ```
 
-most of doc at [http://127.0.0.1:34567/swagger/index.html](http://127.0.0.1:34567/swagger/index.html)
+most of doc at [http://127.0.0.1:34565/swagger/index.html](http://127.0.0.1:34565/swagger/index.html)
 
 ## config
 

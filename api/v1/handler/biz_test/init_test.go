@@ -30,7 +30,7 @@ func setupTestRouter() *gin.Engine {
 }
 
 func mockTestEnv() {
-	baseURL = fetchOsEnvStr(EnvBaseUrl, "http://127.0.0.1:34567")
+	baseURL = fetchOsEnvStr(EnvBaseUrl, "http://127.0.0.1:34565")
 }
 
 func TestMain(m *testing.M) {
