@@ -20,7 +20,7 @@ shell_run_path=$(
 function Usage() {
   cat <<HELP
 ${shell_run_name} can use fast init golang gin project with github
-  Warning must use golang SDK 1.18+
+  Warning must use golang SDK ^1.19
   now temple is ${temple_url}
 
 default repo setting

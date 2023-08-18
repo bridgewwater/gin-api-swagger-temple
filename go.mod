@@ -1,6 +1,6 @@
 module github.com/bridgewwater/gin-api-swagger-temple
 
-go 1.18
+go 1.19
 
 require (
 	github.com/bar-counter/gin-correlation-id v1.2.0

@@ -33,7 +33,7 @@ steps:
         - GOBIN
         - GOPROXY
   - name: go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -48,7 +48,7 @@ steps:
   - name: go-lint
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -62,7 +62,7 @@ steps:
   - name: go-run-check
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -74,7 +74,7 @@ steps:
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -163,7 +163,7 @@ steps:
         - GOBIN
         - GOPROXY
   - name: go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -178,7 +178,7 @@ steps:
   - name: go-lint
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -192,7 +192,7 @@ steps:
   - name: go-run-check
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -204,7 +204,7 @@ steps:
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -218,7 +218,7 @@ steps:
   - name: go-test-coverage
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-test
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -231,7 +231,7 @@ steps:
   - name: go-test-benchmark
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-test
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -243,7 +243,7 @@ steps:
   - name: go-dist-check
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-test
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -342,7 +342,7 @@ steps:
         - GOBIN
         - GOPROXY
   - name: go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -357,7 +357,7 @@ steps:
   - name: go-lint
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -371,7 +371,7 @@ steps:
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
@@ -385,7 +385,7 @@ steps:
   - name: go-dist-release
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-test
-    image: golang:1.19.10-buster
+    image: golang:1.19.12-bullseye
     pull: if-not-exists
     volumes:
       - name: go_cache
