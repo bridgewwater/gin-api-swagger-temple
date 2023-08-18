@@ -15,5 +15,10 @@ func Router(g *gin.Engine, basePath string) {
 		bizRouteGroup.POST("/form", PostForm)
 		bizRouteGroup.POST("/modelBiz", PostJsonModelBiz)
 		bizRouteGroup.POST("/modelBizQuery", PostQueryJsonMode)
+
+		// bizFull
+		bizRouteGroup.GET("/header_full", GetHeaderFull)
+		bizRouteGroup.GET("/query_full", GetQueryFull)
+		bizRouteGroup.POST("/form_full", PostFormFull)
 	}
 }

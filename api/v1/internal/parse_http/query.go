@@ -1,14 +1,15 @@
-package parsehttp
+package parse_http
 
 import (
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/gin_kit/gin_head_check"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"time"
 )
 
-type Form struct {
-	URL          string            `json:"url"`
+type QueryContent struct {
 	ParseTime    string            `json:"parse_time,omitempty"`
+	URL          string            `json:"url"`
 	Method       string            `json:"method,omitempty"`
 	RemoteAddr   string            `json:"remote_addr,omitempty"`
 	Host         string            `json:"host,omitempty"`
@@ -18,28 +19,21 @@ type Form struct {
 	Param        string            `json:"param,omitempty"`
 	Referer      string            `json:"referer,omitempty"`
 	Headers      map[string]string `json:"headers,omitempty"`
-	PostFormData map[string]string `json:"postData,omitempty"`
 	QueryStrings map[string]string `json:"queryString,omitempty"`
 }
 
-func FormPost(c *gin.Context) (Form, error) {
-	return FormPostParam(c, "")
+func HttpQuery(c *gin.Context) (QueryContent, error) {
+	return HttpQueryParam(c, "")
 }
 
-func FormPostParam(c *gin.Context, paramKey string) (Form, error) {
+func HttpQueryParam(c *gin.Context, paramKey string) (QueryContent, error) {
 	var paramVal string
 	if paramKey != "" {
 		paramVal = c.Param(paramKey)
 	}
-	requestHeader := make(map[string]string)
-	r := c.Request
+	requestHeader := gin_head_check.HeaderCheckAsMap(c)
 
-	// remove HEADER Authorization
-	for k, v := range r.Header {
-		if k != "Authorization" {
-			requestHeader[k] = strings.Join(v, "")
-		}
-	}
+	r := c.Request
 
 	queryStrings := make(map[string]string)
 	for k, v := range r.URL.Query() {
@@ -47,14 +41,10 @@ func FormPostParam(c *gin.Context, paramKey string) (Form, error) {
 	}
 	err := r.ParseForm()
 	if err != nil {
-		return Form{}, err
-	}
-	postFormData := make(map[string]string)
-	for k, v := range r.PostForm {
-		postFormData[k] = strings.Join(v, "")
+		return QueryContent{}, err
 	}
 
-	return Form{
+	return QueryContent{
 		ParseTime:    time.Now().String(),
 		URL:          r.URL.String(),
 		Method:       r.Method,
@@ -67,6 +57,5 @@ func FormPostParam(c *gin.Context, paramKey string) (Form, error) {
 		Referer:      r.Referer(),
 		Headers:      requestHeader,
 		QueryStrings: queryStrings,
-		PostFormData: postFormData,
 	}, nil
 }

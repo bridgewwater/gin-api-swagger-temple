@@ -122,6 +122,26 @@ func makeRequest(method, mime, api string, param interface{}) (request *http.Req
 	return
 }
 
+func MockJsonQueryGet(t *testing.T, router *gin.Engine, url string, header map[string]string, query interface{}) (*httptest.ResponseRecorder, *http.Request) {
+	api := url
+	if query != nil {
+		api = fmt.Sprintf("%s?%s", url, MockQueryStrFrom(query))
+	}
+	newRequest, err := http.NewRequest(http.MethodGet, api, nil)
+	if err != nil {
+		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+	}
+	newRequest.Header.Set("Content-Type", "application/json;charset=utf-8")
+	if len(header) > 0 {
+		for k, v := range header {
+			newRequest.Header.Add(k, v)
+		}
+	}
+	recorder := httptest.NewRecorder()
+	router.ServeHTTP(recorder, newRequest)
+	return recorder, newRequest
+}
+
 func MockJsonQueryPost(t *testing.T, router *gin.Engine, url string, header map[string]string, query interface{}, body interface{}) (*httptest.ResponseRecorder, *http.Request) {
 	var (
 		contentBuffer *bytes.Buffer

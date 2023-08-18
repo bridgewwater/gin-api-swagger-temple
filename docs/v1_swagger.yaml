@@ -26,6 +26,101 @@ definitions:
       msg:
         type: string
     type: object
+  parse_http.FormContent:
+    properties:
+      headers:
+        additionalProperties:
+          type: string
+        type: object
+      host:
+        type: string
+      method:
+        type: string
+      param:
+        type: string
+      parse_time:
+        type: string
+      postData:
+        additionalProperties:
+          type: string
+        type: object
+      proto:
+        type: string
+      proto_major:
+        type: integer
+      proto_minor:
+        type: integer
+      queryString:
+        additionalProperties:
+          type: string
+        type: object
+      referer:
+        type: string
+      remote_addr:
+        type: string
+      url:
+        type: string
+    type: object
+  parse_http.HeaderContent:
+    properties:
+      header:
+        type: string
+      headers:
+        additionalProperties:
+          type: string
+        type: object
+      host:
+        type: string
+      method:
+        type: string
+      param:
+        type: string
+      parse_time:
+        type: string
+      proto:
+        type: string
+      proto_major:
+        type: integer
+      proto_minor:
+        type: integer
+      referer:
+        type: string
+      remote_addr:
+        type: string
+      url:
+        type: string
+    type: object
+  parse_http.QueryContent:
+    properties:
+      headers:
+        additionalProperties:
+          type: string
+        type: object
+      host:
+        type: string
+      method:
+        type: string
+      param:
+        type: string
+      parse_time:
+        type: string
+      proto:
+        type: string
+      proto_major:
+        type: integer
+      proto_minor:
+        type: integer
+      queryString:
+        additionalProperties:
+          type: string
+        type: object
+      referer:
+        type: string
+      remote_addr:
+        type: string
+      url:
+        type: string
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
@@ -80,6 +175,76 @@ paths:
           schema:
             $ref: '#/definitions/errdef.Err'
       summary: 'api demo form with: x-www-form-urlencoded'
+      tags:
+      - biz
+  /biz/form_full:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: for biz
+      parameters:
+      - default: foo
+        description: form item foo
+        in: formData
+        name: foo
+        required: true
+        type: string
+      - default: bar
+        description: form item bar
+        in: formData
+        name: bar
+        required: true
+        type: string
+      - default: baz
+        description: form item baz
+        in: formData
+        name: baz
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in parse_http.FormContent
+          schema:
+            $ref: '#/definitions/parse_http.FormContent'
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: /biz/form_full
+      tags:
+      - biz
+  /biz/header_full:
+    get:
+      consumes:
+      - text/plain
+      description: for biz
+      parameters:
+      - default: foo
+        description: 'header BIZ_FOO '
+        in: header
+        name: BIZ_FOO
+        required: true
+        type: string
+      - default: bar
+        description: 'header BIZ_BAR '
+        in: header
+        name: BIZ_BAR
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: value in parse_http.HeaderContent
+          schema:
+            $ref: '#/definitions/parse_http.HeaderContent'
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: /biz/header_full
       tags:
       - biz
   /biz/json:
@@ -215,6 +380,44 @@ paths:
           schema:
             $ref: '#/definitions/errdef.Err'
       summary: api demo for query.
+      tags:
+      - biz
+  /biz/query_full:
+    get:
+      consumes:
+      - application/json
+      description: for biz
+      parameters:
+      - default: '""'
+        description: 'params foo '
+        in: query
+        name: foo
+        required: true
+        type: string
+      - default: '""'
+        description: 'params bar '
+        in: query
+        name: bar
+        required: true
+        type: string
+      - default: '""'
+        description: 'params baz '
+        in: query
+        name: baz
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: value in parse_http.QueryContent
+          schema:
+            $ref: '#/definitions/parse_http.QueryContent'
+        "400":
+          description: error at errdef.Err
+          schema:
+            $ref: '#/definitions/errdef.Err'
+      summary: /biz/query_full
       tags:
       - biz
   /biz/string:

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"github.com/bar-counter/gin-correlation-id/gin_correlation_id_snowflake"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zlog_access"
 	"github.com/gin-gonic/gin"
 	"time"
@@ -41,32 +42,41 @@ func LoggerMiddleware() gin.HandlerFunc {
 		// Method
 		reqMethod := c.Request.Method
 
+		// request id
+		reqId := gin_correlation_id_snowflake.GetCorrelationID(c)
+
 		// status code
 		statusCode := c.Writer.Status()
 		if statusCode < 400 {
 			zlog_access.A().Infof(
-				"=> %15s %13v | %s < %3d -> %s",
+				"=> %15s %13v | %s < %3d -> %s rid:%s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri)
+				reqUri,
+				reqId,
+			)
 		} else if statusCode < 500 {
 			zlog_access.A().Warnf(
-				"=> %15s %13v | %s < %3d -> %s",
+				"=> %15s %13v | %s < %3d -> %s rid:%s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri)
+				reqUri,
+				reqId,
+			)
 		} else {
 			zlog_access.A().Errorf(
-				"=> %15s %13v | %s < %3d -> %s",
+				"=> %15s %13v | %s < %3d -> %s rid:%s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri)
+				reqUri,
+				reqId,
+			)
 		}
 	}
 }
