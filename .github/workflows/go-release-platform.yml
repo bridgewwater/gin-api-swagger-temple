@@ -70,6 +70,10 @@ jobs:
           go mod download -x
           go mod tidy -v
           go mod vendor
+
+          # run help
+          go run ${{ env.DIST_BUILD_ENTRANCE }} -h
+
           # Replace with the name of your binary
           binary_name=${{ env.DIST_BINARY_NAME }}
 

@@ -29,6 +29,7 @@ jobs:
       - name: Build Release binary
         run: |
           make dep
+          make runHelp
           make distPlatformTarCommonUse
           # make distPlatformTarAll
 

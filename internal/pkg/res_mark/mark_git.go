@@ -12,8 +12,7 @@ const (
 	gitHashLen      = 6
 )
 
-//go:embed .git_rev_parse
-var markGitHeadShort string
+var markGitHeadShort = "000000"
 
 func MainProgramRes() string {
 	return markGitHeadShort
@@ -51,6 +50,7 @@ func generateMarkGitHeadShort() error {
 		}
 	}
 
+	markGitHeadShort = shortName
 	targetFile := filepath.Join(currentFolderPath, resMarkFileName)
 	err = writeFileByString(targetFile, shortName, true)
 	if err != nil {
