@@ -9,7 +9,7 @@ import (
 // for zap Sugar
 func S() *zap.SugaredLogger {
 	if zapLog == nil {
-		panic(fmt.Errorf("please use zlog.ZapLoggerInitByViper()"))
+		panic(fmt.Errorf("please use zlog.ZapLoggerInitByViper() or zlog.MockZapLoggerInit() for unit test"))
 	}
 	return zapLog.Sugar
 }
