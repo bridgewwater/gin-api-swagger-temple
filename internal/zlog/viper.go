@@ -1,7 +1,6 @@
 package zlog
 
 import (
-	"fmt"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zap_encoder"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zip_rotate"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zlog_access"
@@ -11,6 +10,14 @@ import (
 	"go.uber.org/zap/zapcore"
 	"os"
 )
+
+// MockZapLoggerInit
+// for unit test
+func MockZapLoggerInit() {
+	logger, _ := zap.NewProduction()
+	newSLogAsZap(logger, logger.Sugar())
+	zlog_access.MockInit()
+}
 
 // ZapLoggerInitByViper
 // init zap logger
@@ -52,7 +59,7 @@ func ZapLoggerInitByViper() error {
 	encoderConfig := zap_encoder.NewEncoderConfigByViper()
 	confEncoding := viper.GetString("zap.Encoding")
 	if confEncoding == "" {
-		return fmt.Errorf("config zap.Encoding is empty")
+		confEncoding = "console"
 	}
 	encoder := zap_encoder.FilterZapEncoder(confEncoding, *encoderConfig)
 

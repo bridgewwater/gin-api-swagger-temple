@@ -4,6 +4,7 @@ import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/errdef"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -73,5 +74,6 @@ func GetQuery(c *gin.Context) {
 //	@Router			/biz/string								[get]
 func GetString(c *gin.Context) {
 	message := "this is biz message"
+	zlog.S().Debugf("ClientIP: %s", c.ClientIP())
 	c.String(http.StatusOK, message)
 }

@@ -50,3 +50,10 @@ func InitByViper() error {
 
 	return nil
 }
+
+// MockInit
+// for unit test init
+func MockInit() {
+	logger, _ := zap.NewProduction()
+	newAccessAsZap(logger, logger.Sugar())
+}

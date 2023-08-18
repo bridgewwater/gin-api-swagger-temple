@@ -2,6 +2,7 @@ package biz_test
 
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"os"
 	"testing"
@@ -18,6 +19,7 @@ var (
 )
 
 func init() {
+	zlog.MockZapLoggerInit()
 	mockTestEnv()
 	basicRouter = setupTestRouter()
 }
