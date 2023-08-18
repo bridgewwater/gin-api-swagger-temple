@@ -26,7 +26,8 @@ import (
 )
 
 var (
-	cfg = pflag.StringP("config", "c", "", "api server config file path.")
+	help = pflag.BoolP("help", "h", false, "help info.")
+	cfg  = pflag.StringP("config", "c", "", "api server config file path.")
 
 	// done
 	//	gracefully exit http server
@@ -40,6 +41,11 @@ var (
 func main() {
 	pflag.Parse()
 	pkgJson.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
+
+	if *help {
+		pflag.Usage()
+		return
+	}
 
 	// init config
 	if err := config.Init(*cfg); err != nil {

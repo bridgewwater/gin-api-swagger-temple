@@ -45,20 +45,6 @@ steps:
       - go mod verify
       - go mod download -x
       - go mod tidy -v
-  - name: go-lint
-    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
-      - go-env
-    image: golang:1.19.12-bullseye
-    pull: if-not-exists
-    volumes:
-      - name: go_cache
-        path: /go
-    environment:
-      GOPATH: /go
-    commands:
-      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
-      - golangci-lint --version
-      - golangci-lint run -c .golangci.yaml
   - name: go-run-check
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
@@ -71,6 +57,20 @@ steps:
       GOPATH: /go
     commands:
       - make runHelp
+  - name: go-lint
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-run-check
+    image: golang:1.19.12-bullseye
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
+      - golangci-lint --version
+      - golangci-lint run -c .golangci.yaml
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
@@ -89,8 +89,8 @@ steps:
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - env-init
       - go-env
-      - go-lint
       - go-run-check
+      - go-lint
       - go-test
     image: sinlov/drone-feishu-robot-oss:1.10.0 # https://hub.docker.com/r/sinlov/drone-feishu-robot-oss/tags
     pull: if-not-exists
@@ -175,20 +175,6 @@ steps:
       - go mod verify
       - go mod download -x
       - go mod tidy -v
-  - name: go-lint
-    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
-      - go-env
-    image: golang:1.19.12-bullseye
-    pull: if-not-exists
-    volumes:
-      - name: go_cache
-        path: /go
-    environment:
-      GOPATH: /go
-    commands:
-      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
-      - golangci-lint run -c .golangci.yaml
-      - golangci-lint --version
   - name: go-run-check
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
@@ -201,6 +187,20 @@ steps:
       GOPATH: /go
     commands:
       - make runHelp
+  - name: go-lint
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-run-check
+    image: golang:1.19.12-bullseye
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
+      - golangci-lint run -c .golangci.yaml
+      - golangci-lint --version
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
@@ -262,8 +262,8 @@ steps:
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - env-init
       - go-env
-      - go-lint
       - go-run-check
+      - go-lint
       - go-test
       - go-test-coverage
       - go-test-benchmark
@@ -354,20 +354,6 @@ steps:
       - go mod verify
       - go mod download -x
       - go mod tidy -v
-  - name: go-lint
-    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
-      - go-env
-    image: golang:1.19.12-bullseye
-    pull: if-not-exists
-    volumes:
-      - name: go_cache
-        path: /go
-    environment:
-      GOPATH: /go
-    commands:
-      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
-      - golangci-lint run -c .golangci.yaml
-      - golangci-lint --version
   - name: go-test
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-env
@@ -382,6 +368,20 @@ steps:
       - go get -t -v ./...
       - go build -v ./...
       - go test -v ./...
+  - name: go-lint
+    depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
+      - go-test
+    image: golang:1.19.12-bullseye
+    pull: if-not-exists
+    volumes:
+      - name: go_cache
+        path: /go
+    environment:
+      GOPATH: /go
+    commands:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
+      - golangci-lint run -c .golangci.yaml
+      - golangci-lint --version
   - name: go-dist-release
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - go-test
@@ -439,8 +439,8 @@ steps:
     depends_on: # https://docs.drone.io/pipeline/exec/syntax/parallelism/
       - env-init
       - go-env
-      - go-lint
       - go-test
+      - go-lint
       - go-dist-release
       - gitea-cc-release
     image: sinlov/drone-feishu-robot-oss:1.10.0 # https://hub.docker.com/r/sinlov/drone-feishu-robot-oss/tags

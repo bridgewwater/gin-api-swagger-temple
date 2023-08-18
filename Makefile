@@ -171,6 +171,9 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+runHelp:
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
+
 run: export GIN_MODE=test
 run: export ENV_WEB_LOG_LEVEL=INFO
 run: export ENV_WEB_AUTO_HOST=true
