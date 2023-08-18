@@ -2,6 +2,7 @@ package biz_test
 
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/handler/biz"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"os"
@@ -25,8 +26,7 @@ func init() {
 }
 
 func setupTestRouter() *gin.Engine {
-	r := gin.Default()
-	gin.SetMode(FetchGinRunMode())
+	r := config.MockInitSample(baseURL, basePath, false)
 	biz.Router(r, basePath)
 	return r
 }

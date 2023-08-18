@@ -68,11 +68,11 @@ func GinRunMode() string {
 func initBaseConf() {
 	gin.SetMode(GinRunMode())
 
-	ssLEnable := false
+	sslEnable := false
 	if viper.GetBool(EnvHttpsEnable) {
-		ssLEnable = true
+		sslEnable = true
 	} else {
-		ssLEnable = viper.GetBool("sslEnable")
+		sslEnable = viper.GetBool("sslEnable")
 	}
 
 	apiBase := viper.GetString("api_base")
@@ -102,7 +102,7 @@ func initBaseConf() {
 			ipv4, errLocalIp := sys.NetworkLocalIP()
 			if errLocalIp == nil {
 				var proc string
-				if ssLEnable {
+				if sslEnable {
 					proc = "https"
 				} else {
 					proc = "http"
@@ -113,7 +113,7 @@ func initBaseConf() {
 		}
 	}
 
-	if ssLEnable {
+	if sslEnable {
 		apiBase = strings.Replace(apiBase, "http://", "https://", 1)
 	}
 
@@ -121,6 +121,6 @@ func initBaseConf() {
 	baseConf = BaseConf{
 		Addr:      apiBaseUrl.Host,
 		BaseURL:   apiBase,
-		SSLEnable: ssLEnable,
+		SSLEnable: sslEnable,
 	}
 }

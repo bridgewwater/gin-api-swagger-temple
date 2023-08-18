@@ -49,13 +49,6 @@ func MockRequest(t *testing.T, router *gin.Engine, method, url string, header ma
 	return recorder, newRequest
 }
 
-func FetchGinRunMode() string {
-	ginMode := os.Getenv(gin.EnvGinMode)
-	if ginMode == "" {
-		ginMode = gin.TestMode
-	}
-	return ginMode
-}
 func MockJsonPost(t *testing.T, router *gin.Engine, url string, header map[string]string, param interface{}) (*httptest.ResponseRecorder, *http.Request) {
 	newRequest, err := makeRequest(http.MethodPost, JSON, url, param)
 	if err != nil {
