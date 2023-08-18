@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/bar-counter/slog"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
@@ -10,6 +10,6 @@ import (
 func (c *Config) watchConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		slog.Debugf("Config file changed: %s", e.Name)
+		zlog.S().Debugf("Config file changed: %s", e.Name)
 	})
 }

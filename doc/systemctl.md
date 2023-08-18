@@ -7,7 +7,7 @@ daemon process by systemctl
 ```conf
 [Unit]
 Description=gin-api-swagger-temple web service
-After=network-online.target network.target syslog.target
+After=network-online.target network.target syzlog.S().target
 Wants=network.target
 
 [Service]

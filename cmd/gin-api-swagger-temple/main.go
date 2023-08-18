@@ -6,11 +6,11 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
-	"github.com/bar-counter/slog"
 	"github.com/bridgewwater/gin-api-swagger-temple"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -66,7 +66,7 @@ func main() {
 		middlewareList...,
 	)
 
-	slog.Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), config.Addr())
+	zlog.S().Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), config.Addr())
 	server := &http.Server{
 		Addr:    config.Addr(),
 		Handler: g,
@@ -74,9 +74,9 @@ func main() {
 	go handleExitSignal(server)
 	err := server.ListenAndServe()
 	if err != nil {
-		slog.Errorf(err, "server run error %v", err)
+		zlog.S().Errorf("server run error %v", err)
 	} else {
-		slog.Infof("server run success!")
+		zlog.S().Infof("server run success!")
 	}
 }
 

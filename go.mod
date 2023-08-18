@@ -5,10 +5,10 @@ go 1.18
 require (
 	github.com/bar-counter/gin-correlation-id v1.2.0
 	github.com/bar-counter/monitor/v2 v2.2.0
-	github.com/bar-counter/slog v1.4.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/json-iterator/go v1.1.12
+	github.com/mattn/go-colorable v0.1.13
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
@@ -16,6 +16,8 @@ require (
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag/v2 v2.0.0-rc3
+	go.uber.org/zap v1.25.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (
@@ -64,6 +66,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/net v0.10.0 // indirect

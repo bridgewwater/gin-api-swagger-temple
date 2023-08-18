@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"github.com/bar-counter/slog"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"net/url"
 	"os"
@@ -44,10 +44,10 @@ func GinRunMode() string {
 		ginRunMode := os.Getenv(gin.EnvGinMode)
 		if ginRunMode != "" {
 			_ginRunMode = ginRunMode
-			slog.Debugf("gin mode initBaseConf by yaml: runMode %v", _ginRunMode)
+			zlog.S().Debugf("gin mode initBaseConf by yaml: runMode %v", _ginRunMode)
 		} else {
 			_ginRunMode = viper.GetString("runmode")
-			slog.Debugf("gin mode initBaseConf by env: %s=%s", gin.EnvGinMode, _ginRunMode)
+			zlog.S().Debugf("gin mode initBaseConf by env: %s=%s", gin.EnvGinMode, _ginRunMode)
 		}
 	}
 	return _ginRunMode
@@ -82,13 +82,13 @@ func initBaseConf() {
 		panic(err)
 	}
 
-	slog.Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
-	slog.Debugf("api_base.Port %v", apiBaseUrl.Port())
+	zlog.S().Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
+	zlog.S().Debugf("api_base.Port %v", apiBaseUrl.Port())
 
 	runPort := viper.GetString("port")
 	if viper.GetString(EnvHostPort) != "" {
 		runPort = viper.GetString(EnvHostPort)
-		slog.Debugf("port change by env as: %s", runPort)
+		zlog.S().Debugf("port change by env as: %s", runPort)
 	}
 	baseHostNameByEnv := viper.GetString(EnvHostName)
 
@@ -97,7 +97,7 @@ func initBaseConf() {
 		apiBase = apiBaseUrl.String()
 	} else {
 		isAutoHost := viper.GetBool(EnvAutoGetHost)
-		slog.Debugf("isAutoHost %v", isAutoHost)
+		zlog.S().Debugf("isAutoHost %v", isAutoHost)
 		if isAutoHost {
 			ipv4, errLocalIp := sys.NetworkLocalIP()
 			if errLocalIp == nil {
@@ -117,7 +117,7 @@ func initBaseConf() {
 		apiBase = strings.Replace(apiBase, "http://", "https://", 1)
 	}
 
-	slog.Debugf("run as apiBase: %s", apiBase)
+	zlog.S().Debugf("run as apiBase: %s", apiBase)
 	baseConf = BaseConf{
 		Addr:      apiBaseUrl.Host,
 		BaseURL:   apiBase,

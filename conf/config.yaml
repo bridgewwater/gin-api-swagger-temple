@@ -17,6 +17,33 @@ log:
   log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
   log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
 
+# zap config
+zap:
+  AtomicLevel: -1 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2
+  FieldsAuto: false # is use auto Fields key set
+  Fields:
+    Key: key
+    Val: val
+  Development: true #  is open file and line number
+  Encoding: console # output format, only use console or json, default is console
+  rotate:
+    Filename: logs/gin-api-swagger-temple.log # Log file path
+    MaxSize: 16 # Maximum size of each zlog file, Unit: M
+    MaxBackups: 10 # How many backups are saved in the zlog file
+    MaxAge: 7 # How many days can the file be keep, Unit: day
+    Compress: true # need compress
+  EncoderConfig:
+    TimeKey: time
+    LevelKey: level
+    NameKey: logger
+    CallerKey: caller
+    MessageKey: msg
+    StacktraceKey: stacktrace
+    TimeEncoder: ISO8601TimeEncoder # ISO8601TimeEncoder EpochMillisTimeEncoder EpochNanosTimeEncoder EpochTimeEncoder default is ISO8601TimeEncoder
+    EncodeDuration: SecondsDurationEncoder # NanosDurationEncoder SecondsDurationEncoder StringDurationEncoder default is SecondsDurationEncoder
+    EncodeLevel: CapitalColorLevelEncoder # CapitalLevelEncoder CapitalColorLevelEncoder LowercaseColorLevelEncoder LowercaseLevelEncoder default is CapitalLevelEncoder
+    EncodeCaller: ShortCallerEncoder # ShortCallerEncoder FullCallerEncoder default is FullCallerEncoder
+
 monitor: # monitor
   status: true             # api status use {monitor.health}
   health: /status/health   # api health

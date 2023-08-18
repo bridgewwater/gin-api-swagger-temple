@@ -47,6 +47,7 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
     - [X] middleware `AppVersion` will add api version for Tracking
     - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server
       each api request
+- [X] log by [zap](https://github.com/uber-go/zap) and support rotate log file
 - [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
 - [X] `major version` api support
     - [X] `api/v1` this first version of major api
@@ -77,9 +78,9 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 | https://github.com/spf13/pflag                    | v1.0.5     |
 | https://github.com/spf13/viper                    | v1.16.0    |
 | https://github.com/json-iterator/go               | v1.1.12    |
+| https://github.com/uber-go/zap                    | v1.25.0    |
 | https://github.com/bar-counter/monitor            | v2.2.0     |
 | https://github.com/bar-counter/gin-correlation-id | v1.2.0     |
-| https://github.com/bar-counter/slog               | v1.4.0     |
 
 more libs see [go.mod](go.mod)
 
@@ -143,7 +144,7 @@ $ make dockerComposeDown
 $ make dockerTestPruneLatest
 ```
 
-most of doc at [http://127.0.0.1:34565/swagger/index.html](http://127.0.0.1:34565/swagger/index.html)
+most of the doc at [http://127.0.0.1:34565/swagger/index.html](http://127.0.0.1:34565/swagger/index.html)
 
 ## config
 
@@ -151,19 +152,36 @@ most of doc at [http://127.0.0.1:34565/swagger/index.html](http://127.0.0.1:3456
 
 ### log
 
-- use log as: [http://github.com/bar-counter/slog](http://github.com/bar-counter/slog)
+- use log as: [https://github.com/uber-go/zap](https://github.com/uber-go/zap)
 
 ```yaml
-log:
-  writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
-  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL
-  logger_file: log/server.log     # log file setting
-  log_hide_lineno: false # `true` will hide code line number, `false` will show code line number, default is false
-  log_format_text: true # format_text `false` will format json, `true` will out stdout
-  rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
-  log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
-  log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
-  log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
+# zap config
+zap:
+  AtomicLevel: -1 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2
+  FieldsAuto: false # is use auto Fields key set
+  Fields:
+    Key: key
+    Val: val
+  Development: true # is open file and line number
+  Encoding: console # output format, only use console or json, default is console
+  rotate:
+    Filename: logs/gin-api-swagger-temple.log # Log file path
+    MaxSize: 16 # Maximum size of each zlog file, Unit: M
+    MaxBackups: 10 # How many backups are saved in the zlog file
+    MaxAge: 7 # How many days can the file be keep, Unit: day
+    Compress: true # need compress
+  EncoderConfig:
+    TimeKey: time
+    LevelKey: level
+    NameKey: logger
+    CallerKey: caller
+    MessageKey: msg
+    StacktraceKey: stacktrace
+    TimeEncoder: ISO8601TimeEncoder # ISO8601TimeEncoder EpochMillisTimeEncoder EpochNanosTimeEncoder EpochTimeEncoder default is ISO8601TimeEncoder
+    EncodeDuration: SecondsDurationEncoder # NanosDurationEncoder SecondsDurationEncoder StringDurationEncoder default is SecondsDurationEncoder
+    EncodeLevel: CapitalColorLevelEncoder # CapitalLevelEncoder CapitalColorLevelEncoder LowercaseColorLevelEncoder LowercaseLevelEncoder default is CapitalLevelEncoder
+    EncodeCaller: ShortCallerEncoder # ShortCallerEncoder FullCallerEncoder default is FullCallerEncoder
+
 ```
 
 ## folder-structure
