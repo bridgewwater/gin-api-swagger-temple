@@ -13,7 +13,7 @@ import (
 
 // monitorAPI
 //
-//	use monitor https://github.com/bar-counter/monitor/v2
+//	use monitor https://github.com/bar-counter/monitor
 //
 //	config.yml like
 //

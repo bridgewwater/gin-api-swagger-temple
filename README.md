@@ -48,6 +48,7 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
     - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server
       each api request
 - [X] log by [zap](https://github.com/uber-go/zap) and support rotate log file
+    - [X] access log at different file, and can change by `zap.rotate.AccessFilename` 
 - [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
 - [X] `major version` api support
     - [X] `api/v1` this first version of major api

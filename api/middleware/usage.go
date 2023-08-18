@@ -16,6 +16,7 @@ func Usage(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 
 	// Middlewares.
 	g.Use(gin.Recovery())
+	g.Use(LoggerMiddleware())
 	g.Use(noCache)
 	g.Use(options)
 	g.Use(secure)

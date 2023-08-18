@@ -21,9 +21,9 @@ type zapLogger struct {
 	Sugar *zap.SugaredLogger
 }
 
-// newZapLog
+// newSLogAsZap
 // init zap by sugar
-func newZapLog(log *zap.Logger, sugar *zap.SugaredLogger) {
+func newSLogAsZap(log *zap.Logger, sugar *zap.SugaredLogger) {
 	if zapLog == nil {
 		zapLog = &zapLogger{
 			Log:   log,

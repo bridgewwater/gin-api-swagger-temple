@@ -82,8 +82,8 @@ func initBaseConf() {
 		panic(err)
 	}
 
-	zlog.S().Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
-	zlog.S().Debugf("api_base.Port %v", apiBaseUrl.Port())
+	//zlog.S().Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
+	//zlog.S().Debugf("api_base.Port %v", apiBaseUrl.Port())
 
 	runPort := viper.GetString("port")
 	if viper.GetString(EnvHostPort) != "" {

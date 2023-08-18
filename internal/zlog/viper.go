@@ -2,7 +2,9 @@ package zlog
 
 import (
 	"fmt"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zap_encoder"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zip_rotate"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zlog_access"
 	"github.com/mattn/go-colorable"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -45,14 +47,14 @@ import (
 // return error
 func ZapLoggerInitByViper() error {
 
-	atomicLevel := zap.NewAtomicLevelAt(filterZapAtomicLevelByViper(viper.GetInt("zap.AtomicLevel"))) // log Level
+	atomicLevel := zap.NewAtomicLevelAt(zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.AtomicLevel"))) // log Level
 
-	encoderConfig := newEncoderConfigByViper()
+	encoderConfig := zap_encoder.NewEncoderConfigByViper()
 	confEncoding := viper.GetString("zap.Encoding")
 	if confEncoding == "" {
 		return fmt.Errorf("config zap.Encoding is empty")
 	}
-	encoder := filterZapEncoder(confEncoding, *encoderConfig)
+	encoder := zap_encoder.FilterZapEncoder(confEncoding, *encoderConfig)
 
 	rotateLogger := zip_rotate.NewLoggerByViper()
 
@@ -99,7 +101,12 @@ func ZapLoggerInitByViper() error {
 		}
 	}
 
-	newZapLog(logZap, logZap.Sugar())
+	newSLogAsZap(logZap, logZap.Sugar())
+
+	err := zlog_access.InitByViper()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -113,27 +120,5 @@ func isAddColorableOut() bool {
 		return true
 	case "LowercaseColorLevelEncoder":
 		return true
-	}
-}
-
-func newEncoderConfigByViper() *zapcore.EncoderConfig {
-	timeKey := viper.GetString("zap.EncoderConfig.TimeKey")
-	levelKey := viper.GetString("zap.EncoderConfig.LevelKey")
-	nameKey := viper.GetString("zap.EncoderConfig.NameKey")
-	callerKey := viper.GetString("zap.EncoderConfig.CallerKey")
-	messageKey := viper.GetString("zap.EncoderConfig.MessageKey")
-	stacktraceKey := viper.GetString("zap.EncoderConfig.StacktraceKey")
-	return &zapcore.EncoderConfig{
-		TimeKey:        timeKey,
-		LevelKey:       levelKey,
-		NameKey:        nameKey,
-		CallerKey:      callerKey,
-		MessageKey:     messageKey,
-		StacktraceKey:  stacktraceKey,
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    filterZapEncodeLevel(viper.GetString("zap.EncoderConfig.EncodeLevel")),
-		EncodeTime:     filterZapTimeEncoder(viper.GetString("zap.EncoderConfig.TimeEncoder")), // ISO8601TimeEncoder ISO8601 UTC time
-		EncodeDuration: filterZapDurationEncoder(viper.GetString("zap.EncoderConfig.EncodeDuration")),
-		EncodeCaller:   filterZapCallerEncoder(viper.GetString("zap.EncoderConfig.EncodeCaller")),
 	}
 }

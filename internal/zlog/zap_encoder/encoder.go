@@ -1,14 +1,15 @@
-package zlog
+package zap_encoder
 
 import (
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"time"
 )
 
-// filterZapTimeEncoder
+// FilterZapTimeEncoder
 // default ISO8601TimeEncoder
-func filterZapTimeEncoder(timeEncoder string) func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+func FilterZapTimeEncoder(timeEncoder string) func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	switch timeEncoder {
 	default:
 		return zapcore.ISO8601TimeEncoder
@@ -23,9 +24,9 @@ func filterZapTimeEncoder(timeEncoder string) func(t time.Time, enc zapcore.Prim
 	}
 }
 
-// filterZapDurationEncoder
+// FilterZapDurationEncoder
 // default SecondsDurationEncoder
-func filterZapDurationEncoder(encodeDuration string) func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
+func FilterZapDurationEncoder(encodeDuration string) func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
 	switch encodeDuration {
 	default:
 		return zapcore.SecondsDurationEncoder
@@ -38,9 +39,9 @@ func filterZapDurationEncoder(encodeDuration string) func(d time.Duration, enc z
 	}
 }
 
-// filterZapCallerEncoder
+// FilterZapCallerEncoder
 // default FullCallerEncoder
-func filterZapCallerEncoder(encodeCaller string) func(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+func FilterZapCallerEncoder(encodeCaller string) func(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
 	switch encodeCaller {
 	default:
 		return zapcore.FullCallerEncoder
@@ -52,9 +53,9 @@ func filterZapCallerEncoder(encodeCaller string) func(caller zapcore.EntryCaller
 
 }
 
-// filterZapEncodeLevel
+// FilterZapEncodeLevel
 // default CapitalLevelEncoder
-func filterZapEncodeLevel(level string) func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+func FilterZapEncodeLevel(level string) func(l zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 	switch level {
 	default:
 		return zapcore.CapitalLevelEncoder
@@ -69,9 +70,9 @@ func filterZapEncodeLevel(level string) func(l zapcore.Level, enc zapcore.Primit
 	}
 }
 
-// filterZapEncoder
+// FilterZapEncoder
 // default zapcore.NewConsoleEncoder(encoderConfig)
-func filterZapEncoder(zapEncoding string, encoderConfig zapcore.EncoderConfig) zapcore.Encoder {
+func FilterZapEncoder(zapEncoding string, encoderConfig zapcore.EncoderConfig) zapcore.Encoder {
 	var encoder zapcore.Encoder
 	switch zapEncoding {
 	default:
@@ -84,9 +85,9 @@ func filterZapEncoder(zapEncoding string, encoderConfig zapcore.EncoderConfig) z
 	return encoder
 }
 
-// filterZapAtomicLevelByViper
+// FilterZapAtomicLevelByViper
 // default zap.InfoLevel
-func filterZapAtomicLevelByViper(atomicLevel int) zapcore.Level {
+func FilterZapAtomicLevelByViper(atomicLevel int) zapcore.Level {
 	var atomViper zapcore.Level
 	switch atomicLevel {
 	default:
@@ -101,4 +102,28 @@ func filterZapAtomicLevelByViper(atomicLevel int) zapcore.Level {
 		atomViper = zap.ErrorLevel
 	}
 	return atomViper
+}
+
+// NewEncoderConfigByViper
+// new zapcore.EncoderConfig
+func NewEncoderConfigByViper() *zapcore.EncoderConfig {
+	timeKey := viper.GetString("zap.EncoderConfig.TimeKey")
+	levelKey := viper.GetString("zap.EncoderConfig.LevelKey")
+	nameKey := viper.GetString("zap.EncoderConfig.NameKey")
+	callerKey := viper.GetString("zap.EncoderConfig.CallerKey")
+	messageKey := viper.GetString("zap.EncoderConfig.MessageKey")
+	stacktraceKey := viper.GetString("zap.EncoderConfig.StacktraceKey")
+	return &zapcore.EncoderConfig{
+		TimeKey:        timeKey,
+		LevelKey:       levelKey,
+		NameKey:        nameKey,
+		CallerKey:      callerKey,
+		MessageKey:     messageKey,
+		StacktraceKey:  stacktraceKey,
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    FilterZapEncodeLevel(viper.GetString("zap.EncoderConfig.EncodeLevel")),
+		EncodeTime:     FilterZapTimeEncoder(viper.GetString("zap.EncoderConfig.TimeEncoder")), // ISO8601TimeEncoder ISO8601 UTC time
+		EncodeDuration: FilterZapDurationEncoder(viper.GetString("zap.EncoderConfig.EncodeDuration")),
+		EncodeCaller:   FilterZapCallerEncoder(viper.GetString("zap.EncoderConfig.EncodeCaller")),
+	}
 }
