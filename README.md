@@ -8,6 +8,16 @@
 [![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/tags)
 [![GitHub release)](https://img.shields.io/github/v/release/bridgewwater/gin-api-swagger-temple)](https://github.com/bridgewwater/gin-api-swagger-temple/releases)
 
+### cli tools to init project fast
+
+```bash
+$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/gin-api-swagger-temple/main/temp-gin-api-swagger
+# let temp-gin-api-swagger file folder under $PATH
+$ chmod +x temp-gin-api-swagger
+# see how to use
+$ temp-gin-api-swagger -h
+```
+
 ## for what
 
 - this project used to gin api server
