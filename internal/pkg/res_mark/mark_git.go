@@ -1,20 +1,34 @@
 package res_mark
 
 import (
-	_ "embed"
+	"embed"
 	"fmt"
 	"github.com/sinlov-go/go-git-tools/git_info"
 	"path/filepath"
 )
 
 const (
+	resMarkFolder   = "res_mark_record"
 	resMarkFileName = ".git_rev_parse"
 	gitHashLen      = 6
 )
 
-var markGitHeadShort = "000000"
+var (
+	//go:embed res_mark_record
+	embedResMark     embed.FS
+	markGitHeadShort = ""
+)
 
 func MainProgramRes() string {
+	if markGitHeadShort == "" {
+		resMarkFileContent, err := embedResMark.ReadFile(filepath.Join(resMarkFolder, resMarkFileName))
+		if err == nil {
+			markGitHeadShort = string(resMarkFileContent)
+		} else {
+			markGitHeadShort = "000000"
+		}
+	}
+
 	return markGitHeadShort
 }
 
@@ -51,7 +65,7 @@ func generateMarkGitHeadShort() error {
 	}
 
 	markGitHeadShort = shortName
-	targetFile := filepath.Join(currentFolderPath, resMarkFileName)
+	targetFile := filepath.Join(currentFolderPath, resMarkFolder, resMarkFileName)
 	err = writeFileByString(targetFile, shortName, true)
 	if err != nil {
 		return err
