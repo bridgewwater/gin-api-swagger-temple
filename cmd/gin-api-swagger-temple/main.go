@@ -10,8 +10,8 @@ import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/res_mark"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
+	"github.com/bridgewwater/gin-api-swagger-temple/zymosis"
 	"net/http"
 	"os"
 	"os/signal"
@@ -53,7 +53,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ] main res: %s\n",
-		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false), res_mark.MainProgramRes())
+		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false), zymosis.MainProgramRes())
 	fmt.Printf("-> by: %s, run on %s %s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())
 

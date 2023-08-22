@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/res_mark"
+	"github.com/bridgewwater/gin-api-swagger-temple/zymosis"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -43,7 +43,7 @@ func appVersionTracking(c *gin.Context) {
 	}
 	var appMainRes = AppMainRes(c)
 	if len(strings.TrimSpace(appMainRes)) == 0 {
-		mainProgramRes := res_mark.MainProgramRes()
+		mainProgramRes := zymosis.MainProgramRes()
 		c.Request.Header.Add(headKeyMainRes, mainProgramRes)
 		c.Header(headKeyMainRes, mainProgramRes)
 	}
