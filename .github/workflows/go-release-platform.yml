@@ -84,7 +84,11 @@ jobs:
           dirname="${{ env.DIST_BINARY_NAME }}-${{ inputs.verison_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}"
 
           # change build tag and ldflags if you need
-          go build -a -tags netgo -ldflags '-w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
+          if [ "${{ matrix.go_os }}" = "darwin" ]; then
+            go build -a -tags netgo -ldflags '-w -s --extldflags "-fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
+          else
+            go build -a -tags netgo -ldflags '-w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
+          fi
 
           # add more resource to archive
           # mv doc/cmd.md "$dirname"

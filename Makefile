@@ -121,7 +121,13 @@ init:
 	@echo "~> you can use [ make help ] see more task"
 	-go mod verify
 
-swagger: cleanSwaggerDoc
+zymosisGo:
+	$(info -> fix zymosis tools run as: go install -v github.com/convention-change/zymosis/cmd/zymosis@latest)
+	@zymosis --version
+	$(info -> generate res mark)
+	@zymosis -g go
+
+swagger: zymosisGo cleanSwaggerDoc
 	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3)
 	@swag --version
 	$(info -> generate swagger doc v1 at path api/v1/main.go)

@@ -142,6 +142,45 @@ $(warning "-> windows make shell cross compiling may be take mistake")
 	@echo "=> end $(strip $(6)).exe"
 endef
 
+define go_stripped_binary_dist
+	@echo "=> start $(0)"
+	@echo " want build out at path        : $(strip $(1))"
+	@echo "      build mark run env       : $(strip $(2))"
+	@echo "      build out binary         : $(strip $(3))"
+	@echo "      build GOOS               : $(strip $(4))"
+	@echo "      build GOARCH             : $(strip $(5))"
+	@echo "      build entrance           : $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})"
+	@echo "      DIST_BUILD_BIN_PATH      : $(strip $(6))"
+	@echo "-> start build OS:$(strip $(4)) ARCH:$(strip $(5))"
+	GOOS=$(strip $(4)) GOARCH=$(strip $(5)) go build \
+	-a \
+	-tags netgo \
+	-ldflags '-w -s --extldflags "-fpic"' \
+	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
+	@echo "=> end $(strip $(6))"
+endef
+
+define go_stripped_binary_windows_dist
+	@echo "=> start $(0)"
+$(warning "-> windows make shell cross compiling may be take mistake")
+	@echo " want build out at path        : $(strip $(1))"
+	@echo "      build mark run env       : $(strip $(2))"
+	@echo "      build out binary         : $(strip $(3))"
+	@echo "      build GOOS               : $(strip $(4))"
+	@echo "      build GOARCH             : $(strip $(5))"
+	@echo "      build entrance           : $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})"
+	@echo "      DIST_BUILD_BIN_PATH      : $(strip $(6))"
+	@echo "-> start build OS:$(strip $(4)) ARCH:$(strip $(5))"
+	set GOOS=$(strip $(4))
+	set GOARCH=$(strip $(5))
+	go build \
+	-a \
+	-tags netgo \
+	-ldflags '-w -s --extldflags "-static"' \
+	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
+	@echo "=> end $(strip $(6)).exe"
+endef
+
 distTest: cleanRootDistLocalTest pathCheckRootDistLocalTest
 ifeq ($(OS),Windows_NT)
 	$(call go_local_binary_dist,\
@@ -599,7 +638,7 @@ distPlatformTarAllLinux: distPlatformTarLinuxAmd64 distPlatformTarLinux386 distP
 
 distPlatformTarMacosAmd64: cleanRootDistPlatformMacOsAmd64 pathCheckRootDistPlatformMacOsAmd64
 ifeq ($(OS),Windows_NT)
-	$(call go_static_binary_windows_dist,\
+	$(call go_stripped_binary_windows_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -608,7 +647,7 @@ ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_PATH_INFO_ROOT_DIST_OS}/${ENV_INFO_PLATFORM_OS_MACOS}/${ENV_INFO_PLATFORM_OS_ARCH_AMD64}/${ENV_INFO_DIST_BIN_NAME})\
 	)
 else
-	$(call go_static_binary_dist,\
+	$(call go_stripped_binary_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -633,7 +672,7 @@ endif
 
 distPlatformTarMacosArm64: cleanRootDistPlatformMacOsArm64 pathCheckRootDistPlatformMacOsArm64
 ifeq ($(OS),Windows_NT)
-	$(call go_static_binary_windows_dist,\
+	$(call go_stripped_binary_windows_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -642,7 +681,7 @@ ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_PATH_INFO_ROOT_DIST_OS}/${ENV_INFO_PLATFORM_OS_MACOS}/${ENV_INFO_PLATFORM_OS_ARCH_ARM64}/${ENV_INFO_DIST_BIN_NAME})\
 	)
 else
-	$(call go_static_binary_dist,\
+	$(call go_stripped_binary_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
