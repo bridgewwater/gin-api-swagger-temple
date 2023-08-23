@@ -66,8 +66,8 @@ jobs:
 
       - name: Build Release binary
         run: |
-          go mod download -x
-          go mod vendor
+          # go mod download -x
+          # go mod vendor
           go build -v ./...
 
           # run help
