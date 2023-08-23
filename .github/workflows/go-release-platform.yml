@@ -66,10 +66,9 @@ jobs:
 
       - name: Build Release binary
         run: |
-          go mod verify
           go mod download -x
-          go mod tidy -v
           go mod vendor
+          go build -v ./...
 
           # run help
           go run ${{ env.DIST_BUILD_ENTRANCE }} -h
