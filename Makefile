@@ -134,7 +134,7 @@ swagger: zymosisGo cleanSwaggerDoc
 	$(info swag i -g main.go -dir api/v1 --instanceName v1)
 	swag i -dir api/v1 --instanceName v1
 
-dep: swagger modVerify modDownload modTidy modVendor
+dep: swagger modVerify modDownload modTidy
 	@echo "-> just check depends below"
 
 style: modTidy modVerify modFmt modLintRun
