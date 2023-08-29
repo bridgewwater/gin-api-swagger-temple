@@ -304,7 +304,7 @@ readme_package_fix=(
   gin-gonic
   json-iterator
 )
-if [ ! -n "${clean_sync_list}" ];then
+if [ ! -n "${readme_package_fix}" ];then
   pI "readme_package_fix is empty"
 else
   for readme_package_fix_item in ${readme_package_fix[@]}; do
