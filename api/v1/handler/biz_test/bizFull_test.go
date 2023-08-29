@@ -1,6 +1,7 @@
 package biz_test
 
 import (
+	"github.com/sinlov-go/go-http-mock/gin_mock"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -9,6 +10,7 @@ import (
 func TestGetHeadFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	// mock GetHeadFull
 	tests := []struct {
 		name     string
@@ -19,7 +21,7 @@ func TestGetHeadFull(t *testing.T) {
 	}{
 		{
 			name: "sample",
-			path: basePath + "/biz/header_full",
+			path: "/biz/header_full",
 			header: map[string]string{
 				"BIZ_FOO": "foo",
 				"BIZ_BAR": "bar",
@@ -31,7 +33,13 @@ func TestGetHeadFull(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 
 			// do GetHeadFull
-			recorder, _ := MockRequestGet(t, ginEngine, tc.path, tc.header)
+
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodGet).
+				Body(nil).
+				Header(tc.header).
+				NewRecorder()
 
 			// verify GetHeadFull
 			assert.False(t, tc.wantErr)
@@ -49,6 +57,7 @@ func TestGetHeadFull(t *testing.T) {
 func TestGetQueryFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 
 	type query struct {
 		Foo string `form:"foo" json:"foo" binding:"required"`
@@ -67,7 +76,7 @@ func TestGetQueryFull(t *testing.T) {
 	}{
 		{
 			name: "sample",
-			path: basePath + "/biz/query_full",
+			path: "/biz/query_full",
 			query: query{
 				Foo: "foo",
 				Bar: "bar",
@@ -79,7 +88,13 @@ func TestGetQueryFull(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// do GetQueryFull
-			recorder, _ := MockJsonQueryGet(t, ginEngine, tc.path, tc.header, tc.query)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodGet).
+				Query(tc.query).
+				BodyJson(nil).
+				Header(tc.header).
+				NewRecorder()
 
 			// verify GetQueryFull
 			assert.False(t, tc.wantErr)
@@ -96,6 +111,7 @@ func TestGetQueryFull(t *testing.T) {
 func TestPostFormFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	type query struct {
 		Foo string `form:"foo" json:"foo" binding:"required"`
 		Bar string `form:"bar" json:"bar" binding:"required"`
@@ -112,7 +128,7 @@ func TestPostFormFull(t *testing.T) {
 	}{
 		{
 			name:     "sample",
-			path:     basePath + "/biz/form_full",
+			path:     "/biz/form_full",
 			body:     query{Foo: "foo", Bar: "bar", Baz: "baz"},
 			respCode: http.StatusOK,
 		},
@@ -120,7 +136,12 @@ func TestPostFormFull(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// do PostFormFull
-			recorder, _ := MockFormPost(t, ginEngine, tc.path, tc.header, tc.body)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodPost).
+				BodyForm(tc.body).
+				Header(tc.header).
+				NewRecorder()
 
 			// verify PostFormFull
 			assert.False(t, tc.wantErr)

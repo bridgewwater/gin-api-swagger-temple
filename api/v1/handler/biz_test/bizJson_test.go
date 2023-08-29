@@ -3,6 +3,7 @@ package biz_test
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model/biz"
 	"github.com/sebdah/goldie/v2"
+	"github.com/sinlov-go/go-http-mock/gin_mock"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -11,6 +12,7 @@ import (
 func TestGetJSON(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	// mock GetJSON
 	tests := []struct {
 		name     string
@@ -21,7 +23,7 @@ func TestGetJSON(t *testing.T) {
 	}{
 		{
 			name:     "sample", // testdata/TestGetJSON/sample.golden
-			path:     basePath + "/biz/json",
+			path:     "/biz/json",
 			respCode: http.StatusOK,
 		},
 	}
@@ -32,7 +34,12 @@ func TestGetJSON(t *testing.T) {
 			)
 
 			// do GetJSON
-			recorder, _ := MockRequestGet(t, ginEngine, tc.path, tc.header)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodGet).
+				BodyJson(nil).
+				Header(tc.header).
+				NewRecorder()
 			assert.False(t, tc.wantErr)
 			if tc.wantErr {
 				t.Logf("want err close check case %s", t.Name())
@@ -48,6 +55,7 @@ func TestGetJSON(t *testing.T) {
 func TestPostJsonModelBiz(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	// mock PostJsonModelBiz
 	tests := []struct {
 		name     string
@@ -59,7 +67,7 @@ func TestPostJsonModelBiz(t *testing.T) {
 	}{
 		{
 			name: "sample", // testdata/TestPostJsonModelBiz/sample.golden
-			path: basePath + "/biz/modelBiz",
+			path: "/biz/modelBiz",
 			body: biz.Biz{
 				Info:   "input info here",
 				Id:     "foo",
@@ -70,7 +78,7 @@ func TestPostJsonModelBiz(t *testing.T) {
 		},
 		{
 			name: "error model", // testdata/TestPostJsonModelBiz/sample.golden
-			path: basePath + "/biz/modelBiz",
+			path: "/biz/modelBiz",
 			body: struct {
 				Foo string `json:"foo"`
 			}{
@@ -86,7 +94,12 @@ func TestPostJsonModelBiz(t *testing.T) {
 			)
 
 			// do PostJsonModelBiz
-			recorder, _ := MockJsonPost(t, ginEngine, tc.path, tc.header, tc.body)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodPost).
+				BodyJson(tc.body).
+				Header(tc.header).
+				NewRecorder()
 			assert.False(t, tc.wantErr)
 			if tc.wantErr {
 				t.Logf("want err close check case %s", t.Name())
@@ -102,6 +115,7 @@ func TestPostJsonModelBiz(t *testing.T) {
 func TestPostQueryJsonMode(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	// mock PostQueryJsonMode
 	tests := []struct {
 		name     string
@@ -114,7 +128,7 @@ func TestPostQueryJsonMode(t *testing.T) {
 	}{
 		{
 			name: "sample", // testdata/TestPostQueryJsonMode/sample.golden
-			path: basePath + "/biz/modelBizQuery",
+			path: "/biz/modelBizQuery",
 			query: biz.Biz{
 				Offset: 1,
 				Limit:  10,
@@ -133,7 +147,13 @@ func TestPostQueryJsonMode(t *testing.T) {
 			)
 
 			// do PostQueryJsonMode
-			recorder, _ := MockJsonQueryPost(t, ginEngine, tc.path, tc.header, tc.query, tc.body)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodPost).
+				Query(tc.query).
+				BodyJson(tc.body).
+				Header(tc.header).
+				NewRecorder()
 			assert.False(t, tc.wantErr)
 			if tc.wantErr {
 				t.Logf("want err close check case %s", t.Name())

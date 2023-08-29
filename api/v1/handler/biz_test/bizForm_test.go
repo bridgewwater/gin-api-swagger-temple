@@ -3,6 +3,7 @@ package biz_test
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/api/v1/model/biz"
 	"github.com/sebdah/goldie/v2"
+	"github.com/sinlov-go/go-http-mock/gin_mock"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
@@ -11,6 +12,7 @@ import (
 func TestPostForm(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
+	apiBasePath := basePath
 	// mock PostForm
 	tests := []struct {
 		name     string
@@ -22,7 +24,7 @@ func TestPostForm(t *testing.T) {
 	}{
 		{
 			name: "sample", // testdata/TestPostForm/sample.golden
-			path: basePath + "/biz/form",
+			path: "/biz/form",
 			body: biz.Biz{
 				Info:   "input info here",
 				Id:     "id123zqqeeadg24qasd",
@@ -39,7 +41,12 @@ func TestPostForm(t *testing.T) {
 			)
 
 			// do PostForm
-			recorder, _ := MockFormPost(t, ginEngine, tc.path, tc.header, tc.body)
+			ginMock := gin_mock.NewGinMock(t, ginEngine, apiBasePath, tc.path)
+			recorder := ginMock.
+				Method(http.MethodPost).
+				BodyForm(tc.body).
+				Header(tc.header).
+				NewRecorder()
 			assert.False(t, tc.wantErr)
 			if tc.wantErr {
 				t.Logf("want err close check case %s", t.Name())
