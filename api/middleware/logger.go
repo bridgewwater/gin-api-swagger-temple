@@ -26,6 +26,10 @@ func LoggerMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		if zlog_access.CheckPrefixIsSkip(reqUri) {
+			return
+		}
+
 		// start time
 		startTime := time.Now()
 		// to next

@@ -5,6 +5,7 @@ import (
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/common"
 	"go.uber.org/zap"
 	"sort"
+	"strings"
 )
 
 // A
@@ -68,10 +69,38 @@ func CheckPathIsSkip(target string) bool {
 
 }
 
-func AppendSkipPath(listPath []string) {
+func AppendSkipPath(listPath ...string) {
 	if len(listPath) == 0 {
 		return
 	}
 	skipPath = append(skipPath, listPath...)
 	skipPath = common.RemoveStringDuplicateNotCopy(skipPath)
+}
+
+var (
+	skipPrefix []string
+)
+
+func CheckPrefixIsSkip(target string) bool {
+	if len(skipPrefix) == 0 {
+		return false
+	}
+
+	for _, prefix := range skipPrefix {
+		if strings.HasPrefix(target, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
+// AppendSkipPrefix
+//
+//	not dot append too much item
+func AppendSkipPrefix(listPrefix ...string) {
+	if len(listPrefix) == 0 {
+		return
+	}
+	skipPrefix = append(skipPrefix, listPrefix...)
+	skipPrefix = common.RemoveStringDuplicateNotCopy(skipPrefix)
 }
