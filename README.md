@@ -52,6 +52,9 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 - [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
 - [X] `major version` api support
     - [X] `api/v1` this first version of major api
+- [ ] error management
+    - basic error generate error by [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
+    - http error at different api version use different error management, v1 use by `errdef`
 - [X] generate swagger doc by [swag](https://github.com/swaggo/swag), and will auto remove at `runmode=release`
 - [X] server handler Exit Signal by `ctrl+c` or `kill -15 [pid]` return code 0, for safe exit.
 - [X] gin unit test case example, support [golden data test](https://github.com/sebdah/goldie), you can use `-update`

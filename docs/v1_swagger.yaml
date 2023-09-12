@@ -22,9 +22,19 @@ definitions:
   errdef.Err:
     properties:
       code:
+        description: |-
+          Code
+          error code default 0 is OK
+        example: 0
         type: integer
       msg:
+        description: |-
+          Msg
+          error message, if OK is empty
+        example: msg of error code 0 is empty
         type: string
+    required:
+    - code
     type: object
   parse_http.FormContent:
     properties:

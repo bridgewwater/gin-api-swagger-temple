@@ -70,3 +70,43 @@ func TestIsErrUserNotFound(t *testing.T) {
 	assert.True(t, foundOne)
 	assert.False(t, foundTwo)
 }
+
+func TestIsEqualByCode(t *testing.T) {
+	// mock IsEqualByCode
+	tests := []struct {
+		name    string
+		e       error
+		code    int
+		wantRes bool
+		wantErr error
+	}{
+		{
+			name:    "foo error",
+			e:       fmt.Errorf("foo"),
+			code:    OK.Code,
+			wantRes: false,
+		},
+		{
+			name:    "ErrUserNotFound",
+			e:       NewErr(ErrUserNotFound),
+			code:    ErrUserNotFound.Code,
+			wantRes: true,
+		},
+		{
+			name:    "ErrTokenInvalid",
+			e:       ErrTokenInvalid,
+			code:    ErrTokenInvalid.Code,
+			wantRes: true,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+
+			// do IsEqualByCode
+			gotResult := IsEqualByCode(tc.e, tc.code)
+
+			// verify IsEqualByCode
+			assert.Equal(t, tc.wantRes, gotResult)
+		})
+	}
+}

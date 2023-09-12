@@ -120,6 +120,8 @@ init:
 	go env
 	@echo "~> you can use [ make help ] see more task"
 	-go mod verify
+	@echo "~> as dev need kit https://pkg.go.dev/golang.org/x/tools/cmd/stringer"
+	@echo "~> can fix by: go install golang.org/x/tools/cmd/stringer@latest"
 
 zymosisGo:
 	$(info -> fix zymosis tools run as: go install -v github.com/convention-change/zymosis/cmd/zymosis@latest)

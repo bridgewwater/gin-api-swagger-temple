@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/internalErr/errServer"
 	"os"
 	"path/filepath"
 	"strings"
@@ -112,7 +112,7 @@ func (c *Config) initConfig() error {
 func checkMustHasString() error {
 	for _, config := range mustConfigString {
 		if "" == viper.GetString(config) {
-			return fmt.Errorf("not has must string key [ %v ]", config)
+			return errServer.Errorf(errServer.ConfigFormatError, "not has must string key [ %v ]", config)
 		}
 	}
 	return nil
