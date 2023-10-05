@@ -6,20 +6,12 @@ api_base: http://127.0.0.1:34565        # url full ip:port, this will cover by e
 base_path: /api/v1                      # /v1 is api MAJOR version as https://semver.org/
 sslEnable: false                        # isEnable ssl mode, this will cover by env: ENV_WEB_HTTPS_ENABLE
 
-log:
-  logger_level: DEBUG             # log level: DEBUG, INFO, WARN, ERROR, FATAL, this will cover by env:  ENV_WEB_LOG_LEVEL
-  writers: file,stdout            # file,stdout。`file` will let `logger_file` to file，`stdout` will show at std, most of time use bose
-  logger_file: logs/debug_access.log    # "" is not writer log file, and this will cover by env: CHASSIS_HOME
-  log_hide_lineno: false # `true` will hide code line number, `false` will show code line number, default is false
-  log_format_text: true # format_text `false` will format json, `true` will out stdout
-  rolling_policy: size            # rotate policy, can choose as: daily, size. `daily` store as daily，`size` will save as max
-  log_rotate_date: 1              # rotate date, coordinate `rollingPolicy: daily`
-  log_rotate_size: 8              # rotate size，coordinate `rollingPolicy: size`
-  log_backup_count: 7             # backup max count, log system will compress the log file when log reaches rotate set, this set is max file count
-
 # zap config
 zap:
   AtomicLevel: -1 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2
+  Api:
+    PrefixPaths: "/api/v1/" # api path prefix list
+    AtomicLevel: 0 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2 default 0
   FieldsAuto: false # is use auto Fields key set
   Fields:
     Key: key

@@ -32,6 +32,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 
 		// start time
 		startTime := time.Now()
+
 		// to next
 		c.Next()
 		// end time
@@ -53,46 +54,35 @@ func LoggerMiddleware() gin.HandlerFunc {
 		statusCode := c.Writer.Status()
 		if statusCode < 400 {
 			zlog_access.A().Infof(
-				"=> %15s %13v | %s < %3d -> %s rid:%s",
+				"=> %15s %13v | %s < %3d rid:%s -> %s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri,
 				reqId,
+				reqUri,
 			)
+
 		} else if statusCode < 500 {
 			zlog_access.A().Warnf(
-				"=> %15s %13v | %s < %3d -> %s rid:%s",
+				"=> %15s %13v | %s < %3d rid:%s -> %s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri,
 				reqId,
+				reqUri,
 			)
 		} else {
 			zlog_access.A().Errorf(
-				"=> %15s %13v | %s < %3d -> %s rid:%s",
+				"=> %15s %13v | %s < %3d rid:%s -> %s",
 				clientIP,
 				latencyTime,
 				reqMethod,
 				statusCode,
-				reqUri,
 				reqId,
+				reqUri,
 			)
 		}
-	}
-}
-
-// LoggerToMongo logger to mongo
-func LoggerToMongo() gin.HandlerFunc {
-	return func(c *gin.Context) {
-	}
-}
-
-// LoggerToMQ logger to MQ
-func LoggerToMQ() gin.HandlerFunc {
-	return func(c *gin.Context) {
 	}
 }

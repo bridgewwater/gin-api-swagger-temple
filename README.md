@@ -48,11 +48,12 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
     - [X] middleware [gin-correlation-id](https://github.com/bar-counter/gin-correlation-id) can tracking this server
       each api request
 - [X] log by [zap](https://github.com/uber-go/zap) and support rotate log file
-    - [X] access log at different file, and can change by `zap.rotate.AccessFilename` 
+    - [X] access log at different file, and can change by `zap.rotate.AccessFilename`
+    - [X] api log file, and can change by config `zap.Api.**`
 - [X] server status [monitor](https://github.com/bar-counter/monitor), for help DevOps tracking server status
 - [X] `major version` api support
     - [X] `api/v1` this first version of major api
-- [ ] error management
+- [X] error management
     - basic error generate error by [stringer](https://pkg.go.dev/golang.org/x/tools/cmd/stringer)
     - http error at different api version use different error management, v1 use by `errdef`
 - [X] generate swagger doc by [swag](https://github.com/swaggo/swag), and will auto remove at `runmode=release`
@@ -162,6 +163,9 @@ most of the doc at [http://127.0.0.1:34565/swagger/index.html](http://127.0.0.1:
 # zap config
 zap:
   AtomicLevel: -1 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2
+  Api:
+    PrefixPaths: "/api/v1/" # api path prefix list
+    AtomicLevel: 0 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2 default 0
   FieldsAuto: false # is use auto Fields key set
   Fields:
     Key: key
@@ -169,7 +173,9 @@ zap:
   Development: true # is open file and line number
   Encoding: console # output format, only use console or json, default is console
   rotate:
-    Filename: logs/gin-api-swagger-temple.log # Log file path
+    Filename: logs/template-gitea-gin-api.log # Log file path
+    # AccessFilename: logs/access.log # Access log file path
+    # ApiFilename: logs/api.log # api log file path
     MaxSize: 16 # Maximum size of each zlog file, Unit: M
     MaxBackups: 10 # How many backups are saved in the zlog file
     MaxAge: 7 # How many days can the file be keep, Unit: day

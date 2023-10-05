@@ -27,6 +27,9 @@ func MockZapLoggerInit() {
 //		# zap config
 //		zap:
 //		  AtomicLevel: -1 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2
+//		  Api:
+//		    PrefixPaths: "/api/v1/" # api path prefix list
+//		    AtomicLevel: 0 # DebugLevel:-1 InfoLevel:0 WarnLevel:1 ErrorLevel:2 default 0
 //		  FieldsAuto: false # is use auto Fields key set
 //		  Fields:
 //		    Key: key
@@ -35,6 +38,8 @@ func MockZapLoggerInit() {
 //		  Encoding: console # output format, only use console or json, default is console
 //		  rotate:
 //		    Filename: logs/temp-gin-web.log # Log file path
+//		    # AccessFilename: logs/access.log # Access log file path
+//		    # ApiFilename: logs/api.log # api log file path
 //		    MaxSize: 16 # Maximum size of each zlog file, Unit: M
 //		    MaxBackups: 10 # How many backups are saved in the zlog file
 //		    MaxAge: 7 # How many days can the file be keep, Unit: day

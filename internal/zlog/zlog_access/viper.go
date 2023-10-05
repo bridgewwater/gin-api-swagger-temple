@@ -2,6 +2,7 @@ package zlog_access
 
 import (
 	"fmt"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/common"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zap_encoder"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zip_rotate"
 	"github.com/spf13/viper"
@@ -9,7 +10,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const defaultAccessFileName = "logs/access.log"
+const (
+	defaultAccessFileName = "logs/access.log"
+	defaultApiFileName    = "logs/api.log"
+)
 
 func InitByViper() error {
 
@@ -24,12 +28,32 @@ func InitByViper() error {
 	}
 	encoder := zap_encoder.FilterZapEncoder(confEncoding, *encoderConfig)
 
-	rotateLogger := zip_rotate.NewLoggerByViper()
+	// format skipPath
+	skipPath = common.RemoveStringDuplicateNotCopy(skipPath)
+
 	accessFileName := viper.GetString("zap.rotate.AccessFilename")
 	if accessFileName == "" {
 		accessFileName = defaultAccessFileName
 	}
-	rotateLogger.Filename = accessFileName
+
+	apiFileName := viper.GetString("zap.rotate.ApiFilename")
+	if apiFileName == "" {
+		apiFileName = defaultApiFileName
+	}
+
+	if accessFileName == apiFileName {
+		return fmt.Errorf("config [ zap.rotate.AccessFilename ] and [ zap.rotate.ApiFilename ] is same")
+	}
+
+	initAccessByViper(encoder, atomicLevel, accessFileName)
+	initApiByViper(encoder, apiFileName)
+
+	return nil
+}
+
+func initAccessByViper(encoder zapcore.Encoder, atomicLevel zap.AtomicLevel, fileName string) {
+	rotateLogger := zip_rotate.NewLoggerByViper()
+	rotateLogger.Filename = fileName
 
 	core := zapcore.NewCore(
 		encoder, // Encoder configuration
@@ -39,21 +63,39 @@ func InitByViper() error {
 		atomicLevel, // Log level
 	)
 
-	//var logZap *zap.Logger
-	//if viper.GetBool("zap.Development") {
-	//	logZap = zap.New(core, zap.AddCaller(), zap.Development())
-	//} else {
-	//	logZap = zap.New(core)
-	//}
 	logZap := zap.New(core)
 	newAccessAsZap(logZap, logZap.Sugar())
+}
 
-	return nil
+func initApiByViper(encoder zapcore.Encoder, fileName string) {
+	atomicLevel := zap.NewAtomicLevelAt(zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.Api.AtomicLevel")))
+	rotateLogger := zip_rotate.NewLoggerByViper()
+	rotateLogger.Filename = fileName
+	configApiPaths := viper.GetStringSlice("zap.Api.PrefixPaths")
+	if len(configApiPaths) > 0 {
+		AppendApiPrefix(configApiPaths...)
+	}
+
+	core := zapcore.NewCore(
+		encoder, // Encoder configuration
+		zapcore.NewMultiWriteSyncer(
+			zapcore.AddSync(rotateLogger),
+		), // Print to console and file
+		atomicLevel, // Log level
+	)
+
+	logZap := zap.New(core)
+	newApiAsZap(logZap, logZap.Sugar())
 }
 
 // MockInit
-// for unit test init
+//
+//	for unit test init
 func MockInit() {
+	// format skipPath
+	skipPath = common.RemoveStringDuplicateNotCopy(skipPath)
+
 	logger, _ := zap.NewProduction()
 	newAccessAsZap(logger, logger.Sugar())
+	newApiAsZap(logger, logger.Sugar())
 }

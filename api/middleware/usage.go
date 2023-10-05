@@ -1,10 +1,11 @@
 package middleware
 
 import (
+	"net/http"
+
 	"github.com/bar-counter/gin-correlation-id/gin_correlation_id_snowflake"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func Usage(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
@@ -17,6 +18,7 @@ func Usage(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	// Middlewares.
 	g.Use(gin.Recovery())
 	g.Use(LoggerMiddleware())
+	g.Use(LoggerContentMiddleware())
 	g.Use(noCache)
 	g.Use(options)
 	g.Use(secure)
