@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/bar-counter/gin-correlation-id v1.2.0
 	github.com/bar-counter/monitor/v2 v2.2.0
-	github.com/fsnotify/fsnotify v1.6.0
+	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/json-iterator/go v1.1.12
 	github.com/mattn/go-colorable v0.1.13
