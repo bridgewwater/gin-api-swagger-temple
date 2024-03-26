@@ -122,8 +122,11 @@ $ make help
 $ make dep
 # run all test case
 $ make test
+# run test case with coverage and see report
+$ make testCoverage testCoverageShow
 # run test case with coverage and see report by browser
 $ make testCoverageBrowser
+
 # run server as dev
 $ make dev
 

@@ -81,9 +81,9 @@ testCoverageClean:
 testCoverage:
 	@echo "=> run test coverage start"
 ifeq ($(OS),Windows_NT)
-	@go test -cover -coverprofile ${ENV_GO_TEST_COVERAGE_PROFILE} -covermode count -coverpkg ./... -tags test -v ${ENV_ROOT_TEST_LIST}
+	@go test -tags test -cover -coverprofile ${ENV_GO_TEST_COVERAGE_PROFILE} -covermode count -coverpkg ./... -v ${ENV_ROOT_TEST_LIST}
 else
-	@go test -cover -coverprofile ${ENV_GO_TEST_COVERAGE_PROFILE} -covermode count -coverpkg ./... -tags test -v ${ENV_ROOT_TEST_LIST}
+	@go test -tags test -cover -coverprofile ${ENV_GO_TEST_COVERAGE_PROFILE} -covermode count -coverpkg ./... -v ${ENV_ROOT_TEST_LIST}
 endif
 
 testCoverageBrowser: testCoverage

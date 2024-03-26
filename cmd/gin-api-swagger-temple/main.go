@@ -42,8 +42,13 @@ func main() {
 	pflag.Parse()
 	pkgJson.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
 
+	versionInfoStr := fmt.Sprintf("api [ %s ] version: [ %v ] run on %s %s res: %s",
+		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false),
+		runtime.GOOS, runtime.GOARCH, zymosis.MainProgramRes())
+
 	if *help {
 		pflag.Usage()
+		fmt.Printf("=> %s\n", versionInfoStr)
 		return
 	}
 
@@ -52,9 +57,8 @@ func main() {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
-	fmt.Printf("=> config init success, now api [ %s ] version: [ %v ] run on %s %s res: %s\n",
-		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false),
-		runtime.GOOS, runtime.GOARCH, zymosis.MainProgramRes(),
+	fmt.Printf("=> config init success, now %s\n",
+		versionInfoStr,
 	)
 	fmt.Printf("-> by: %s, run on %s %s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())

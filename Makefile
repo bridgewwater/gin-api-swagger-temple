@@ -236,6 +236,7 @@ endif
 	@echo "~> make testBenchmark       - run go test benchmark case all"
 	@echo "~> make ci                  - run CI tools tasks"
 	@echo "~> make style               - run local code fmt and style check"
+	@echo "~> make runHelp             - run use ${ENV_RUN_INFO_HELP_ARGS}"
 	@echo "~> make runRelease          - run as release mode"
 	@echo "~> make run                 - run as test mode"
 	@echo "~> make dev                 - run as develop mode"
