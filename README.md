@@ -197,7 +197,7 @@ zap:
 
 ```
 
-## folder-structure
+## EngineeringStructure
 
 Project file definition
 
@@ -209,12 +209,14 @@ Project file definition
 ├── docker-compose.yml          # local development docker-compose
 ├── build.dockerfile            # local docker build enter
 ├── z-MakefileUtils             # Makefile tool library
-├── Makefile                    # Makefile file, using make as a compilation tool
+├── Makefile                    # Makefile file entry, using make as a compilation tool
 ├── README.md
 ├── api                         # api management
 │   ├── middleware                # api middleware directory
 │   │   ├── app_version.go          # app version tracking middleware, use package.json to manage api version, header: X-App-Version
 │   │   ├── header.go               # header middleware, include: options secure noCache etc.
+│   │   ├── logger_access.go        # access log middleware, use zap rotate log by `zlog_access.A()`
+│   │   ├── logger_content.go       # api log middleware, use zap rotate by `zlog_access.I()`
 │   │   ├── monitor.go              # monitor middleware, use https://github.com/bar-counter/monitor
 │   │   └── usage.go                # usage middleware for Gin engine.
 │   │
@@ -225,18 +227,22 @@ Project file definition
 │       ├── handler                 # under api/v1 api, Similar to C in MVC architecture, it is used to read input, forward the processing flow to the actual processing function, and finally return the result.
 │       │   ├── biz                    # api group folder for /biz
 │       │   ├── json.go                # json parse
-│       │   └── jsonResponse.go        # universal response structure, The authentication method of each major version is inconsistent.
+│       │   ├── json_response_func.go  # universal response structure, The authentication method of each major version is inconsistent.
+│       │   └── parse_query.go         # parse query kit as `ParseQueryCommonOffsetAndLimit`
+│       ├── internal                # api v1 internal tools
+│       │   └── parse_http             # parse http request
 │       ├── model                   # under api/v1 model define api, The model of each major version is inconsistent.
-│       └── main.go                 # swag generated file entrance, swag base info update here
-├── cmd                         # cmd folder
+│       └── swagger.go              # swag generated file entrance, swag base info update here
+├── cmd                         # cmd folder for golang project
 │   └── gin-api-swagger-temple    # package of this web app
 │       ├── main.go                 # app program entrance
 │       └── main_test.go            # app integration test entrance
-│
+├── codecov.yml                 # code coverage config
+├── coverage.txt                # code coverage report, which is not in the git list
 ├── conf                        # Configuration files are stored in a unified directory
-│   ├── config.yaml
-│   ├── release                   # release configuration file
-│   └── test                      # test configuration file
+│   ├── config.yaml               # default configuration file
+│   ├── release                   # release configuration file folder
+│   └── test                      # test configuration file folder
 ├── build                       # build directory, which is not in the git list
 ├── dist                        # Publish the directory, which is not in the git list
 ├── doc                         # API document directory
@@ -249,18 +255,30 @@ Project file definition
 │   ├── swagger.json
 │   └── swagger.yaml
 ├── go.mod                      # go.mod file
-├── logs                        # log directory not in git management list
+├── logs                        # log directory, which is not in the git list
 ├── resource.go                 # embed file entrance, such as: html, js, css, image, json, etc.
-└── internal                    # internal tool directory
-    ├── config                    # Dedicated to handling configuration and configuration files Go package
-    │   ├── baseConf.go
-    │   ├── config.go
-    │   ├── logConf.go
-    │   └── watchConf.go
-    ├── folder                    # OS path tools
-    ├── parsehttp                 # parse http request
-    ├── pkg                       # referenced package
-    └── sys                       # system info tools
+├── internal                    # internal tool directory
+│   ├── config                    # Dedicated to handling configuration and configuration files Go package
+│   │   ├── conf_base.go
+│   │   ├── conf_log.go
+│   │   ├── config.go
+│   │   ├── mock_config.go
+│   │   └── watch_conf.go
+│   ├── folder                    # OS path tools
+│   ├── gin_kit                   # tools for gin
+│   ├── internal_err              # err code sample
+│   ├── pkg                       # referenced package
+│   │   ├── pkgJson                 # package.json toolkit
+│   │   └── version_check           # version check by semver
+│   ├── sys                       # system info tools
+│   └── zlog                      # zap log tools
+├── logs                        # log directory, which is not in the git list
+│   ├── access.log                # access log by `zlog_access.A()`
+│   ├── api.log                   # api log by `zlog_access.I()`
+│   └── gin-api-swagger-temple.log # log by zap rotate
+├── package.json               # command line profile information for embed
+├── resource.go                # embed resource
+└── zymosis                    # resource mark by https://github.com/convention-change/zymosis
 ```
 
 ## development skills
