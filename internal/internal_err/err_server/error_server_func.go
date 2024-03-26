@@ -1,42 +1,9 @@
-package errServer
+package err_server
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
 )
-
-//go:generate stringer -type ErrCode -linecomment
-const (
-	GoVersionError    ErrCode = 20000
-	ConfigFormatError ErrCode = 20101
-
-	RedisConnectError ErrCode = 20201
-
-	DBConnectError    ErrCode = 20301
-	DBInitializeError ErrCode = 20302
-)
-
-// ErrCode
-// error code
-type ErrCode int
-
-type ServerError struct {
-	Code    ErrCode `json:"code"`
-	Message string  `json:"msg"`
-}
-
-func (e *ServerError) Error() string {
-	return e.Code.String()
-}
-
-func (e *ServerError) Json() string {
-	marshal, err := json.Marshal(e)
-	if err != nil {
-		return ""
-	}
-	return string(marshal)
-}
 
 func Error(code ErrCode) error {
 	return errors.Wrap(&ServerError{

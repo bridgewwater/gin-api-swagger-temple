@@ -1,8 +1,8 @@
 package parse_http
 
-type QueryContent struct {
-	ParseTime    string            `json:"parse_time,omitempty"`
+type FormContent struct {
 	URL          string            `json:"url"`
+	ParseTime    string            `json:"parse_time,omitempty"`
 	Method       string            `json:"method,omitempty"`
 	RemoteAddr   string            `json:"remote_addr,omitempty"`
 	Host         string            `json:"host,omitempty"`
@@ -12,5 +12,6 @@ type QueryContent struct {
 	Param        string            `json:"param,omitempty"`
 	Referer      string            `json:"referer,omitempty"`
 	Headers      map[string]string `json:"headers,omitempty"`
+	PostFormData map[string]string `json:"postData,omitempty"`
 	QueryStrings map[string]string `json:"queryString,omitempty"`
 }

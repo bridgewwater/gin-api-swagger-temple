@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/internalErr/errServer"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/internal_err/err_server"
 	"os"
 	"path/filepath"
 	"strings"
@@ -83,8 +83,8 @@ func (c *Config) initConfig() error {
 		viper.SetConfigName("config")
 	}
 	viper.SetConfigType("yaml")          // 设置配置文件格式为YAML
-	viper.AutomaticEnv()                 // 读取匹配的环境变量
 	viper.SetEnvPrefix(defaultEnvPrefix) // 读取环境变量的前缀为 defaultEnvPrefix
+	viper.AutomaticEnv()                 // 读取匹配的环境变量
 
 	// 设置 默认环境变量
 	_ = os.Setenv(EnvHostName, "")
@@ -112,7 +112,7 @@ func (c *Config) initConfig() error {
 func checkMustHasString() error {
 	for _, config := range mustConfigString {
 		if "" == viper.GetString(config) {
-			return errServer.Errorf(errServer.ConfigFormatError, "not has must string key [ %v ]", config)
+			return err_server.Errorf(err_server.ConfigFormatError, "not has must string key [ %v ]", config)
 		}
 	}
 	return nil

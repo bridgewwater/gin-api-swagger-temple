@@ -10,10 +10,14 @@ import (
 )
 
 // JsonErrDef
-// use as
+//
+//	use as
+//
 // handler.JsonErrDef(c, errdef.ErrParams)
 // return
-// or use add messages, sep of message use string "; "
+//
+//	or use add messages, sep of message use string "; "
+//
 // handler.JsonErrDef(c, errdef.ErrParams, "id", "not found, set id and retry")
 // return
 func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
@@ -29,10 +33,14 @@ func JsonErrDef(c *gin.Context, def *errdef.ErrDef, errMsgs ...string) {
 }
 
 // JsonErrDefErr
-// use as
+//
+//	use as
+//
 // handler.JsonErrDefErr(c, errdef.ErrDatabase, err)
 // return
-// or use add messages, sep of message use string "; "
+//
+//	or use add messages, sep of message use string "; "
+//
 // handler.JsonErrDefErr(c, errdef.ErrDatabase, err, "can not found")
 // return
 func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsg ...string) {
@@ -53,7 +61,9 @@ func JsonErrDefErr(c *gin.Context, def *errdef.ErrDef, err error, errMsg ...stri
 }
 
 // JsonSuccess
-// use as
+//
+//	use as
+//
 // handler.JsonSuccess(c)
 // return
 func JsonSuccess(c *gin.Context, data interface{}) {
@@ -72,7 +82,9 @@ func JsonSuccess(c *gin.Context, data interface{}) {
 }
 
 // JsonFail
-// use as
+//
+//	use as
+//
 // handler.JsonFail(c, "fail message")
 // return
 func JsonFail(c *gin.Context, fail string, data interface{}) {
@@ -91,7 +103,9 @@ func JsonFail(c *gin.Context, fail string, data interface{}) {
 }
 
 // JsonErr
-// use as
+//
+//	use as
+//
 // handler.JsonErr(c, 0)
 // return
 func JsonErr(c *gin.Context, errCode int, data interface{}) {

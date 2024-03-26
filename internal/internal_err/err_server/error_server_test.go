@@ -1,4 +1,4 @@
-package errServer
+package err_server
 
 import (
 	"errors"
