@@ -10,7 +10,7 @@ import (
 func TestGetHeadFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock GetHeadFull
 	tests := []struct {
 		name     string
@@ -57,7 +57,7 @@ func TestGetHeadFull(t *testing.T) {
 func TestGetQueryFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 
 	type query struct {
 		Foo string `form:"foo" json:"foo" binding:"required"`
@@ -111,7 +111,7 @@ func TestGetQueryFull(t *testing.T) {
 func TestPostFormFull(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	type query struct {
 		Foo string `form:"foo" json:"foo" binding:"required"`
 		Bar string `form:"bar" json:"bar" binding:"required"`

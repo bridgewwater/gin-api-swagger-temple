@@ -3,6 +3,7 @@ module github.com/bridgewwater/gin-api-swagger-temple
 go 1.19
 
 require (
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/bar-counter/gin-correlation-id v1.2.0
 	github.com/bar-counter/monitor/v2 v2.2.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -12,6 +13,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/sinlov-go/go-http-mock v1.0.0
+	github.com/sinlov-go/unittest-kit v1.1.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0

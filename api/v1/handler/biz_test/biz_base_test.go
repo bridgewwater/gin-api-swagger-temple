@@ -11,7 +11,7 @@ import (
 func TestGetPath(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock GetPath
 	tests := []struct {
 		name     string
@@ -64,7 +64,7 @@ func TestGetPath(t *testing.T) {
 func TestGetQuery(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 
 	type query struct {
 		Offset string `form:"offset" json:"offset"`
@@ -143,7 +143,7 @@ func TestGetQuery(t *testing.T) {
 }
 
 func TestGetString(t *testing.T) {
-	ginMock := gin_mock.NewGinMock(t, basicRouter, basePath, "/biz/string")
+	ginMock := gin_mock.NewGinMock(t, basicRouter, valBasePath, "/biz/string")
 	recorder := ginMock.
 		Method(http.MethodGet).
 		Body(nil).

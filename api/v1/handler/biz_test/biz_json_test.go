@@ -12,7 +12,7 @@ import (
 func TestGetJSON(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock GetJSON
 	tests := []struct {
 		name     string
@@ -55,7 +55,7 @@ func TestGetJSON(t *testing.T) {
 func TestPostJsonModelBiz(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock PostJsonModelBiz
 	tests := []struct {
 		name     string
@@ -115,7 +115,7 @@ func TestPostJsonModelBiz(t *testing.T) {
 func TestPostQueryJsonMode(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock PostQueryJsonMode
 	tests := []struct {
 		name     string

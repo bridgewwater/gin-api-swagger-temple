@@ -1,14 +1,16 @@
 ## for golang test task
 # include z-MakefileUtils/MakeGoMod.mk
 # windows use must install tools
-# https://scoop.sh/#/apps?q=gow&s=0&d=1&o=true
-# scoop install gow
+# https://scoop.sh/#/apps?q=busybox&s=0&d=1&o=true
+# scoop install main/busybox
 
 checkEnvGOPATH:
 ifndef GOPATH
 	@echo Environment variable GOPATH is not set
 	exit 1
 endif
+
+ENV_GO_PATH=$(shell go env GOPATH)
 
 modFetch:
 	@echo "-> can fetch last version github.com/gin-gonic/gin as"
@@ -45,7 +47,7 @@ modVerify:
 	@go mod verify
 
 modTidy:
-	@go mod tidy -x -v
+	@go mod tidy -v
 
 modDownload:
 	@go mod download -x
@@ -81,6 +83,7 @@ endif
 
 modLintRun:
 	@echo "-> if run error try fix: make modCiLintInstall"
+	@golangci-lint --version
 	golangci-lint run -c .golangci.yaml
 
 helpGoMod:

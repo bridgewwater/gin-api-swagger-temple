@@ -1,4 +1,4 @@
-package biz_test
+package gin_mock_test
 
 import (
 	"bytes"
@@ -50,9 +50,9 @@ func MockRequest(t *testing.T, router *gin.Engine, method, url string, header ma
 }
 
 func MockJsonPost(t *testing.T, router *gin.Engine, url string, header map[string]string, param interface{}) (*httptest.ResponseRecorder, *http.Request) {
-	newRequest, err := makeRequest(http.MethodPost, JSON, url, param)
+	newRequest, err := MakeRequest(http.MethodPost, JSON, url, param)
 	if err != nil {
-		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+		t.Fatalf("mock MakeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
 	}
 	if len(header) > 0 {
 		for k, v := range header {
@@ -65,9 +65,9 @@ func MockJsonPost(t *testing.T, router *gin.Engine, url string, header map[strin
 }
 
 func MockFormPost(t *testing.T, router *gin.Engine, url string, header map[string]string, param interface{}) (*httptest.ResponseRecorder, *http.Request) {
-	newRequest, err := makeRequest(http.MethodPost, FORM, url, param)
+	newRequest, err := MakeRequest(http.MethodPost, FORM, url, param)
 	if err != nil {
-		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+		t.Fatalf("mock MakeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
 	}
 	if len(header) > 0 {
 		for k, v := range header {
@@ -80,7 +80,7 @@ func MockFormPost(t *testing.T, router *gin.Engine, url string, header map[strin
 }
 
 // make request
-func makeRequest(method, mime, api string, param interface{}) (request *http.Request, err error) {
+func MakeRequest(method, mime, api string, param interface{}) (request *http.Request, err error) {
 	method = strings.ToUpper(method)
 	mime = strings.ToLower(mime)
 
@@ -129,7 +129,7 @@ func MockJsonQueryGet(t *testing.T, router *gin.Engine, url string, header map[s
 	}
 	newRequest, err := http.NewRequest(http.MethodGet, api, nil)
 	if err != nil {
-		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+		t.Fatalf("mock MakeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
 	}
 	newRequest.Header.Set("Content-Type", "application/json;charset=utf-8")
 	if len(header) > 0 {
@@ -153,12 +153,12 @@ func MockJsonQueryPost(t *testing.T, router *gin.Engine, url string, header map[
 	}
 	jsonBytes, err := json.Marshal(body)
 	if err != nil {
-		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+		t.Fatalf("mock MakeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
 	}
 	contentBuffer = bytes.NewBuffer(jsonBytes)
 	newRequest, err := http.NewRequest(http.MethodPost, api, contentBuffer)
 	if err != nil {
-		t.Fatalf("mock makeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
+		t.Fatalf("mock MakeRequest name %s method [ %s ] url %v error %v", t.Name(), http.MethodPost, url, err)
 	}
 	newRequest.Header.Set("Content-Type", "application/json;charset=utf-8")
 	if len(header) > 0 {

@@ -1,5 +1,7 @@
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
+github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0rYXWg0=
+github.com/Masterminds/semver/v3 v3.2.1/go.mod h1:qvl/7zhW3nngYb5+80sSMF+FG2BjYrf8m9wsX0PNOMQ=
 github.com/bar-counter/gin-correlation-id v1.2.0 h1:nkvuHXorGPTeo/B2Ci2ftksMVLA6oK73ZoqbucBfpNk=
 github.com/bar-counter/gin-correlation-id v1.2.0/go.mod h1:LdjnA8T1uyVTuGspLUNLJXX+viQjm3cXT3CK+wxyrKg=
 github.com/bar-counter/monitor/v2 v2.2.0 h1:fLaka7mbDbEh6Nc8EG9aStk8Nf4gwhKpCuuS8vqt5bQ=
@@ -125,6 +127,8 @@ github.com/shoenig/test v0.6.4 h1:kVTaSd7WLz5WZ2IaoM0RSzRsUD+m8wRR+5qvntpn4LU=
 github.com/shoenig/test v0.6.4/go.mod h1:byHiCGXqrVaflBLAMq/srcZIHynQPQgeyvkvXnjqq0k=
 github.com/sinlov-go/go-http-mock v1.0.0 h1:FBpO+CP7yiYjr/1hS5hynJzeK66AS21E3zKYz+2pL2M=
 github.com/sinlov-go/go-http-mock v1.0.0/go.mod h1:U0JKYWF+wAsq5PyG7doam6ZnqsSlUR7dZwFtFN2MMX4=
+github.com/sinlov-go/unittest-kit v1.1.0 h1:mT3cnhe+LAlvOoxkAggi4xQDOT58Q3az4XKV3R5cdJM=
+github.com/sinlov-go/unittest-kit v1.1.0/go.mod h1:2Xkvyl6VpSXAZ6lyrb4q52Dk4oAD+Yio5KQsd1ZhxOc=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spf13/afero v1.11.0 h1:WJQKhtpdm3v2IzqG8VMqrr6Rf3UYpEF239Jy9wNepM8=

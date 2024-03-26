@@ -12,7 +12,7 @@ import (
 func TestPostForm(t *testing.T) {
 	// mock gin at package test init()
 	ginEngine := basicRouter
-	apiBasePath := basePath
+	apiBasePath := valBasePath
 	// mock PostForm
 	tests := []struct {
 		name     string
