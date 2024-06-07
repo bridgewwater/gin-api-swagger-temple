@@ -1,5 +1,5 @@
 ## for golang test task
-# include z-MakefileUtils/MakeGoDist.mk
+# include z-MakefileUtils/go-dist.mk
 # this file must use as base Makefile job must has variate
 #
 # must as some include MakeDistTools.mk
@@ -40,10 +40,8 @@ define dist_tar_with_source
 	@echo ""
 	$(warning if cp source can change here cp tar undper $(strip ${1}))
 	$(info change this - cp '${ENV_ROOT_MANIFEST_PKG_JSON}' '$(strip ${1})')
-	$(info change this - cp -R 'docs/' '$(strip ${1})/docs')
-	cp -R 'docs/' '$(strip ${1})/docs'
-	mkdir -p '$(strip ${1})/conf'
-	cp 'conf/config.yaml' '$(strip ${1})/conf/'
+	$(info change this - cp -R 'doc/' '$(strip ${1})/doc')
+	cp -R 'doc/' '$(strip ${1})/doc'
 	@echo "-> cp source finish"
 
 	tar -zcvf $(strip ${2})${ENV_INFO_DIST_BIN_NAME}-$(strip ${3})-${ENV_INFO_DIST_VERSION}${ENV_INFO_DIST_MARK}.tar.gz -C $(strip ${1}) "."
@@ -63,10 +61,8 @@ define dist_tar_with_windows_source
 	@echo ""
 	$(warning if cp source can change here cp tar undper $(strip ${1}))
 	$(info change this - cp '${ENV_ROOT_MANIFEST_PKG_JSON}' '$(strip ${1})')
-	$(info change this - cp -R 'docs\' '$(strip ${1})\')
-	cp -R 'docs\' '$(strip ${1})\'
-	mkdir '$(strip ${1})\conf\'
-	cp 'conf\config.yaml' '$(strip ${1})\conf\'
+	$(info change this - cp -R 'doc\' '$(strip ${1})\')
+	cp -R 'doc\' '$(strip ${1})\'
 	@echo "-> cp source finish"
 
 	tar -zcvf $(strip ${2})${ENV_INFO_DIST_BIN_NAME}-$(strip ${3})-${ENV_INFO_DIST_VERSION}${ENV_INFO_DIST_MARK}.tar.gz -C $(strip ${1}) "."
@@ -75,6 +71,7 @@ define dist_tar_with_windows_source
 	@echo "~> tar ${ENV_INFO_DIST_VERSION}${ENV_INFO_DIST_MARK} at: $(strip ${2})${ENV_INFO_DIST_BIN_NAME}-$(strip ${3})-${ENV_INFO_DIST_VERSION}${ENV_INFO_DIST_MARK}.tar.gz"
 endef
 
+.PHONY: distEnv
 distEnv:
 	@echo "== MakeGoDist info start =="
 	@echo ""
@@ -90,6 +87,7 @@ distEnv:
 	@echo "== MakeGoDist info end   =="
 	@echo ""
 
+.PHONY: cleanDistAll
 cleanAllDist: cleanDistAll
 	@echo "~> finish clean path: ${ENV_PATH_INFO_ROOT_DIST}"
 
@@ -142,45 +140,7 @@ $(warning "-> windows make shell cross compiling may be take mistake")
 	@echo "=> end $(strip $(6)).exe"
 endef
 
-define go_stripped_binary_dist
-	@echo "=> start $(0)"
-	@echo " want build out at path        : $(strip $(1))"
-	@echo "      build mark run env       : $(strip $(2))"
-	@echo "      build out binary         : $(strip $(3))"
-	@echo "      build GOOS               : $(strip $(4))"
-	@echo "      build GOARCH             : $(strip $(5))"
-	@echo "      build entrance           : $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})"
-	@echo "      DIST_BUILD_BIN_PATH      : $(strip $(6))"
-	@echo "-> start build OS:$(strip $(4)) ARCH:$(strip $(5))"
-	GOOS=$(strip $(4)) GOARCH=$(strip $(5)) go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-fpic"' \
-	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
-	@echo "=> end $(strip $(6))"
-endef
-
-define go_stripped_binary_windows_dist
-	@echo "=> start $(0)"
-$(warning "-> windows make shell cross compiling may be take mistake")
-	@echo " want build out at path        : $(strip $(1))"
-	@echo "      build mark run env       : $(strip $(2))"
-	@echo "      build out binary         : $(strip $(3))"
-	@echo "      build GOOS               : $(strip $(4))"
-	@echo "      build GOARCH             : $(strip $(5))"
-	@echo "      build entrance           : $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})"
-	@echo "      DIST_BUILD_BIN_PATH      : $(strip $(6))"
-	@echo "-> start build OS:$(strip $(4)) ARCH:$(strip $(5))"
-	set GOOS=$(strip $(4))
-	set GOARCH=$(strip $(5))
-	go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-static"' \
-	-o $(strip $(6)) $(strip ${ENV_INFO_DIST_BUILD_ENTRANCE})
-	@echo "=> end $(strip $(6)).exe"
-endef
-
+.PHONY: distTest
 distTest: cleanRootDistLocalTest pathCheckRootDistLocalTest
 ifeq ($(OS),Windows_NT)
 	$(call go_local_binary_dist,\
@@ -196,6 +156,7 @@ else
 	${ENV_INFO_DIST_BUILD_ENTRANCE})
 endif
 
+.PHONY: distTestTar
 distTestTar: distTest
 ifeq ($(OS),Windows_NT)
 	$(call dist_tar_with_windows_source,\
@@ -211,6 +172,7 @@ else
 	)
 endif
 
+.PHONY: distTestOS
 distTestOS: cleanRootDistOs pathCheckRootDistOs
 ifeq (${ENV_INFO_DIST_GO_OS},${ENV_INFO_PLATFORM_OS_WINDOWS})
 ifeq ($(OS),Windows_NT)
@@ -254,6 +216,7 @@ else
 endif
 endif
 
+.PHONY: distTestOSTar
 distTestOSTar: distTestOS
 ifeq ($(OS),Windows_NT)
 	$(call dist_tar_with_windows_source,\
@@ -269,6 +232,7 @@ else
 	)
 endif
 
+.PHONY: distRelease
 distRelease: cleanRootDistLocalRelease pathCheckRootDistLocalRelease
 ifeq ($(OS),Windows_NT)
 	$(call go_local_binary_dist,\
@@ -284,6 +248,7 @@ else
 	${ENV_INFO_DIST_BUILD_ENTRANCE})
 endif
 
+.PHONY: distReleaseTar
 distReleaseTar: distRelease
 ifeq ($(OS),Windows_NT)
 	$(call dist_tar_with_windows_source,\
@@ -299,6 +264,7 @@ else
 	)
 endif
 
+.PHONY: distReleaseOS
 distReleaseOS: cleanRootDistOs pathCheckRootDistOs
 ifeq (${ENV_INFO_DIST_GO_OS},${ENV_INFO_PLATFORM_OS_WINDOWS})
 ifeq ($(OS),Windows_NT)
@@ -342,6 +308,7 @@ else
 endif
 endif
 
+.PHONY: distReleaseOSTar
 distReleaseOSTar: distReleaseOS
 ifeq ($(OS),Windows_NT)
 	$(call dist_tar_with_windows_source,\
@@ -357,9 +324,11 @@ else
 	)
 endif
 
+.PHONY: distAllLocalTar
 distAllLocalTar: distTestTar distReleaseTar
 	@echo "=> all dist as os tar finish"
 
+.PHONY: distAllReleaseTar
 distPlatformTarWinAmd64: cleanRootDistPlatformWinAmd64 pathCheckRootDistPlatformWinAmd64
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -394,6 +363,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarWin386
 distPlatformTarWin386: cleanRootDistPlatformWin386 pathCheckRootDistPlatformWin386
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -428,6 +398,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarWinArm64
 distPlatformTarWinArm64: cleanRootDistPlatformWinArm64 pathCheckRootDistPlatformWinArm64
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -462,6 +433,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarWinArm
 distPlatformTarWinArm: cleanRootDistPlatformWinArm pathCheckRootDistPlatformWinArm
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -496,8 +468,10 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarAllWindows
 distPlatformTarAllWindows: distPlatformTarWinAmd64 distPlatformTarWin386 distPlatformTarWinArm64 distPlatformTarWinArm
 
+.PHONY: distPlatformTarLinuxAmd64
 distPlatformTarLinuxAmd64: cleanRootDistPlatformLinuxAmd64 pathCheckRootDistPlatformLinuxAmd64
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -532,6 +506,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarLinux386
 distPlatformTarLinux386: cleanRootDistPlatformLinuxAmd386 pathCheckRootDistPlatformLinux386
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -566,6 +541,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarLinuxArm
 distPlatformTarLinuxArm64: cleanRootDistPlatformLinuxArm64 pathCheckRootDistPlatformLinuxArm64
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -600,6 +576,7 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarLinuxArm
 distPlatformTarLinuxArm: cleanRootDistPlatformLinuxArm pathCheckRootDistPlatformLinuxArm
 ifeq ($(OS),Windows_NT)
 	$(call go_static_binary_windows_dist,\
@@ -634,11 +611,13 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarAllLinux
 distPlatformTarAllLinux: distPlatformTarLinuxAmd64 distPlatformTarLinux386 distPlatformTarLinuxArm64 distPlatformTarLinuxArm
 
+.PHONY: distPlatformTarMacos
 distPlatformTarMacosAmd64: cleanRootDistPlatformMacOsAmd64 pathCheckRootDistPlatformMacOsAmd64
 ifeq ($(OS),Windows_NT)
-	$(call go_stripped_binary_windows_dist,\
+	$(call go_static_binary_windows_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -647,7 +626,7 @@ ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_PATH_INFO_ROOT_DIST_OS}/${ENV_INFO_PLATFORM_OS_MACOS}/${ENV_INFO_PLATFORM_OS_ARCH_AMD64}/${ENV_INFO_DIST_BIN_NAME})\
 	)
 else
-	$(call go_stripped_binary_dist,\
+	$(call go_static_binary_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -670,9 +649,10 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarMacosArm
 distPlatformTarMacosArm64: cleanRootDistPlatformMacOsArm64 pathCheckRootDistPlatformMacOsArm64
 ifeq ($(OS),Windows_NT)
-	$(call go_stripped_binary_windows_dist,\
+	$(call go_static_binary_windows_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -681,7 +661,7 @@ ifeq ($(OS),Windows_NT)
 	$(subst /,\,${ENV_PATH_INFO_ROOT_DIST_OS}/${ENV_INFO_PLATFORM_OS_MACOS}/${ENV_INFO_PLATFORM_OS_ARCH_ARM64}/${ENV_INFO_DIST_BIN_NAME})\
 	)
 else
-	$(call go_stripped_binary_dist,\
+	$(call go_static_binary_dist,\
 	${ENV_PATH_INFO_ROOT_DIST_OS},\
 	${ENV_INFO_DIST_ENV_RELEASE_NAME},\
 	${ENV_INFO_DIST_BIN_NAME},\
@@ -704,12 +684,16 @@ else
 	)
 endif
 
+.PHONY: distPlatformTarAllMacos
 distPlatformTarAllMacos: distPlatformTarMacosAmd64 distPlatformTarMacosArm64
 
+.PHONY: distPlatformTarCommonUse
 distPlatformTarCommonUse: distPlatformTarLinuxAmd64 distPlatformTarWinAmd64 distPlatformTarMacosAmd64 distPlatformTarMacosArm64
 
+.PHONY: distPlatformTarAll
 distPlatformTarAll: distPlatformTarAllLinux distPlatformTarAllMacos distPlatformTarAllWindows
 
+.PHONY: helpGoDist
 helpGoDist:
 	@echo "Help: MakeGoDist.mk"
 	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_INFO_DIST_GO_OS) $(ENV_INFO_DIST_GO_ARCH) --"

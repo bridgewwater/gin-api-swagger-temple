@@ -2,7 +2,6 @@
 
 *.log
 logs/
-.env
 
 ### build temple
 build/

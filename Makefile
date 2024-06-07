@@ -57,15 +57,14 @@ ENV_ROOT_TEST_MAX_TIME:=1m
 
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
-include z-MakefileUtils/MakeGoList.mk
-include z-MakefileUtils/MakeGoMod.mk
-include z-MakefileUtils/MakeGoTest.mk
-include z-MakefileUtils/MakeGoTestIntegration.mk
-include z-MakefileUtils/MakeGoDist.mk
+include z-MakefileUtils/go-mod.mk
+include z-MakefileUtils/go-test.mk
+include z-MakefileUtils/go-test-integration.mk
+include z-MakefileUtils/go-dist.mk
+include z-MakefileUtils/go-list.mk
 include z-MakefileUtils/MakeGoDistScp.mk
 # include MakeDockerCompose.mk for docker run
 include z-MakefileUtils/MakeDockerCompose.mk
-include z-MakefileUtils/MakeGoAction.mk
 
 all: env
 
@@ -112,6 +111,7 @@ clean: cleanTestData cleanBuild cleanLog
 cleanAll: clean cleanAllDist
 	@echo "~> clean all finish"
 
+.PHONY: init
 init:
 	@echo "~> start init this project"
 	@echo "-> check version"
@@ -123,12 +123,14 @@ init:
 	@echo "~> as dev need kit https://pkg.go.dev/golang.org/x/tools/cmd/stringer"
 	@echo "~> can fix by: go install golang.org/x/tools/cmd/stringer@latest"
 
+.PHONY: zymosisGo
 zymosisGo:
 	$(info -> fix zymosis tools run as: go install -v github.com/convention-change/zymosis/cmd/zymosis@latest)
 	@zymosis --version
 	$(info -> generate res mark)
 	@zymosis -g go
 
+.PHONY: swagger
 swagger: zymosisGo cleanSwaggerDoc
 	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3)
 	@swag --version
@@ -136,12 +138,26 @@ swagger: zymosisGo cleanSwaggerDoc
 	$(info swag i -g main.go -dir api/v1 --instanceName v1)
 	swag i -dir api/v1 --instanceName v1
 
-dep: swagger modVerify modDownload modTidy
-	@echo "-> just check depends below"
+.PHONY: dep
+dep: swagger go.mod.verify go.mod.download go.mod.tidy
 
-style: modTidy modVerify modFmt modLintRun
+.PHONY: style
+style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
 
-ci: modTidy modVerify modFmt modLintRun modVet test
+.PHONY: test
+test: test.go
+
+.PHONY: ci
+ci: style go.mod.vet test
+
+.PHONY: ci.test.benchmark
+ci.test.benchmark: test.go.benchmark
+
+.PHONY: ci.coverage.show
+ci.coverage.show: test.go.coverage.show
+
+.PHONY: ci.all
+ci.all: ci ci.test.benchmark ci.coverage.show
 
 buildMain: swagger
 	@echo "-> start build local OS"
@@ -208,6 +224,7 @@ cloc:
 	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
 	cloc --exclude-list-file=.clocignore .
 
+.PHONY: helpProjectRoot
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
 ifeq ($(OS),Windows_NT)
@@ -226,21 +243,40 @@ endif
 	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
 	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
-	@echo "~> make env                 - print env of this project"
-	@echo "~> make init                - check base env of this project"
-	@echo "~> make dep                 - check and install by go mod"
-	@echo "~> make clean               - remove build binary file, log files, and testdata"
-	@echo "~> make test                - run test case ignore --invert-match by config"
-	@echo "~> make testCoverage        - run test coverage case ignore --invert-match by config"
-	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
-	@echo "~> make testBenchmark       - run go test benchmark case all"
-	@echo "~> make ci                  - run CI tools tasks"
-	@echo "~> make style               - run local code fmt and style check"
+	@echo "~> make test                 - run test fast"
+	@echo "~> make ci.all               - run CI tasks all"
+	@echo "~> make ci.test.benchmark    - run CI tasks as test benchmark"
+	@echo "~> make ci.coverage.show     - run CI tasks as test coverage and show"
+	@echo ""
+	@echo "~> make env                  - print env of this project"
+	@echo "~> make init                 - check base env of this project"
+	@echo "~> make dep                  - check and install by go mod"
+	@echo "~> make clean                - remove build binary file, log files, and testdata"
+	@echo "~> make style                - run local code fmt and style check"
+	@echo "~> make ci                   - run CI tools tasks"
+	@echo ""
+	@echo "~> make devHelp             - run as develop mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
+	@echo "~> make dev                 - run as develop mode"
+ifeq ($(OS),Windows_NT)
+	@echo "~> make devInstallLocal     - install at $(subst /,\,${ENV_GO_PATH}/bin)"
+else
+	@echo "~> make devInstallLocal     - install at ${ENV_GO_PATH}/bin"
+endif
 	@echo "~> make runHelp             - run use ${ENV_RUN_INFO_HELP_ARGS}"
 	@echo "~> make runRelease          - run as release mode"
 	@echo "~> make run                 - run as test mode"
 	@echo "~> make dev                 - run as develop mode"
-
-help: helpGoMod helpGoTest helpGoDist helpDocker helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoTestIntegration.mk MakeGoDist.mk MakeDockerCompose.mk --"
+
+.PHONY: help
+help: helpProjectRoot
+	@echo "== show more help"
+	@echo ""
+	@echo "$$ make helpGoDist"
+	@echo ""
+	@echo "$$ make help.test.go.integration"
+	@echo "$$ make help.test.go"
+	@echo "$$ make help.go.list"
+	@echo "$$ make help.go.mod"
+	@echo ""
+	@echo "-- more info see Makefile include --"
