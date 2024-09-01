@@ -3,7 +3,7 @@ module github.com/bridgewwater/gin-api-swagger-temple
 go 1.19
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/bar-counter/gin-correlation-id v1.2.0
 	github.com/bar-counter/monitor/v2 v2.2.0
 	github.com/fsnotify/fsnotify v1.7.0
