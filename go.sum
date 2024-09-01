@@ -1,7 +1,7 @@
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
-github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0rYXWg0=
-github.com/Masterminds/semver/v3 v3.2.1/go.mod h1:qvl/7zhW3nngYb5+80sSMF+FG2BjYrf8m9wsX0PNOMQ=
+github.com/Masterminds/semver/v3 v3.3.0 h1:B8LGeaivUe71a5qox1ICM/JLl0NqZSW5CHyL+hmvYS0=
+github.com/Masterminds/semver/v3 v3.3.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/bar-counter/gin-correlation-id v1.2.0 h1:nkvuHXorGPTeo/B2Ci2ftksMVLA6oK73ZoqbucBfpNk=
 github.com/bar-counter/gin-correlation-id v1.2.0/go.mod h1:LdjnA8T1uyVTuGspLUNLJXX+viQjm3cXT3CK+wxyrKg=
 github.com/bar-counter/monitor/v2 v2.2.0 h1:fLaka7mbDbEh6Nc8EG9aStk8Nf4gwhKpCuuS8vqt5bQ=
