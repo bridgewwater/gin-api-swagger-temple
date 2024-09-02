@@ -10,7 +10,7 @@ import (
 func MockInitSample(host string, baseUrl string, sslEnable bool) *gin.Engine {
 
 	e := gin_mock.MockEngine(func(engine *gin.Engine) error {
-		baseConf = BaseConf{
+		baseConf = &BaseConf{
 			Addr:      host,
 			BaseURL:   baseUrl,
 			SSLEnable: sslEnable,

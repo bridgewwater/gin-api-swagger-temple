@@ -70,8 +70,8 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## env
 
-- minimum go version: go 1.19
-- change `go 1.19`, `^1.19`, `1.19.12-bullseye` `1.19.12` to new go version
+- minimum go version: go 1.21
+- change `go 1.21`, `^1.21`, `1.21.13` to new go version
 
 ### libs
 

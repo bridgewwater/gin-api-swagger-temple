@@ -22,6 +22,7 @@ type Err struct {
 //
 //	errdef.NewErr(errdef.ErrParams).Add("params id not found")
 func NewErr(e *ErrDef) *Err {
+	// nolint:govet
 	return &Err{Code: e.Code, Msg: e.Msg, Err: fmt.Errorf(e.Msg)}
 }
 

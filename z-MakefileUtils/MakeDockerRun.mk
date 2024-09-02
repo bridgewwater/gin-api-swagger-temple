@@ -24,11 +24,15 @@ initDockerDevImages:
 	-GOPROXY="$(ENV_GO_PROXY)" GO111MODULE=on go mod vendor
 
 dockerLocalImageInit:
-	docker build --tag $(ROOT_DOCKER_IMAGE_NAME):$(ROOT_DOCKER_IMAGE_TAG) .
+	docker build \
+	--build-arg ENV_BUILD_DIST_CODE_MARK=${ENV_DIST_CODE_MARK} \
+	--tag $(ROOT_DOCKER_IMAGE_NAME):$(ROOT_DOCKER_IMAGE_TAG) .
 
 dockerLocalImageRebuild:
 	-docker image rm $(ROOT_DOCKER_IMAGE_NAME):$(ROOT_DOCKER_IMAGE_TAG)
-	docker build --tag $(ROOT_DOCKER_IMAGE_NAME):$(ROOT_DOCKER_IMAGE_TAG) .
+	docker build \
+	--build-arg ENV_BUILD_DIST_CODE_MARK=${ENV_DIST_CODE_MARK} \
+	--tag $(ROOT_DOCKER_IMAGE_NAME):$(ROOT_DOCKER_IMAGE_TAG) .
 
 localIPLinux:
 	@echo "=> now run as docker with linux"

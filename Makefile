@@ -9,7 +9,7 @@ ROOT_NAME?=gin-api-swagger-temple
 ## MakeDockerCompose.mk settings start
 ROOT_DOCKER_CONTAINER_PORT =34565
 ROOT_OWNER ?=bridgewwater
-ROOT_PARENT_SWITCH_TAG ?=1.19.12-bullseye
+ROOT_PARENT_SWITCH_TAG ?=1.21.13
 # for image local build
 INFO_TEST_BUILD_DOCKER_PARENT_IMAGE ?=golang
 # for image running
@@ -73,6 +73,7 @@ env: envBasic
 	@echo ""
 	@echo "ENV_DIST_VERSION                          ${ENV_DIST_VERSION}"
 	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
+	@echo "ENV_DIST_CODE_MARK                        ${ENV_DIST_CODE_MARK}"
 	@echo ""
 	@echo "== project env info end =="
 
@@ -159,16 +160,18 @@ ci.coverage.show: test.go.coverage.show
 .PHONY: ci.all
 ci.all: ci ci.test.benchmark ci.coverage.show
 
+.PHONY: buildMain
 buildMain: swagger
 	@echo "-> start build local OS"
 ifeq ($(OS),Windows_NT)
-	@go build -o $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_ROOT_BUILD_ENTRANCE}
+	@go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH}.exe ${ENV_ROOT_BUILD_ENTRANCE}
 	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
 else
-	@go build -o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
+	@go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
+.PHONY: buildCross
 buildCross: swagger
 	@echo "-> start build OS:${ENV_DIST_GO_OS} ARCH:${ENV_DIST_GO_ARCH}"
 ifeq ($(ENV_DIST_GO_OS),windows)
@@ -187,6 +190,7 @@ else
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
+.PHONY: dev
 dev: export ENV_WEB_AUTO_HOST=true
 dev: cleanBuild buildMain
 ifeq ($(OS),windows)
@@ -195,9 +199,11 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+.PHONY: runHelp
 runHelp:
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
 
+.PHONY: run
 run: export GIN_MODE=test
 run: export ENV_WEB_LOG_LEVEL=INFO
 run: export ENV_WEB_AUTO_HOST=true
@@ -209,6 +215,7 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+.PHONY: runRelease
 runRelease: export GIN_MODE=release
 runRelease: export ENV_WEB_LOG_LEVEL=INFO
 runRelease: export ENV_WEB_AUTO_HOST=true
@@ -220,6 +227,7 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+.PHONY: cloc
 cloc:
 	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
 	cloc --exclude-list-file=.clocignore .
