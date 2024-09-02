@@ -38,13 +38,22 @@ var (
 	quit = make(chan os.Signal, 1)
 )
 
+var buildID string
+
+func init() {
+	if buildID == "" {
+		buildID = "unknown"
+	}
+}
+
 func main() {
 	pflag.Parse()
 	pkgJson.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
 
-	versionInfoStr := fmt.Sprintf("api [ %s ] version: [ %v ] run on %s %s res: %s",
+	versionInfoStr := fmt.Sprintf("=> api [ %s ] version: [ %v ] run on %s %s build: %s res: %s\n",
 		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false),
-		runtime.GOOS, runtime.GOARCH, zymosis.MainProgramRes())
+		runtime.GOOS, runtime.GOARCH, buildID, zymosis.MainProgramRes(),
+	)
 
 	if *help {
 		pflag.Usage()
@@ -53,7 +62,7 @@ func main() {
 	}
 
 	// init config
-	if err := config.Init(*cfg); err != nil {
+	if err := config.Init(*cfg, buildID); err != nil {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}

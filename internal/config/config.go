@@ -49,7 +49,7 @@ type Config struct {
 // ENV_WEB_HTTPS_ENABLE=false
 // ENV_AUTO_HOST=true
 // ENV_WEB_HOST 127.0.0.1:8000
-func Init(cfg string) error {
+func Init(cfg string, buildId string) error {
 	c := Config{
 		Name: cfg,
 	}
@@ -65,7 +65,7 @@ func Init(cfg string) error {
 	}
 
 	// init BaseConf
-	initBaseConf()
+	initBaseConf(buildId)
 
 	// TODO other config
 

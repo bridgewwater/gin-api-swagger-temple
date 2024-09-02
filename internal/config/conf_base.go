@@ -12,12 +12,21 @@ import (
 	"github.com/spf13/viper"
 )
 
-var baseConf BaseConf
+var baseConf *BaseConf
 
 type BaseConf struct {
+	buildId string
+
 	Addr      string
 	BaseURL   string
 	SSLEnable bool
+}
+
+// FetchBuildId
+//
+//	get build id
+func FetchBuildId() string {
+	return baseConf.buildId
 }
 
 // Addr
@@ -65,7 +74,7 @@ func GinRunMode() string {
 //	ENV_WEB_HOSTNAME  0.0.0.0
 //
 // this function will check base config
-func initBaseConf() {
+func initBaseConf(buildId string) {
 	gin.SetMode(GinRunMode())
 
 	sslEnable := false
@@ -118,7 +127,9 @@ func initBaseConf() {
 	}
 
 	zlog.S().Debugf("run as apiBase: %s", apiBase)
-	baseConf = BaseConf{
+	baseConf = &BaseConf{
+		buildId: buildId,
+
 		Addr:      apiBaseUrl.Host,
 		BaseURL:   apiBase,
 		SSLEnable: sslEnable,

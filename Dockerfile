@@ -3,8 +3,11 @@
 # Author: sinlov
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
-FROM golang:1.19.12-bullseye as builder
+FROM golang:1.21.13 as builder
 
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG ENV_BUILD_DIST_CODE_MARK=unknown
 ARG GO_ENV_PACKAGE_NAME=github.com/bridgewwater/gin-api-swagger-temple
 ARG GO_ENV_ROOT_BUILD_BIN_NAME=gin-api-swagger-temple
 ARG GO_ENV_ROOT_BUILD_BIN_PATH=build/${GO_ENV_ROOT_BUILD_BIN_NAME}
@@ -16,6 +19,12 @@ WORKDIR ${GO_PATH_SOURCE_DIR}
 RUN mkdir -p ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}
 COPY $PWD ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}
 
+# proxy golang
+#RUN go env -w "GOPROXY=https://goproxy.cn,direct"
+RUN go env -w "GOPRIVATE='*.gitlab.com,*.gitee.com"
+
+RUN echo "build running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+
 RUN cd ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME} && \
     go mod download -x
 
@@ -25,7 +34,7 @@ RUN  cd ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME} && \
   -a \
   -v \
   -installsuffix cgo \
-  -ldflags '-w -s --extldflags "-static -fpic"' \
+  -ldflags '-X main.buildID=${ENV_BUILD_DIST_CODE_MARK} -w -s --extldflags "-static -fpic"' \
   -tags netgo \
   -o ${GO_ENV_ROOT_BUILD_BIN_PATH} \
   ${GO_ENV_ROOT_BUILD_ENTRANCE}
