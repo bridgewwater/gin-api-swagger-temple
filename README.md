@@ -72,6 +72,10 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 - minimum go version: go 1.21
 - change `go 1.21`, `^1.21`, `1.21.13` to new go version
+- change `golangci-lint@v1.59.1` from [golangci-lint version release](https://github.com/golangci/golangci-lint/releases) to new version
+    - more info see [golangci-lint local-installation](https://golangci-lint.run/usage/install/#local-installation)
+- change swag version `github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4`
+    - more info see [github.com/swaggo/swag/releases](https://github.com/swaggo/swag/releases) 
 
 ### libs
 
@@ -98,7 +102,7 @@ more libs see [go.mod](go.mod)
 - swagger tools use [swag](https://github.com/swaggo/swag)
 
 ```bash
-$ go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3
+$ go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4
 # this will install at: echo $(go env GOBIN)/bin
 # this path must in your $PATH
 ```

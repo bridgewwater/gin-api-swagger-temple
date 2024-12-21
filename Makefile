@@ -133,7 +133,7 @@ zymosisGo:
 
 .PHONY: swagger
 swagger: zymosisGo cleanSwaggerDoc
-	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc3)
+	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4)
 	@swag --version
 	$(info -> generate swagger doc v1 at path api/v1/main.go)
 	$(info swag i -g main.go -dir api/v1 --instanceName v1)
