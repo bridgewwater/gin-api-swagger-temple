@@ -3,7 +3,7 @@
   "version": "v0.1.2",
   "description": "golang web api as gin",
   "directories": {
-    "doc": "doc"
+    "doc": "doc-dev"
   },
   "keywords": [
     "gin",

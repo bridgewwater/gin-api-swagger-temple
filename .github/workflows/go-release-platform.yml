@@ -61,7 +61,7 @@ jobs:
       - name: Set up Go SDK
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.13'
+          go-version: '1.22.11'
           cache: false
 
       - name: Build Release binary
@@ -90,7 +90,7 @@ jobs:
           fi
 
           # add more resource to archive
-          # mv doc/cmd.md "$dirname"
+          # mv doc-dev/supervisor.md "$dirname"
 
           # archive and hash
           if [ "${{ matrix.os }}" = "windows-latest" ]; then

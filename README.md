@@ -11,7 +11,7 @@
 ### cli tools to init project fast
 
 ```bash
-$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/gin-api-swagger-temple/main/temp-gin-api-swagger
+$ v=1.0.0; curl -L --fail https://raw.githubusercontent.com/bridgewwater/gin-api-swagger-temple/v$v/temp-gin-api-swagger -o temp-gin-api-swagger
 # let temp-gin-api-swagger file folder under $PATH
 $ chmod +x temp-gin-api-swagger
 # see how to use
@@ -70,8 +70,8 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## env
 
-- minimum go version: go 1.21
-- change `go 1.21`, `^1.21`, `1.21.13` to new go version
+- minimum go version: go 1.22
+- change `go 1.22`, `^1.22`, `1.22.11` to new go version
 - change `golangci-lint@v1.59.1` from [golangci-lint version release](https://github.com/golangci/golangci-lint/releases) to new version
     - more info see [golangci-lint local-installation](https://golangci-lint.run/usage/install/#local-installation)
 - change swag version `github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4`
@@ -127,9 +127,9 @@ $ make dep
 # run all test case
 $ make test
 # run test case with coverage and see report
-$ make testCoverage testCoverageShow
+$ make test.go.coverage test.go.coverage.show
 # run test case with coverage and see report by browser
-$ make testCoverageBrowser
+$ make test.go.coverage.browser
 
 # run server as dev
 $ make dev

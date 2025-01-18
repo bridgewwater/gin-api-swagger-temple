@@ -1,5 +1,5 @@
 docs/
-doc/
+doc-dev/
 vendor/
 node_modules/
 dist/
