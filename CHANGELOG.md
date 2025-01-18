@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.0.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.0...v1.0.1) (2025-01-19)
+
+### 📝 Documentation
+
+* move development documentation to separate files ([185cca89](https://github.com/bridgewwater/gin-api-swagger-temple/commit/185cca8994cf46c4b750daf9d4d610193eacbe23))
+
+### 👷‍ Build System
+
+* update project version to 1.0.1 ([1a6cbf5c](https://github.com/bridgewwater/gin-api-swagger-temple/commit/1a6cbf5ccafbc36edcab1a57dda894a040cbeae4))
+
+* comment out docker-image-tag job and update related workflows ([b3975486](https://github.com/bridgewwater/gin-api-swagger-temple/commit/b3975486561a4047239928b782d6f7c634571309))
+
 ## 1.0.0 (2025-01-18)
 
 ### BREAKING CHANGE:
