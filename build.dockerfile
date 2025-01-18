@@ -3,7 +3,7 @@
 # Author: sinlov
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
-FROM golang:1.21.13 as builder
+FROM golang:1.22.11 as builder
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM

@@ -70,8 +70,8 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 ## env
 
-- minimum go version: go 1.21
-- change `go 1.21`, `^1.21`, `1.21.13` to new go version
+- minimum go version: go 1.22
+- change `go 1.22`, `^1.22`, `1.22.11` to new go version
 - change `golangci-lint@v1.59.1` from [golangci-lint version release](https://github.com/golangci/golangci-lint/releases) to new version
     - more info see [golangci-lint local-installation](https://golangci-lint.run/usage/install/#local-installation)
 - change swag version `github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4`
