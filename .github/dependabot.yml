@@ -33,3 +33,4 @@ updates:
       - dependency-name: github.com/swaggo/gin-swagger
       - dependency-name: github.com/swaggo/files
       - dependency-name: github.com/swaggo/swag/v2
+      - dependency-name: github.com/sv-tools/openapi
