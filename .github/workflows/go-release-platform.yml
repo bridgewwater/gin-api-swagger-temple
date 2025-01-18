@@ -90,7 +90,7 @@ jobs:
           fi
 
           # add more resource to archive
-          # mv doc/cmd.md "$dirname"
+          # mv doc-dev/supervisor.md "$dirname"
 
           # archive and hash
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
