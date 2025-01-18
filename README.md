@@ -127,9 +127,9 @@ $ make dep
 # run all test case
 $ make test
 # run test case with coverage and see report
-$ make testCoverage testCoverageShow
+$ make test.go.coverage test.go.coverage.show
 # run test case with coverage and see report by browser
-$ make testCoverageBrowser
+$ make test.go.coverage.browser
 
 # run server as dev
 $ make dev
