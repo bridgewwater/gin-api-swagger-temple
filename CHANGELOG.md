@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * non-constant format string in call to fmt.Errorf (govet) need nolint ([16ed5505](https://github.com/bridgewwater/gin-api-swagger-temple/commit/16ed550554412144ea1644a82da8119963b28b12)), fix [#29](https://github.com/bridgewwater/gin-api-swagger-temple/issues/29)
 
-* change go-release-version use docker build verison ([ec62d1e0](https://github.com/bridgewwater/gin-api-swagger-temple/commit/ec62d1e08f084b00e3d01e0b2b9a1be2b8a1865a))
+* change go-release-version use docker build version ([ec62d1e0](https://github.com/bridgewwater/gin-api-swagger-temple/commit/ec62d1e08f084b00e3d01e0b2b9a1be2b8a1865a))
 
 * beacuse bad CPU type in executable, remove dist at macos-arm64 ([f0222bbe](https://github.com/bridgewwater/gin-api-swagger-temple/commit/f0222bbe27dde395a7c4c4744cd64b4aa4306388))
 
