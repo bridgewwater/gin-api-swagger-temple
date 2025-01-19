@@ -1,0 +1,44 @@
+version: "3"
+
+env:
+  GO111MODULE: on
+
+tasks:
+
+  build:
+    desc: Build the binary
+    sources:
+      - ./**/*.go
+    generates:
+      - goreleaser
+    cmds:
+      - go build
+
+  goreleaser-prepare:
+    desc: Prepare the GoReleaser generated binary
+    cmds:
+      - go install github.com/goreleaser/goreleaser/v2@v2.4.8
+      - goreleaser --version
+      - goreleaser healthcheck
+      - goreleaser check
+
+  goreleaser-build-snapshot:
+    desc: Build the GoReleaser binary local snapshot
+    deps:
+      - build
+    cmds:
+      - goreleaser build --clean --timeout 60m --snapshot
+
+  goreleaser-build:
+    desc: Build the GoReleaser binary local
+    deps:
+      - build
+    cmds:
+      - goreleaser build --clean --timeout 60m --auto-snapshot
+
+  goreleaser-release:
+    desc: Run GoReleaser either in snapshot or release mode
+    deps:
+      - build
+    cmds:
+      - goreleaser release --clean --timeout 60m --auto-snapshot
