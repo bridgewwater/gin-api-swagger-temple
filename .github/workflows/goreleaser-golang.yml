@@ -170,8 +170,8 @@ jobs:
           overwrite: true
           if-no-files-found: error
           path: |
-            metadata.json
-            checksums.txt
+            dist/metadata.json
+            dist/checksums.txt
             **/*.zip
             **/*.tar.gz
             **/*.sha256

@@ -73,8 +73,8 @@ jobs:
           ## set release binaries, empty means do not upload files for release
           # https://github.com/isaacs/node-glob
           files: |
-            metadata.json
-            checksums.txt
+            dist/metadata.json
+            dist/checksums.txt
             **/*.zip
             **/*.tar.gz
             **/*.sha256
