@@ -52,6 +52,7 @@ jobs:
     needs:
      - golang-ci
     uses: ./.github/workflows/goreleaser-golang.yml
+    if: ${{ github.ref_type != 'tag' }}
     secrets: inherit
     with:
       version_name: ${{ needs.version.outputs.cc-latest-date }}
