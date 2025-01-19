@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.1.2](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.1...v1.1.2) (2025-01-19)
+
+### 👷‍ Build System
+
+* update artifact naming convention ([c8dda662](https://github.com/bridgewwater/gin-api-swagger-temple/commit/c8dda662e4a378f1ec1c7feb956a22ff68154b7b))
+
 ## [1.1.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.0...v1.1.1) (2025-01-19)
 
 ### 👷‍ Build System
