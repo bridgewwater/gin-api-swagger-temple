@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.1.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.0...v1.1.1) (2025-01-19)
+
+### 👷‍ Build System
+
+* update project version to 1.1.1 ([f976f723](https://github.com/bridgewwater/gin-api-swagger-temple/commit/f976f723d3116f0ca9a5b5e4bdb7bf7f1ba0e0d0))
+
+* only run release workflow on non-tag refs and fix artifact naming ([e62d6976](https://github.com/bridgewwater/gin-api-swagger-temple/commit/e62d69762a501ce7ebb577c30d6f716f589194a4))
+
 ## [1.1.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.1...v1.1.0) (2025-01-19)
 
 ### ✨ Features

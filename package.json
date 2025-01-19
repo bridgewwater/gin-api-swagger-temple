@@ -1,6 +1,6 @@
 {
   "name": "gin-api-swagger-temple",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "golang web api as gin",
   "directories": {
     "doc": "doc-dev"
