@@ -17,7 +17,7 @@ import (
 //
 // load at config.yml
 func swaggerInfo(baseURL string) {
-	//genDocs.SwaggerInfo.Version = pkgJson.GetPackageJsonVersionGoStyle()
+	//genDocs.SwaggerInfo.Version = pkg_kit.GetPackageJsonVersionGoStyle()
 	//genDocs.SwaggerInfo.Schemes = []string{"http", "https"}
 	zlog.S().Info("=== In debug mode,you can use swagger ===")
 	zlog.S().Infof("baseURL at: %v", baseURL)

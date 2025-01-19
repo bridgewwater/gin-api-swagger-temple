@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
 	"github.com/bridgewwater/gin-api-swagger-temple/zymosis"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -36,7 +36,7 @@ func xAppVersionTracking() gin.HandlerFunc {
 func appVersionTracking(c *gin.Context) {
 	var apiVersion = AppVersion(c)
 	if len(strings.TrimSpace(apiVersion)) == 0 {
-		packageJsonVersion := pkgJson.GetPackageJsonVersion()
+		packageJsonVersion := pkg_kit.GetPackageJsonVersion()
 		c.Request.Header.Add(headKeyApiVersion, packageJsonVersion)
 		c.Header(headKeyApiVersion, packageJsonVersion)
 

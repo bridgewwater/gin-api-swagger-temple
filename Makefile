@@ -199,8 +199,8 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
-.PHONY: runHelp
-runHelp:
+.PHONY: run.help
+run.help:
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
 
 .PHONY: run
@@ -215,11 +215,11 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
-.PHONY: runRelease
-runRelease: export GIN_MODE=release
-runRelease: export ENV_WEB_LOG_LEVEL=INFO
-runRelease: export ENV_WEB_AUTO_HOST=true
-runRelease: cleanBuild buildMain
+.PHONY: run.release
+run.release: export GIN_MODE=release
+run.release: export ENV_WEB_LOG_LEVEL=INFO
+run.release: export ENV_WEB_AUTO_HOST=true
+run.release: cleanBuild buildMain
 	@echo "=> run GIN_MODE=release start"
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
@@ -263,17 +263,10 @@ endif
 	@echo "~> make style                - run local code fmt and style check"
 	@echo "~> make ci                   - run CI tools tasks"
 	@echo ""
-	@echo "~> make devHelp             - run as develop mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
-	@echo "~> make dev                 - run as develop mode"
-ifeq ($(OS),Windows_NT)
-	@echo "~> make devInstallLocal     - install at $(subst /,\,${ENV_GO_PATH}/bin)"
-else
-	@echo "~> make devInstallLocal     - install at ${ENV_GO_PATH}/bin"
-endif
-	@echo "~> make runHelp             - run use ${ENV_RUN_INFO_HELP_ARGS}"
-	@echo "~> make runRelease          - run as release mode"
-	@echo "~> make run                 - run as test mode"
-	@echo "~> make dev                 - run as develop mode"
+	@echo "~> make run.help             - run use ${ENV_RUN_INFO_HELP_ARGS}"
+	@echo "~> make dev                  - run as develop mode"
+	@echo "~> make run.release          - run as release mode"
+	@echo "~> make run                  - run as test mode"
 	@echo ""
 
 .PHONY: help
