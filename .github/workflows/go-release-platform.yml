@@ -13,12 +13,17 @@ on:
         default: ''
         required: false
         type: string
+      go_build_id:
+        description: 'setup go build id'
+        default: 'unknown'
+        required: false
+        type: string
 
 env:
   DIST_BINARY_NAME: gin-api-swagger-temple # to change your binary name, windows will auto add .exe
   DIST_BUILD_ENTRANCE: cmd/gin-api-swagger-temple/main.go # to change your build entrance
 
-permissions:
+permissions: # https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#permissions
   contents: write
 
 jobs:
@@ -66,13 +71,10 @@ jobs:
 
       - name: Build Release binary
         run: |
+          go mod verify
           go mod download -x
-          go mod vendor
-          # go build -v ./...
-
-          # run help
-          go run ${{ env.DIST_BUILD_ENTRANCE }} -h
-
+          go mod tidy -v
+          # go mod vendor
           # Replace with the name of your binary
           binary_name=${{ env.DIST_BINARY_NAME }}
 
@@ -83,14 +85,10 @@ jobs:
           dirname="${{ env.DIST_BINARY_NAME }}-${{ inputs.version_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}"
 
           # change build tag and ldflags if you need
-          if [ "${{ matrix.go_os }}" = "darwin" ]; then
-            go build -a -tags netgo -ldflags '-w -s --extldflags "-fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
-          else
-            go build -a -tags netgo -ldflags '-w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
-          fi
+          go build -a -tags netgo -ldflags '-X main.buildID=${{ inputs.go_build_id }} -w -s --extldflags "-static -fpic"' -o $dirname/$binary_name ${{ env.DIST_BUILD_ENTRANCE }}
 
           # add more resource to archive
-          # mv doc-dev/supervisor.md "$dirname"
+          # mv doc/cmd.md "$dirname"
 
           # archive and hash
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
@@ -109,6 +107,7 @@ jobs:
           GOARCH: ${{ matrix.go_arch }}
 
       - name: Check Release archive
+       # if: ${{ inputs.tag_name != null }}
         run: |
           echo "release archive at: ${{ env.ASSET }}"
           echo " archive sha256sum at: ${{ env.ASSET }}.sha256"
@@ -117,8 +116,9 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_artifact_name != null }}
         with:
-          name: ${{ inputs.upload_artifact_name }}
+          name: ${{ inputs.upload_artifact_name }}-${{inputs.version_name}}-${{ matrix.go_os }}-${{ matrix.go_arch }}
           retention-days: 5
+          overwrite: true
           if-no-files-found: error
           path: |
             ${{ env.ASSET }}

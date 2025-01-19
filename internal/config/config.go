@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/internal_err/err_server"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
 	"os"
 	"path/filepath"
 	"strings"
@@ -49,7 +50,7 @@ type Config struct {
 // ENV_WEB_HTTPS_ENABLE=false
 // ENV_AUTO_HOST=true
 // ENV_WEB_HOST 127.0.0.1:8000
-func Init(cfg string, buildId string) error {
+func Init(cfg string, bdInfo pkg_kit.BuildInfo) error {
 	c := Config{
 		Name: cfg,
 	}
@@ -65,7 +66,7 @@ func Init(cfg string, buildId string) error {
 	}
 
 	// init BaseConf
-	initBaseConf(buildId)
+	initBaseConf(bdInfo)
 
 	// TODO other config
 

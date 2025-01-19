@@ -9,9 +9,9 @@ import (
 	"github.com/bridgewwater/gin-api-swagger-temple"
 	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkgJson"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/constant"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
-	"github.com/bridgewwater/gin-api-swagger-temple/zymosis"
 	"net/http"
 	"os"
 	"os/signal"
@@ -38,7 +38,15 @@ var (
 	quit = make(chan os.Signal, 1)
 )
 
-var buildID string
+//nolint:gochecknoglobals
+var (
+	// Populated by goreleaser during build
+	version    = "unknown"
+	rawVersion = "unknown"
+	buildID    string
+	commit     = "?"
+	date       = ""
+)
 
 func init() {
 	if buildID == "" {
@@ -48,26 +56,35 @@ func init() {
 
 func main() {
 	pflag.Parse()
-	pkgJson.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
+	pkg_kit.InitPkgJsonContent(gin_api_swagger_temple.PackageJson)
 
-	versionInfoStr := fmt.Sprintf("=> api [ %s ] version: [ %v ] run on %s %s build: %s res: %s\n",
-		pkgJson.GetPackageJsonName(), pkgJson.GetPackageJsonVersionGoStyle(false),
-		runtime.GOOS, runtime.GOARCH, buildID, zymosis.MainProgramRes(),
+	bdInfo := pkg_kit.NewBuildInfo(
+		pkg_kit.GetPackageJsonName(),
+		version,
+		rawVersion,
+		buildID,
+		commit,
+		date,
+		pkg_kit.GetPackageJsonAuthor().Name,
+		constant.CopyrightStartYear,
 	)
+
+	versionStr := bdInfo.VersionString()
+	versionInfoStr := bdInfo.String()
 
 	if *help {
 		pflag.Usage()
-		fmt.Printf("=> %s\n", versionInfoStr)
+		fmt.Printf("\n%s\n", versionInfoStr)
 		return
 	}
 
 	// init config
-	if err := config.Init(*cfg, buildID); err != nil {
+	if err := config.Init(*cfg, bdInfo); err != nil {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
 	fmt.Printf("=> config init success, now %s\n",
-		versionInfoStr,
+		versionStr,
 	)
 	fmt.Printf("-> by: %s, run on %s %s\n", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("-> start service %v at time: %v\n", viper.GetString("name"), time.Now().String())

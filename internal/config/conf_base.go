@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"net/url"
@@ -74,7 +75,7 @@ func GinRunMode() string {
 //	ENV_WEB_HOSTNAME  0.0.0.0
 //
 // this function will check base config
-func initBaseConf(buildId string) {
+func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 	gin.SetMode(GinRunMode())
 
 	sslEnable := false
@@ -128,7 +129,7 @@ func initBaseConf(buildId string) {
 
 	zlog.S().Debugf("run as apiBase: %s", apiBase)
 	baseConf = &BaseConf{
-		buildId: buildId,
+		buildId: bdInfo.BuildId,
 
 		Addr:      apiBaseUrl.Host,
 		BaseURL:   apiBase,
