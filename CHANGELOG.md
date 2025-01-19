@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.1.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.1...v1.1.0) (2025-01-19)
+
+### ✨ Features
+
+* implement version information and refactor related code ([25c2e7a2](https://github.com/bridgewwater/gin-api-swagger-temple/commit/25c2e7a24329b99f4b60dcd360a1d4d9146a0037)), feat [#38](https://github.com/bridgewwater/gin-api-swagger-temple/issues/38)
+
+### 👷‍ Build System
+
+* update release process and artifact handling ([1209136f](https://github.com/bridgewwater/gin-api-swagger-temple/commit/1209136fbb56b693124bd234605c4f04ede123fb))
+
+* update GoReleaser workflow and add dry run step ([cd6f624d](https://github.com/bridgewwater/gin-api-swagger-temple/commit/cd6f624d172ce256f8b071bb3f7546eaf1328a4f)), feat [#38](https://github.com/bridgewwater/gin-api-swagger-temple/issues/38)
+
+* add docker buildx bake workflows ([4c4fa67c](https://github.com/bridgewwater/gin-api-swagger-temple/commit/4c4fa67cbb879fe1b810ac608b91320921813386)), feat [#38](https://github.com/bridgewwater/gin-api-swagger-temple/issues/38)
+
 ## [1.0.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.0...v1.0.1) (2025-01-19)
 
 ### 📝 Documentation
