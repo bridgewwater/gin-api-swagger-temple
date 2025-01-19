@@ -68,7 +68,7 @@ jobs:
           #   go_arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
-      - name: check inputs
+      - name: Check inputs
         run: |
           echo "inputs.version_name: ${{ inputs.version_name }}"
           echo "inputs.dry_run: ${{ inputs.dry_run }}"

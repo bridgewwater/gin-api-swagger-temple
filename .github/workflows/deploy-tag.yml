@@ -38,7 +38,7 @@ jobs:
     name: repo-release
     runs-on: ubuntu-latest
     steps:
-      - name: check inputs
+      - name: Check inputs
         run: |
           echo "inputs.dry_run: ${{ inputs.dry_run }}"
           echo "inputs.prerelease: ${{ inputs.prerelease }}"

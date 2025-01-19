@@ -56,7 +56,7 @@ jobs:
     if: ${{ github.ref_type != 'tag' }}
     secrets: inherit
     with:
-      version_name: ${{ needs.version.outputs.cc-latest-date }}
+      version_name: ${{ needs.version.outputs.cc_date }}
       goreleaser-build-timeout-minutes: 30
       dry_run: true
       # upload_artifact_name: go-release
