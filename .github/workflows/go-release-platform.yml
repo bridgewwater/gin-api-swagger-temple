@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Check inputs
         run: |
+          echo "github.run_id: ${{ github.run_id }}"
+          echo "github.run_attempt: ${{ github.run_attempt }}"
           echo "inputs.version_name: ${{ inputs.version_name }}"
           echo "inputs.upload_artifact_name: ${{ inputs.upload_artifact_name }}"
           echo "inputs.go_build_id: ${{ inputs.go_build_id }}"
@@ -122,7 +124,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_artifact_name != null }}
         with:
-          name: ${{ inputs.upload_artifact_name }}-${{ inputs.version_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}
+          name: ${{ inputs.upload_artifact_name }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.version_name }}-${{ matrix.go_os }}-${{ matrix.go_arch }}
           retention-days: 5
           overwrite: true
           if-no-files-found: error

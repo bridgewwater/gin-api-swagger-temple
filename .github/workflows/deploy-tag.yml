@@ -59,7 +59,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/dist
           ## https://github.com/actions/download-artifact/tree/v4?tab=readme-ov-file#breaking-changes
-          pattern: ${{ inputs.download_artifact_name }}-${{inputs.tag_name}}*
+          pattern: ${{ inputs.download_artifact_name }}-${{ github.run_id }}-${{ github.run_attempt }}-${{inputs.tag_name}}*
           merge-multiple: true
 
       - name: Display structure of downloaded files
