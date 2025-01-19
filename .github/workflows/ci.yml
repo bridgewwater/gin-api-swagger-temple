@@ -6,7 +6,7 @@ on:
       - '**/README.md'
       - '**/doc-dev/*'
     branches:
-      - 'main'
+      # - 'main'
       - 'release-*'
       - '*-feature-*'
       - '*-enhancement-*'

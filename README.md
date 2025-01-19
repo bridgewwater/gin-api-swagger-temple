@@ -11,7 +11,7 @@
 ### cli tools to init project fast
 
 ```bash
-$ v=1.1.1; curl -L --fail https://raw.githubusercontent.com/bridgewwater/gin-api-swagger-temple/v$v/temp-gin-api-swagger -o temp-gin-api-swagger
+$ v=1.1.2; curl -L --fail https://raw.githubusercontent.com/bridgewwater/gin-api-swagger-temple/v$v/temp-gin-api-swagger -o temp-gin-api-swagger
 # let temp-gin-api-swagger file folder under $PATH
 $ chmod +x temp-gin-api-swagger
 # see how to use
