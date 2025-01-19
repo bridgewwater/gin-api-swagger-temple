@@ -3,21 +3,21 @@ name: goreleaser-golang
 on:
   workflow_call: # https://docs.github.com/actions/using-workflows/reusing-workflows#using-inputs-and-secrets-in-a-reusable-workflow
     inputs:
+      version_name:
+        description: 'most of this use tag name'
+        default: ''
+        required: true
+        type: string
       dry_run:
         description: 'dry run flag'
         default: false
-        required: true
+        required: false
         type: boolean
       goreleaser-build-timeout-minutes:
         description: 'goreleaser build timeout minutes default 30'
         default: 30
         required: false
         type: number
-      version_name:
-        description: 'most of this use tag name'
-        default: ''
-        required: false
-        type: string
       upload_artifact_name:
         description: 'upload artifact name'
         default: ''
@@ -125,7 +125,7 @@ jobs:
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
           version: '~> v2'
-          args: release --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --snapshot
+          args: release --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
@@ -155,8 +155,23 @@ jobs:
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
           version: '~> v2'
-          args: release --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
+          args: release --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+
+      - name: upload-artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.upload_artifact_name != null || ! inputs.dry_run }}
+        with:
+          name: ${{ inputs.upload_artifact_name }}-${{inputs.version_name}}
+          retention-days: 5
+          overwrite: true
+          if-no-files-found: error
+          path: |
+            metadata.json
+            checksums.txt
+            **/*.zip
+            **/*.tar.gz
+            **/*.sha256

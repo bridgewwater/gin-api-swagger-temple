@@ -52,9 +52,13 @@ jobs:
     needs:
      - golang-ci
     uses: ./.github/workflows/goreleaser-golang.yml
+    if: startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     with:
+      version_name: ${{ needs.version.outputs.cc-latest-date }}
+      goreleaser-build-timeout-minutes: 30
       dry_run: true
+      # upload_artifact_name: go-release
 
 #   go-build-check-main:
 #     name: go-build-check-main
@@ -97,18 +101,31 @@ jobs:
   #   secrets:
   #     DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
 
-  go-release-platform:
-    name: go-release-platform
+  go-goreleaser-by-tag:
+    name: go-goreleaser-dry-run
     needs:
-     - version
      - golang-ci
-     # - docker-image-tag
+    uses: ./.github/workflows/goreleaser-golang.yml
     if: startsWith(github.ref, 'refs/tags/')
-    uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
     with:
       version_name: ${{ needs.version.outputs.tag_name }}
-      # upload_artifact_name: go-release
+      goreleaser-build-timeout-minutes: 30
+      upload_artifact_name: go-release
+      # dry_run: false
+
+  # go-release-platform:
+  #   name: go-release-platform
+  #   needs:
+  #    - version
+  #    - golang-ci
+  #    # - docker-image-tag
+  #   if: startsWith(github.ref, 'refs/tags/')
+  #   uses: ./.github/workflows/go-release-platform.yml
+  #   secrets: inherit
+  #   with:
+  #     version_name: ${{ needs.version.outputs.tag_name }}
+  #     # upload_artifact_name: go-release
 
   # docker-bake-basic-all-tag:
   #   name: docker-bake-basic-all-tag
@@ -141,7 +158,8 @@ jobs:
     needs:
       - version
       # - docker-bake-multi-basic-all-tag
-      - go-release-platform
+      - go-goreleaser-by-tag
+      # - go-release-platform
     name: deploy-tag
     uses: ./.github/workflows/deploy-tag.yml
     if: startsWith(github.ref, 'refs/tags/')
@@ -150,4 +168,4 @@ jobs:
       prerelease: true
       tag_name: ${{ needs.version.outputs.tag_name }}
       tag_changes: ${{ needs.version.outputs.cc_changes }}
-      # download_artifact_name: go-release
+      download_artifact_name: go-release
