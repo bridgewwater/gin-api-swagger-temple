@@ -1,9 +1,16 @@
 version: "3"
+silent: true
+
+dotenv: ['.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
 
 env:
   GO111MODULE: on
 
 tasks:
+  default:
+    desc: "default task show environment"
+    cmds:
+      - goreleaser --version
 
   build:
     desc: Build the binary
@@ -28,6 +35,13 @@ tasks:
       - build
     cmds:
       - goreleaser build --clean --timeout 60m --snapshot
+
+  goreleaser-release-snapshot:
+    desc: Run GoReleaser either in snapshot mode
+    deps:
+      - build
+    cmds:
+      - goreleaser release --clean --timeout 60m --snapshot
 
   goreleaser-build:
     desc: Build the GoReleaser binary local

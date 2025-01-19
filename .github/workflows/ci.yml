@@ -47,6 +47,15 @@ jobs:
      - version
     uses: ./.github/workflows/golang-ci.yml
 
+  go-goreleaser-dry-run:
+    name: go-goreleaser-dry-run
+    needs:
+     - golang-ci
+    uses: ./.github/workflows/goreleaser-golang.yml
+    secrets: inherit
+    with:
+      dry_run: true
+
 #   go-build-check-main:
 #     name: go-build-check-main
 #     needs:

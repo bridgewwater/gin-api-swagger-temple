@@ -6,12 +6,7 @@ on:
       dry_run:
         description: 'dry run flag'
         default: false
-        required: false
-        type: boolean
-      snapshot:
-        description: 'snapshot build flag'
-        default: false
-        required: false
+        required: true
         type: boolean
       goreleaser-build-timeout-minutes:
         description: 'goreleaser build timeout minutes default 30'
@@ -81,6 +76,16 @@ jobs:
           cache: false
 
       -
+        name: version GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          # 'latest', 'nightly', or a semver
+          version: '~> v2'
+          args: --version
+
+      -
         name: healthcheck GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
@@ -101,7 +106,7 @@ jobs:
           args: check
 
       -
-        name: Dry Run GoReleaser
+        name: DryRun build GoReleaser
         uses: goreleaser/goreleaser-action@v6
         if: ${{ inputs.dry_run }}
         with:
@@ -109,14 +114,25 @@ jobs:
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
           version: '~> v2'
-          args: release --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
+          args: build --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --snapshot
+
+      -
+        name: DryRun release GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        if: ${{ inputs.dry_run }}
+        with:
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          # 'latest', 'nightly', or a semver
+          version: '~> v2'
+          args: release --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
 
       -
-        name: Run GoReleaser
+        name: build GoReleaser
         uses: goreleaser/goreleaser-action@v6
         if: ${{ ! inputs.dry_run }}
         with:
@@ -124,7 +140,22 @@ jobs:
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
           version: '~> v2'
-          args: release --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
+          args: build --clean --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
+          # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+
+      -
+        name: release GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        if: ${{ ! inputs.dry_run }}
+        with:
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          # 'latest', 'nightly', or a semver
+          version: '~> v2'
+          args: release --timeout ${{ inputs.goreleaser-build-timeout-minutes }}m --auto-snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
