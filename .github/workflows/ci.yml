@@ -6,7 +6,7 @@ on:
       - '**/README.md'
       - '**/doc-dev/*'
     branches:
-      # - 'main'
+      - 'main'
       - 'release-*'
       - '*-feature-*'
       - '*-enhancement-*'
@@ -50,6 +50,7 @@ jobs:
   go-goreleaser-dry-run:
     name: go-goreleaser-dry-run
     needs:
+     - version
      - golang-ci
     uses: ./.github/workflows/goreleaser-golang.yml
     if: ${{ github.ref_type != 'tag' }}
@@ -60,17 +61,17 @@ jobs:
       dry_run: true
       # upload_artifact_name: go-release
 
-#   go-build-check-main:
-#     name: go-build-check-main
-#     needs:
-#       - version
-#       - golang-ci
-#     if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
-#     uses: ./.github/workflows/go-release-platform.yml
-#     secrets: inherit
-#     with:
-#       version_name: latest
-#       go_build_id: ${{ needs.version.outputs.short_sha }}
+  # go-build-check-main:
+  #   name: go-build-check-main
+  #   needs:
+  #     - version
+  #     - golang-ci
+  #   if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
+  #   uses: ./.github/workflows/go-release-platform.yml
+  #   secrets: inherit
+  #   with:
+  #     version_name: latest
+  #     go_build_id: ${{ needs.version.outputs.short_sha }}
 
   docker-bake-basic-all-latest:
     name: docker-bake-basic-all-latest
@@ -101,9 +102,12 @@ jobs:
   #   secrets:
   #     DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
 
+  ### tag to release start
+
   go-goreleaser-by-tag:
     name: go-goreleaser-by-tag
     needs:
+     - version
      - golang-ci
     uses: ./.github/workflows/goreleaser-golang.yml
     if: startsWith(github.ref, 'refs/tags/')
@@ -157,8 +161,8 @@ jobs:
   deploy-tag:
     needs:
       - version
-      # - docker-bake-multi-basic-all-tag
       - go-goreleaser-by-tag
+      # - docker-bake-multi-basic-all-tag
       # - go-release-platform
     name: deploy-tag
     uses: ./.github/workflows/deploy-tag.yml
@@ -169,3 +173,5 @@ jobs:
       tag_name: ${{ needs.version.outputs.tag_name }}
       tag_changes: ${{ needs.version.outputs.cc_changes }}
       download_artifact_name: go-release
+
+  ### tag to release end
