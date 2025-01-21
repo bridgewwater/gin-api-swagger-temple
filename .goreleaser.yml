@@ -18,6 +18,9 @@ builds:
       - -X main.commit={{.FullCommit}}
       - -X main.date={{.Date}}
       - --extldflags "-static -fpic"
+    tags:
+      - netgo
+      - static_build
     env:
       - CGO_ENABLED=0
     goos:
