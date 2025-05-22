@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.1.3...v1.2.0) (2025-05-22)
+
+### ✨ Features
+
+* support golangci-v2, update workflows and improve code structure ([58b54bf8](https://github.com/bridgewwater/gin-api-swagger-temple/commit/58b54bf8a34ea872a4b7ba6c27bd3e26a24e6e85))
+
+### 📝 Documentation
+
+* update template ([e1607b9a](https://github.com/bridgewwater/gin-api-swagger-temple/commit/e1607b9a20da95a87a2b2b0d386b96fbc8b798b5))
+
+### ♻ Refactor
+
+* simplify SSL enable configuration ([4faaf4da](https://github.com/bridgewwater/gin-api-swagger-temple/commit/4faaf4dabaf88fd8076938c97cf4653c1237a116))
+
+* improve code quality and maintainability ([225bcc16](https://github.com/bridgewwater/gin-api-swagger-temple/commit/225bcc167d31a36a1c5d935b689b626e1a04a3ce))
+
+* improve code quality and maintainability ([4036fe4c](https://github.com/bridgewwater/gin-api-swagger-temple/commit/4036fe4c7af809a94e737b57775b2759c1ee2555))
+
+### 👷‍ Build System
+
+* bump github.com/gin-gonic/gin from 1.10.0 to 1.10.1 ([ce00e1cd](https://github.com/bridgewwater/gin-api-swagger-temple/commit/ce00e1cda43a1ad892eb8ef46d701f0faa5ada8f))
+
+* update Go version to 1.23 ([fb0ff44f](https://github.com/bridgewwater/gin-api-swagger-temple/commit/fb0ff44f873908629d744b5acc3b055c8ae926ef))
+
+* bump github.com/fsnotify/fsnotify from 1.8.0 to 1.9.0 ([cd55896b](https://github.com/bridgewwater/gin-api-swagger-temple/commit/cd55896bb4cbf38f34f5cc7dea5a4ea940d1b9ff))
+
+* bump github.com/spf13/viper from 1.19.0 to 1.20.1 ([70c64143](https://github.com/bridgewwater/gin-api-swagger-temple/commit/70c641431576f25b313eb3c54695b1caf94b79f8))
+
+* bump github.com/spf13/pflag from 1.0.5 to 1.0.6 ([858e0b1d](https://github.com/bridgewwater/gin-api-swagger-temple/commit/858e0b1de16120a2248877cbd541d19cec2e5d1c))
+
+* add tags for netgo and static_build ([76d98d1d](https://github.com/bridgewwater/gin-api-swagger-temple/commit/76d98d1d1d8db3521cb81042fc2aafb53ed901e9))
+
 ## [1.1.3](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.2...v1.1.3) (2025-01-19)
 
 ### 👷‍ Build System
