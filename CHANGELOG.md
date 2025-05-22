@@ -40,7 +40,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * add tags for netgo and static_build ([76d98d1d](https://github.com/bridgewwater/gin-api-swagger-temple/commit/76d98d1d1d8db3521cb81042fc2aafb53ed901e9))
 
-## [1.1.3](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.2...v1.1.3) (2025-01-19)
+## [1.1.3](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.1.2...v1.1.3) (2025-01-19)
 
 ### 👷‍ Build System
 
@@ -48,13 +48,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 * update artifact upload patterns ([175b5343](https://github.com/bridgewwater/gin-api-swagger-temple/commit/175b5343634c26b83aba81b55b4e5204720f54b9))
 
-## [1.1.2](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.1...v1.1.2) (2025-01-19)
+## [1.1.2](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.1.1...v1.1.2) (2025-01-19)
 
 ### 👷‍ Build System
 
 * update artifact naming convention ([c8dda662](https://github.com/bridgewwater/gin-api-swagger-temple/commit/c8dda662e4a378f1ec1c7feb956a22ff68154b7b))
 
-## [1.1.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.1.0...v1.1.1) (2025-01-19)
+## [1.1.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.1.0...v1.1.1) (2025-01-19)
 
 ### 👷‍ Build System
 
@@ -62,7 +62,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * only run release workflow on non-tag refs and fix artifact naming ([e62d6976](https://github.com/bridgewwater/gin-api-swagger-temple/commit/e62d69762a501ce7ebb577c30d6f716f589194a4))
 
-## [1.1.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.1...v1.1.0) (2025-01-19)
+## [1.1.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.0.1...v1.1.0) (2025-01-19)
 
 ### ✨ Features
 
@@ -76,7 +76,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 * add docker buildx bake workflows ([4c4fa67c](https://github.com/bridgewwater/gin-api-swagger-temple/commit/4c4fa67cbb879fe1b810ac608b91320921813386)), feat [#38](https://github.com/bridgewwater/gin-api-swagger-temple/issues/38)
 
-## [1.0.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/1.0.0...v1.0.1) (2025-01-19)
+## [1.0.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.0.0...v1.0.1) (2025-01-19)
 
 ### 📝 Documentation
 
