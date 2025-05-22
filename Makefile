@@ -82,7 +82,7 @@ define buildGoBinaryLocal
 	@echo "         build out path: ${1}"
 	@echo "         build entrance: ${2}"
 	@echo "         buildID: ${3}"
-	go build -ldflags "-X main.buildID=${3}" -o ${1} ${2}
+	go build -tags static_build -ldflags "-s -w" -ldflags "-X main.buildID=${3}" -o ${1} ${2}
 endef
 
 .PHONY: all

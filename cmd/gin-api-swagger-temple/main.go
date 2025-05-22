@@ -70,6 +70,7 @@ func main() {
 		pkg_kit.GetPackageJsonAuthor().Name,
 		constant.CopyrightStartYear,
 	)
+	pkg_kit.SaveBuildInfo(&bdInfo)
 
 	versionStr := bdInfo.VersionString()
 	versionInfoStr := bdInfo.String()
@@ -82,7 +83,12 @@ func main() {
 	}
 
 	if *versionFlag {
-		fmt.Printf("%s - %s\n", pkg_kit.FetchNowVersion(), pkg_kit.FetchNowBuildCode())
+		fmt.Printf(
+			"%s version %s - %s\n",
+			bdInfo.PkgName,
+			pkg_kit.FetchNowVersion(),
+			pkg_kit.FetchNowBuildCode(),
+		)
 
 		return
 	}

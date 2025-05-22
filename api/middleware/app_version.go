@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
-	"github.com/bridgewwater/gin-api-swagger-temple/zymosis"
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -34,18 +34,22 @@ func xAppVersionTracking() gin.HandlerFunc {
 }
 
 func appVersionTracking(c *gin.Context) {
-	var apiVersion = AppVersion(c)
+	apiVersion := AppVersion(c)
 	if len(strings.TrimSpace(apiVersion)) == 0 {
-		packageJsonVersion := pkg_kit.GetPackageJsonVersion()
+		packageJsonVersion := pkg_kit.FetchNowVersion()
 		c.Request.Header.Add(headKeyApiVersion, packageJsonVersion)
 		c.Header(headKeyApiVersion, packageJsonVersion)
-
 	}
-	var appMainRes = AppMainRes(c)
+
+	appMainRes := AppMainRes(c)
 	if len(strings.TrimSpace(appMainRes)) == 0 {
-		mainProgramRes := zymosis.MainProgramRes()
+		mainProgramRes := pkg_kit.FetchNowBuildCode()
+		if mainProgramRes == "" {
+			mainProgramRes = pkg_kit.InfoUnknown
+		}
 		c.Request.Header.Add(headKeyMainRes, mainProgramRes)
 		c.Header(headKeyMainRes, mainProgramRes)
 	}
+
 	c.Next()
 }
