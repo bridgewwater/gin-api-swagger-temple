@@ -1,8 +1,9 @@
 package zlog_access
 
 import (
-	"fmt"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/common"
+	"errors"
+
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/common"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zap_encoder"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog/zip_rotate"
 	"github.com/spf13/viper"
@@ -16,16 +17,18 @@ const (
 )
 
 func InitByViper() error {
-
-	atomicLevel := zap.NewAtomicLevelAt(zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.AtomicLevel"))) // log Level
+	atomicLevel := zap.NewAtomicLevelAt(
+		zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.AtomicLevel")),
+	) // log Level
 
 	encoderConfig := zap_encoder.NewEncoderConfigByViper()
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 
 	confEncoding := viper.GetString("zap.Encoding")
 	if confEncoding == "" {
-		return fmt.Errorf("config zap.Encoding is empty")
+		return errors.New("config zap.Encoding is empty")
 	}
+
 	encoder := zap_encoder.FilterZapEncoder(confEncoding, *encoderConfig)
 
 	// format skipPath
@@ -42,7 +45,9 @@ func InitByViper() error {
 	}
 
 	if accessFileName == apiFileName {
-		return fmt.Errorf("config [ zap.rotate.AccessFilename ] and [ zap.rotate.ApiFilename ] is same")
+		return errors.New(
+			"config [ zap.rotate.AccessFilename ] and [ zap.rotate.ApiFilename ] is same",
+		)
 	}
 
 	initAccessByViper(encoder, atomicLevel, accessFileName)
@@ -68,9 +73,12 @@ func initAccessByViper(encoder zapcore.Encoder, atomicLevel zap.AtomicLevel, fil
 }
 
 func initApiByViper(encoder zapcore.Encoder, fileName string) {
-	atomicLevel := zap.NewAtomicLevelAt(zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.Api.AtomicLevel")))
+	atomicLevel := zap.NewAtomicLevelAt(
+		zap_encoder.FilterZapAtomicLevelByViper(viper.GetInt("zap.Api.AtomicLevel")),
+	)
 	rotateLogger := zip_rotate.NewLoggerByViper()
 	rotateLogger.Filename = fileName
+
 	configApiPaths := viper.GetStringSlice("zap.Api.PrefixPaths")
 	if len(configApiPaths) > 0 {
 		AppendApiPrefix(configApiPaths...)

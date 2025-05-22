@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"net/http"
 	"time"
 
 	"github.com/bar-counter/monitor/v2"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -33,6 +33,7 @@ import (
 //			admin: pwd # admin:pwd
 func monitorAPI(g *gin.Engine) {
 	var monitorCfg *monitor.Cfg
+
 	isSecurity := viper.GetBool("monitor.security")
 	if isSecurity {
 		monitorCfg = &monitor.Cfg{
@@ -76,8 +77,10 @@ func checkPingServer(apiBaseURL string) {
 	// Ping the server to make sure the router is working.
 	go func() {
 		if err := pingServer(apiBaseURL, viper.GetString("monitor.health")); err != nil {
-			zlog.S().Errorf("The router has no response, or it might took too long to start up. err %v", err)
+			zlog.S().
+				Errorf("The router has no response, or it might took too long to start up. err %v", err)
 		}
+
 		zlog.S().Info("The router has been deployed successfully.")
 	}()
 }
@@ -97,18 +100,24 @@ func checkPingServer(apiBaseURL string) {
 func pingServer(apiBaseURL, checkRouter string) error {
 	pingApi := apiBaseURL + checkRouter
 	zlog.S().Infof("pingServer test api : %v", pingApi)
-	for i := 0; i < viper.GetInt("monitor.retryCount"); i++ {
-		// Ping the server by sending a GET request to `/health`.
-		resp, err := http.Get(pingApi)
-		if err == nil && resp.StatusCode == 200 {
-			zlog.S().Infof("pingServer test pass api at: %v", pingApi)
-			return nil
-		}
 
-		// sleep for a second to continue the next ping.
-		zlog.S().Warnf("Waiting for the router, retry in 1 second. Check URL: %v", pingApi)
-		time.Sleep(time.Second)
+	retryCount := viper.GetInt("monitor.retryCount")
+	if retryCount > 0 {
+		for range retryCount {
+			// Ping the server by sending a GET request to `/health`.
+			resp, err := http.Get(pingApi)
+			if err == nil && resp.StatusCode == http.StatusOK {
+				zlog.S().Infof("pingServer test pass api at: %v", pingApi)
+
+				return nil
+			}
+
+			// sleep for a second to continue the next ping.
+			zlog.S().Warnf("Waiting for the router, retry in 1 second. Check URL: %v", pingApi)
+			time.Sleep(time.Second)
+		}
 	}
+
 	//noinspection ALL
 	return fmt.Errorf("Can not connect to the router %v.", pingApi)
 }

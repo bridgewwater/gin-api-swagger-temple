@@ -6,12 +6,6 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
-	"github.com/bridgewwater/gin-api-swagger-temple"
-	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/constant"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,15 +13,22 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bridgewwater/gin-api-swagger-temple/api/v1"
+	gin_api_swagger_temple "github.com/bridgewwater/gin-api-swagger-temple"
+	"github.com/bridgewwater/gin-api-swagger-temple/api/middleware"
+	v1 "github.com/bridgewwater/gin-api-swagger-temple/api/v1"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/config"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/constant"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
 var (
-	help = pflag.BoolP("help", "h", false, "help info.")
-	cfg  = pflag.StringP("config", "c", "", "api server config file path.")
+	help        = pflag.BoolP("help", "h", false, "help info.")
+	versionFlag = pflag.BoolP("version", "v", false, "show version")
+	cfg         = pflag.StringP("config", "c", "", "api server config file path.")
 
 	// done
 	//	gracefully exit http server
@@ -40,7 +41,7 @@ var (
 
 //nolint:gochecknoglobals
 var (
-	// Populated by goreleaser during build
+	// Populated by goreleaser during build.
 	version    = "unknown"
 	rawVersion = "unknown"
 	buildID    string
@@ -60,6 +61,7 @@ func main() {
 
 	bdInfo := pkg_kit.NewBuildInfo(
 		pkg_kit.GetPackageJsonName(),
+		pkg_kit.GetPackageJsonDescription(),
 		version,
 		rawVersion,
 		buildID,
@@ -75,6 +77,13 @@ func main() {
 	if *help {
 		pflag.Usage()
 		fmt.Printf("\n%s\n", versionInfoStr)
+
+		return
+	}
+
+	if *versionFlag {
+		fmt.Printf("%s - %s\n", pkg_kit.FetchNowVersion(), pkg_kit.FetchNowBuildCode())
+
 		return
 	}
 
@@ -83,6 +92,7 @@ func main() {
 		fmt.Printf("Error, run service not use -c or config yaml error, more info: %v\n", err)
 		panic(err)
 	}
+
 	fmt.Printf("=> config init success, now %s\n",
 		versionStr,
 	)
@@ -106,12 +116,15 @@ func main() {
 		middlewareList...,
 	)
 
-	zlog.S().Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), config.Addr())
+	zlog.S().
+		Warnf("-> Sever name: [ %s ], try ListenAndServe address: %s", viper.GetString("name"), config.Addr())
+
 	server := &http.Server{
 		Addr:    config.Addr(),
 		Handler: g,
 	}
 	go handleExitSignal(server)
+
 	err := server.ListenAndServe()
 	if err != nil {
 		zlog.S().Errorf("server run error %v", err)

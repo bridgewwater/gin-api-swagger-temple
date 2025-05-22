@@ -1,4 +1,3 @@
-.PHONY: test check clean build dist all
 # Makefile root
 # can change this by env:ENV_CI_DIST_VERSION use and change by env:ENV_CI_DIST_MARK by CI
 ENV_DIST_VERSION=latest
@@ -9,7 +8,7 @@ ROOT_NAME?=gin-api-swagger-temple
 ## MakeDockerCompose.mk settings start
 ROOT_DOCKER_CONTAINER_PORT =34565
 ROOT_OWNER ?=bridgewwater
-ROOT_PARENT_SWITCH_TAG ?=1.22.11
+ROOT_PARENT_SWITCH_TAG ?=1.23.8
 # for image local build
 INFO_TEST_BUILD_DOCKER_PARENT_IMAGE ?=golang
 # for image running
@@ -24,72 +23,116 @@ ENV_RUN_INFO_HELP_ARGS=-h
 ENV_RUN_INFO_ARGS=-c ./conf/config.yaml
 ## run info end
 
-## build dist env start
-# change to other build entrance
-ENV_ROOT_BUILD_ENTRANCE=cmd/gin-api-swagger-temple/main.go
-ENV_ROOT_BUILD_BIN_NAME=${ROOT_NAME}
-ENV_ROOT_BUILD_PATH = build
-ENV_ROOT_BUILD_BIN_PATH=${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
-ENV_ROOT_LOG_PATH=logs/
-ENV_ROOT_SWAGGER_PATH=docs/
-# linux windows darwin  list as: go tool dist list
-ENV_DIST_GO_OS=linux
-# amd64 386
-ENV_DIST_GO_ARCH=amd64
-# mark for dist and tag helper
-ENV_ROOT_MANIFEST_PKG_JSON?=package.json
-ENV_ROOT_MAKE_FILE?=Makefile
-ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
-## build dist env end
-
-## go test MakeGoTest.mk start
+## go test go-test.mk start
 # ignore used not matching mode
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
-ENV_ROOT_TEST_INVERT_MATCH?="vendor|go_fatal_error|robotn|shirou"
+ENV_ROOT_TEST_INVERT_MATCH ?="vendor|go_fatal_error|robotn|shirou"
 ifeq ($(OS),Windows_NT)
-ENV_ROOT_TEST_LIST?=./...
+ENV_ROOT_TEST_LIST ?=./...
 else
-ENV_ROOT_TEST_LIST?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
+ENV_ROOT_TEST_LIST ?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
 endif
 # test max time
-ENV_ROOT_TEST_MAX_TIME:=1m
-## go test MakeGoTest.mk end
+ENV_ROOT_TEST_MAX_TIME :=1m
+## go test go-test.mk end
+
+## go doc start
+ENV_GO_GODOC_PORT_NUMBER=36060
+ENV_GO_GODOC_EXPORT_PATH=build/godoc
+ENV_GO_GODOC_EXPORT_PKG =github.com/bridgewwater/gin-api-swagger-temple/
+include z-MakefileUtils/go-doc.mk
+## go doc end
+
+## clean args start
+ENV_ROOT_BUILD_PATH =build
+ENV_ROOT_LOG_PATH =logs/
+## clean args end
+
+## build args start
+ENV_ROOT_BUILD_ENTRANCE=cmd/gin-api-swagger-temple/main.go
+ENV_ROOT_BUILD_PATH =build
+ENV_ROOT_BUILD_BIN_NAME =${ROOT_NAME}
+ENV_ROOT_BUILD_BIN_PATH =${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
+## build args end
+
+## build dist args start
+# linux windows darwin  list as: go tool dist list
+ENV_DIST_GO_OS =linux
+# amd64 386
+ENV_DIST_GO_ARCH =amd64
+# mark for dist and tag helper
+ENV_ROOT_MANIFEST_PKG_JSON? =package.json
+ENV_ROOT_CHANGELOG_PATH ?=CHANGELOG.md
+## build dist args end
 
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
+include z-MakefileUtils/go-list.mk
 include z-MakefileUtils/go-mod.mk
 include z-MakefileUtils/go-test.mk
 include z-MakefileUtils/go-test-integration.mk
 include z-MakefileUtils/go-dist.mk
-include z-MakefileUtils/go-list.mk
-include z-MakefileUtils/MakeGoDistScp.mk
 # include MakeDockerCompose.mk for docker run
 include z-MakefileUtils/MakeDockerCompose.mk
 
+
+define buildGoBinaryLocal
+	@echo "=> start $(0)"
+	@echo "-> start build local OS: ${PLATFORM} ${OS_BIT}"
+	@echo "         build out path: ${1}"
+	@echo "         build entrance: ${2}"
+	@echo "         buildID: ${3}"
+	go build -ldflags "-X main.buildID=${3}" -o ${1} ${2}
+endef
+
+.PHONY: all
 all: env
 
-env: envBasic
+.PHONY: env
+env:
 	@echo "== project env info start =="
 	@echo ""
+	@echo "test info"
+	@echo "ENV_ROOT_TEST_LIST                        ${ENV_ROOT_TEST_LIST}"
+	@echo ""
+	@echo "ROOT_NAME                                 ${ROOT_NAME}"
 	@echo "ENV_DIST_VERSION                          ${ENV_DIST_VERSION}"
+	@echo "ENV_ROOT_CHANGELOG_PATH                   ${ENV_ROOT_CHANGELOG_PATH}"
+	@echo ""
+	@echo "ENV_ROOT_BUILD_ENTRANCE                   ${ENV_ROOT_BUILD_ENTRANCE}"
+	@echo "ENV_ROOT_BUILD_PATH                       ${ENV_ROOT_BUILD_PATH}"
+ifeq ($(OS),Windows_NT)
+	@echo "ENV_ROOT_BUILD_BIN_PATH                   $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
+else
+	@echo "ENV_ROOT_BUILD_BIN_PATH                   ${ENV_ROOT_BUILD_BIN_PATH}"
+endif
+	@echo "ENV_DIST_GO_OS                            ${ENV_DIST_GO_OS}"
+	@echo "ENV_DIST_GO_ARCH                          ${ENV_DIST_GO_ARCH}"
+	@echo ""
 	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
 	@echo "ENV_DIST_CODE_MARK                        ${ENV_DIST_CODE_MARK}"
-	@echo ""
 	@echo "== project env info end =="
 
-cleanBuild:
+.PHONY: clean.build
+clean.build:
 	@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
 
-cleanLog:
+.PHONY: clean.log
+clean.log:
 	@$(RM) -r ${ENV_ROOT_LOG_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
-cleanSwaggerDoc:
+.PHONY: clean.test
+clean.test: test.go.clean
+
+.PHONY: clean.swagger.doc
+clean.swagger.doc:
 	@$(RM) -r ${ENV_ROOT_SWAGGER_PATH}
 	@echo "~> finish clean swagger gen path: ${ENV_ROOT_SWAGGER_PATH}"
 
-cleanTestGoldenData:
+.PHONY: clean.test.data
+clean.test.data:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
@@ -101,18 +144,14 @@ cleanTestGoldenData:
 	@$(RM) -r **/**/**/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
 
-cleanTestData:
-	@$(RM) coverage.txt
-	@$(RM) coverage.out
-	@$(RM) profile.txt
-
-clean: cleanTestData cleanBuild cleanLog
+.PHONY: clean
+clean: clean.test clean.build clean.log
 	@echo "~> clean finish"
 
-cleanAll: clean cleanAllDist
+.PHONY: cleanAll
+cleanAll: clean
 	@echo "~> clean all finish"
 
-.PHONY: init
 init:
 	@echo "~> start init this project"
 	@echo "-> check version"
@@ -121,18 +160,9 @@ init:
 	go env
 	@echo "~> you can use [ make help ] see more task"
 	-go mod verify
-	@echo "~> as dev need kit https://pkg.go.dev/golang.org/x/tools/cmd/stringer"
-	@echo "~> can fix by: go install golang.org/x/tools/cmd/stringer@latest"
-
-.PHONY: zymosisGo
-zymosisGo:
-	$(info -> fix zymosis tools run as: go install -v github.com/convention-change/zymosis/cmd/zymosis@latest)
-	@zymosis --version
-	$(info -> generate res mark)
-	@zymosis -g go
 
 .PHONY: swagger
-swagger: zymosisGo cleanSwaggerDoc
+swagger: clean.swagger.doc
 	$(info -> fix swag tools run as: go install github.com/swaggo/swag/v2/cmd/swag@v2.0.0-rc4)
 	@swag --version
 	$(info -> generate swagger doc v1 at path api/v1/main.go)
@@ -143,13 +173,13 @@ swagger: zymosisGo cleanSwaggerDoc
 dep: swagger go.mod.verify go.mod.download go.mod.tidy
 
 .PHONY: style
-style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run
+style: go.mod.verify go.mod.tidy go.mod.fmt go.mod.lint.run.v2
 
 .PHONY: test
 test: test.go
 
 .PHONY: ci
-ci: style go.mod.vet test
+ci: style go.mod.vet test run.help
 
 .PHONY: ci.test.benchmark
 ci.test.benchmark: test.go.benchmark
@@ -162,53 +192,62 @@ ci.all: ci ci.test.benchmark ci.coverage.show
 
 .PHONY: buildMain
 buildMain: swagger
-	@echo "-> start build local OS"
+	@echo "-> start buildMain local OS: ${PLATFORM} ${OS_BIT}"
 ifeq ($(OS),Windows_NT)
-	@go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH}.exe ${ENV_ROOT_BUILD_ENTRANCE}
+	$(call buildGoBinaryLocal,${ENV_ROOT_BUILD_BIN_PATH}.exe,${ENV_ROOT_BUILD_ENTRANCE},${ENV_DIST_CODE_MARK})
 	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
 else
-	@go build -ldflags "-X main.buildID=${ENV_DIST_CODE_MARK}" -o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
+	$(call buildGoBinaryLocal,${ENV_ROOT_BUILD_BIN_PATH},${ENV_ROOT_BUILD_ENTRANCE},${ENV_DIST_CODE_MARK})
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-.PHONY: buildCross
-buildCross: swagger
-	@echo "-> start build OS:${ENV_DIST_GO_OS} ARCH:${ENV_DIST_GO_ARCH}"
-ifeq ($(ENV_DIST_GO_OS),windows)
-	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-static -fpic"' \
-	-o $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_ROOT_BUILD_ENTRANCE}
-	@echo "-> finish build out path: $(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe"
+.PHONY: dev.help
+dev.help: export ENV_WEB_AUTO_HOST=false
+dev.help: clean.build buildMain
+ifeq ($(OS),Windows_NT)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
 else
-	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
-	-a \
-	-tags netgo \
-	-ldflags '-w -s --extldflags "-static -fpic"' \
-	-o ${ENV_ROOT_BUILD_BIN_PATH} ${ENV_ROOT_BUILD_ENTRANCE}
-	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
+	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
 endif
+
+.PHONY: run.help
+run.help: export ENV_WEB_AUTO_HOST=false
+run.help:
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
+
+run.version: export ENV_WEB_AUTO_HOST=false
+run.version:
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} --version
 
 .PHONY: dev
+dev: export GIN_MODE=debug
+dev: export ENV_WEB_LOG_LEVEL=DEBUG
 dev: export ENV_WEB_AUTO_HOST=true
-dev: cleanBuild buildMain
+dev:
+ifeq ($(OS),Windows_NT)
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
+else
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
+endif
+
+.PHONY: run
+run: export GIN_MODE=test
+run: export ENV_WEB_LOG_LEVEL=INFO
+run: export ENV_WEB_AUTO_HOST=true
+run: clean.build buildMain
+	@echo "=> run start"
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
 else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
-.PHONY: run.help
-run.help:
-	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
-
 .PHONY: run
-run: export GIN_MODE=test
-run: export ENV_WEB_LOG_LEVEL=INFO
-run: export ENV_WEB_AUTO_HOST=true
-run: cleanBuild buildMain
-	@echo "=> run GIN_MODE=test start"
+run.debug: export GIN_MODE=debug
+run.debug: export ENV_WEB_LOG_LEVEL=DEBUG
+run.debug: export ENV_WEB_AUTO_HOST=true
+run.debug: clean.build buildMain
+	@echo "=> run start"
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
 else
@@ -219,7 +258,7 @@ endif
 run.release: export GIN_MODE=release
 run.release: export ENV_WEB_LOG_LEVEL=INFO
 run.release: export ENV_WEB_AUTO_HOST=true
-run.release: cleanBuild buildMain
+run.release: clean.build buildMain
 	@echo "=> run GIN_MODE=release start"
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
@@ -252,6 +291,7 @@ endif
 	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
 	@echo "~> make test                 - run test fast"
+	@echo "~> make test.go.update       - run test with flag -update"
 	@echo "~> make ci.all               - run CI tasks all"
 	@echo "~> make ci.test.benchmark    - run CI tasks as test benchmark"
 	@echo "~> make ci.coverage.show     - run CI tasks as test coverage and show"
@@ -263,10 +303,17 @@ endif
 	@echo "~> make style                - run local code fmt and style check"
 	@echo "~> make ci                   - run CI tools tasks"
 	@echo ""
+	@echo "~> make dev.help             - run as develop code mode see help with ${ENV_RUN_INFO_HELP_ARGS}"
+	@echo "~> make dev                  - run as develop code mode"
+ifeq ($(OS),Windows_NT)
+	@echo "~> make devInstallLocal      - install at $(subst /,\,${ENV_GO_PATH}/bin)"
+else
+	@echo "~> make devInstallLocal      - install at ${ENV_GO_PATH}/bin"
+endif
 	@echo "~> make run.help             - run use ${ENV_RUN_INFO_HELP_ARGS}"
-	@echo "~> make dev                  - run as develop mode"
-	@echo "~> make run.release          - run as release mode"
-	@echo "~> make run                  - run as test mode"
+	@echo "~> make run                  - run as ordinary binary mode"
+	@echo "~> make run.debug            - run as debug binary mode open by env:ENV_WEB_AUTO_HOST=true"
+	@echo "~> make run.release          - run as release binary mode open by env:ENV_WEB_AUTO_HOST=true"
 	@echo ""
 
 .PHONY: help
@@ -279,5 +326,6 @@ help: helpProjectRoot
 	@echo "$$ make help.test.go"
 	@echo "$$ make help.go.list"
 	@echo "$$ make help.go.mod"
+	@echo "$$ make help.go.doc"
 	@echo ""
 	@echo "-- more info see Makefile include --"

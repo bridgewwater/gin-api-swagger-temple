@@ -32,7 +32,7 @@ on:
     #   - 'DOC-*'
     #   - 'hotfix-*'
 
-permissions:
+permissions: # https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#permissions
   contents: write
   discussions: write
 
@@ -44,8 +44,14 @@ jobs:
   golang-ci:
     name: golang-ci
     needs:
-     - version
+      - version
     uses: ./.github/workflows/golang-ci.yml
+    secrets: inherit
+    with:
+      run_test_case: true
+      run_golangci_lint: true
+      run_benchmark: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
+      run_test_coverage: true
 
   go-goreleaser-dry-run:
     name: go-goreleaser-dry-run
@@ -71,36 +77,7 @@ jobs:
   #   secrets: inherit
   #   with:
   #     version_name: latest
-  #     go_build_id: ${{ needs.version.outputs.short_sha }}
-
-  docker-bake-basic-all-latest:
-    name: docker-bake-basic-all-latest
-    needs:
-      - version
-      - golang-ci
-    uses: ./.github/workflows/docker-buildx-bake-hubdocker-latest.yml
-    if: ${{ github.ref_type != 'tag' }}
-    with:
-      # push_remote_flag: ${{ github.ref == 'refs/heads/main' }}
-      # push_remote_flag: ${{ github.event.pull_request.merged == true }}
-      push_remote_flag: false # not push
-      docker_bake_targets: 'image-basic'
-    secrets:
-      DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
-
-  # docker-bake-multi-basic-all-latest:
-  #   name: docker-bake-multi-basic-all-latest
-  #   needs:
-  #     - version
-  #   uses: ./.github/workflows/docker-buildx-bake-multi-latest.yml
-  #   if: ${{ github.ref_type != 'tag' }}
-  #   with:
-  #     ghcr_package_owner_name: ${{ github.repository_owner }} # required for ghcr.io
-  #     # push_remote_flag: ${{ github.ref == 'refs/heads/main' }}
-  #     push_remote_flag: ${{ github.event.pull_request.merged == true }}
-  #     docker_bake_targets: 'image-basic'
-  #   secrets:
-  #     DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
+  #     go_build_id: ${{ needs.version.outputs.short_sha }
 
   ### tag to release start
 
@@ -156,7 +133,7 @@ jobs:
   #     docker-metadata-flavor-suffix: '' # default is '', can add as: -alpine -debian
   #     # push_remote_flag: true # default is true
   #   secrets:
-  #     DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}"
+  #     DOCKERHUB_TOKEN: "${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy-tag:
     needs:
@@ -169,9 +146,10 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     secrets: inherit
     with:
+      dry_run: false # open/close dry run
       prerelease: true
       tag_name: ${{ needs.version.outputs.tag_name }}
       tag_changes: ${{ needs.version.outputs.cc_changes }}
-      download_artifact_name: go-release
+      download_artifact_name: go-release # download artifact name, download from actions/upload-artifact, as: {download_artifact_name}-{tag_name}-*, empty is not download
 
   ### tag to release end
