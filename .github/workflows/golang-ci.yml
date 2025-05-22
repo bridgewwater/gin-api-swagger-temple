@@ -34,8 +34,8 @@ jobs:
     strategy:
       matrix:
         go:
-          - '^1.22'
-          - '1.22.11'
+          - '^1.23'
+          - '1.23.8'
         os:
           - macos-latest
           - windows-latest

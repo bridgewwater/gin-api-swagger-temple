@@ -2,14 +2,14 @@ package config
 
 import (
 	"fmt"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
-	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
-	"github.com/gin-gonic/gin"
 	"net/url"
 	"os"
 	"strings"
 
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/pkg/pkg_kit"
 	"github.com/bridgewwater/gin-api-swagger-temple/internal/sys"
+	"github.com/bridgewwater/gin-api-swagger-temple/internal/zlog"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -60,21 +60,11 @@ func GinRunMode() string {
 			zlog.S().Debugf("gin mode initBaseConf by env: %s=%s", gin.EnvGinMode, _ginRunMode)
 		}
 	}
+
 	return _ginRunMode
 }
 
-// initBaseConf
-//
-//	read default config by conf/config.yaml
-//	can change by CLI by `-c`
-//	this config can config by ENV
-//
-//	ENV_WEB_HTTPS_ENABLE=false
-//	ENV_AUTO_HOST=true
-//	ENV_WEB_HOST_PORT 34565
-//	ENV_WEB_HOSTNAME  0.0.0.0
-//
-// this function will check base config
+// this function will check base config.
 func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 	gin.SetMode(GinRunMode())
 
@@ -87,14 +77,15 @@ func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 		panic(err)
 	}
 
-	//zlog.S().Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
-	//zlog.S().Debugf("api_base.Port %v", apiBaseUrl.Port())
+	// zlog.S().Debugf("api_base.Hostname %v", apiBaseUrl.Hostname())
+	// zlog.S().Debugf("api_base.Port %v", apiBaseUrl.Port())
 
 	runPort := viper.GetString("port")
 	if viper.GetString(EnvHostPort) != "" {
 		runPort = viper.GetString(EnvHostPort)
 		zlog.S().Debugf("port change by env as: %s", runPort)
 	}
+
 	baseHostNameByEnv := viper.GetString(EnvHostName)
 
 	if baseHostNameByEnv != "" {
@@ -103,6 +94,7 @@ func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 	} else {
 		isAutoHost := viper.GetBool(EnvAutoGetHost)
 		zlog.S().Debugf("isAutoHost %v", isAutoHost)
+
 		if isAutoHost {
 			ipv4, errLocalIp := sys.NetworkLocalIP()
 			if errLocalIp == nil {
@@ -112,6 +104,7 @@ func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 				} else {
 					proc = "http"
 				}
+
 				apiBase = fmt.Sprintf("%s://%s:%s", proc, ipv4, runPort)
 				apiBaseUrl.Host = fmt.Sprintf("%s:%s", ipv4, runPort)
 			}
