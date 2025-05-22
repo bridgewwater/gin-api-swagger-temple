@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [convention-change-log](https://github.com/convention-change/convention-change-log) for commit guidelines.
 
+## [1.2.1](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.2.0...v1.2.1) (2025-05-22)
+
+### 👷‍ Build System
+
+* update project version and adjust initialization script ([cd54cda6](https://github.com/bridgewwater/gin-api-swagger-temple/commit/cd54cda643f4e0319c285905c2d3e26a183d3503))
+
 ## [1.2.0](https://github.com/bridgewwater/gin-api-swagger-temple/compare/v1.1.3...v1.2.0) (2025-05-22)
 
 ### ✨ Features
