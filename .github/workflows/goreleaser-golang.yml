@@ -175,7 +175,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_artifact_name != null || ! inputs.dry_run }}
         with:
-          name: ${{ inputs.upload_artifact_name }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.version_name }}
+          name: ${{ inputs.upload_artifact_name }}-${{ inputs.version_name }}-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 5
           overwrite: true
           if-no-files-found: error

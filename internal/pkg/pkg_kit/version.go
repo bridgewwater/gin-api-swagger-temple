@@ -8,29 +8,67 @@ import (
 	"time"
 )
 
-var (
-	nowVersion = versionDevel
-	nowBuildId = infoUnknown
-)
+var buildInfo *BuildInfo
+
+func GetNewBuildInfo() BuildInfo {
+	checkPackageJsonLoad()
+
+	if buildInfo == nil {
+		panic("buildInfo is nil, please init by method NewBuildInfo()")
+	}
+
+	return *buildInfo
+}
 
 func FetchNowVersion() string {
-	return nowVersion
+	checkPackageJsonLoad()
+
+	return buildInfo.Version
 }
+
 func FetchNowBuildId() string {
-	return nowBuildId
+	checkPackageJsonLoad()
+
+	if buildInfo.BuildId == "" {
+		panic("nowBuildId is empty, please init by method NewBuildInfo()")
+	}
+
+	return buildInfo.BuildId
+}
+
+func FetchNowBuildIdShort() string {
+	checkPackageJsonLoad()
+
+	if buildInfo.BuildIdShort == "" {
+		panic("nowBuildIdShort is empty, please init by method NewBuildInfo()")
+	}
+
+	return buildInfo.BuildIdShort
+}
+
+func FetchNowBuildCode() string {
+	if FetchNowBuildId() != infoUnknown {
+		return FetchNowBuildId()
+	}
+
+	return buildInfo.BuildSum
 }
 
 const (
-	infoUnknown  = "unknown"
-	versionDevel = "devel"
+	infoUnknown      = "unknown"
+	versionDevel     = "devel"
+	buildIdShortSize = 8
 )
 
 type BuildInfo struct {
-	PkgName string `json:"pkgName"`
+	PkgName     string `json:"pkgName"`
+	Description string `json:"description"`
 
-	Version    string `json:"version"`
-	RawVersion string `json:"rawVersion"`
-	BuildId    string `json:"buildId"`
+	Version      string `json:"version"`
+	RawVersion   string `json:"rawVersion"`
+	BuildId      string `json:"buildId"`
+	BuildIdShort string
+	BuildSum     string `json:"buildSum"`
 
 	GoVersion    string `json:"goVersion"`
 	GitCommit    string `json:"gitCommit"`
@@ -45,8 +83,19 @@ type BuildInfo struct {
 }
 
 func (b BuildInfo) String() string {
-	return fmt.Sprintf("%s has version %s, © %s-%s %s,  built with %s id: %s from %s on %s, run on %s",
-		b.PkgName, b.Version, b.CopyrightStartYear, b.CopyrightNowYear, b.AuthorName, b.GoVersion, b.BuildId, b.GitCommit, b.Date, b.Platform)
+	return fmt.Sprintf(
+		"%s has version %s, © %s-%s %s,  built with %s id: %s from %s on %s, run on %s",
+		b.PkgName,
+		b.Version,
+		b.CopyrightStartYear,
+		b.CopyrightNowYear,
+		b.AuthorName,
+		b.GoVersion,
+		b.BuildId,
+		b.GitCommit,
+		b.Date,
+		b.Platform,
+	)
 }
 
 func (b BuildInfo) Copyright() string {
@@ -54,8 +103,23 @@ func (b BuildInfo) Copyright() string {
 		b.CopyrightStartYear, b.CopyrightNowYear, b.AuthorName, b.GoVersion, b.BuildId, b.Platform)
 }
 
+func (b BuildInfo) RunInfoString() string {
+	return fmt.Sprintf("%s, run on %s, built with %s id: %s from %s on %s",
+		b.PkgName, b.Platform, b.GoVersion, b.BuildId, b.GitCommit, b.Date,
+	)
+}
+
 func (b BuildInfo) PgkNameString() string {
 	return b.PkgName
+}
+
+func (b BuildInfo) PgkFullInfo() string {
+	return fmt.Sprintf("%s by: %s build with %s id: %s, run on %s",
+		b.PkgName, b.AuthorName, b.GoVersion, b.BuildId, b.Platform)
+}
+
+func (b BuildInfo) DescriptionString() string {
+	return b.Description
 }
 
 func (b BuildInfo) VersionString() string {
@@ -67,12 +131,14 @@ func (b BuildInfo) RawVersionString() string {
 }
 
 func NewBuildInfo(
-	pkgName, version, rawVersion,
+	pkgName, description,
+	version, rawVersion,
 	buildId, commit, date,
 	author, copyrightStartYear string,
 ) BuildInfo {
 	info := BuildInfo{
-		PkgName: pkgName,
+		PkgName:     pkgName,
+		Description: description,
 
 		Version:    version,
 		RawVersion: rawVersion,
@@ -86,6 +152,13 @@ func NewBuildInfo(
 		CopyrightStartYear: copyrightStartYear,
 		CopyrightNowYear:   strconv.Itoa(time.Now().Year()),
 	}
+
+	nowBuildIdShort := info.BuildId
+	if len(nowBuildIdShort) > buildIdShortSize {
+		nowBuildIdShort = info.BuildId[buildIdShortSize:]
+	}
+
+	info.BuildIdShort = nowBuildIdShort
 
 	bi, available := debug.ReadBuildInfo()
 	if !available {
@@ -101,15 +174,14 @@ func NewBuildInfo(
 		info.Version = firstNonEmpty(getGitVersion(bi), versionDevel)
 	}
 
-	nowVersion = info.Version
-	nowBuildId = info.BuildId
-
 	if date != "" {
 		return info
 	}
 
 	var revision string
+
 	var modified string
+
 	for _, setting := range bi.Settings {
 		// The `vcs.xxx` information is only available with `go build`.
 		// This information is not available with `go install` or `go run`.
@@ -141,6 +213,10 @@ func NewBuildInfo(
 
 	info.GitCommit = fmt.Sprintf("(%s, modified: %s, mod sum: %q)", revision, modified, bi.Main.Sum)
 
+	info.BuildSum = bi.Main.Sum
+
+	buildInfo = &info
+
 	return info
 }
 
@@ -168,19 +244,23 @@ func getDirty(bi *debug.BuildInfo) string {
 	if modified == "true" {
 		return "dirty"
 	}
+
 	if modified == "false" {
 		return "clean"
 	}
+
 	return ""
 }
 
 //nolint:golint,unused
 func getBuildDate(bi *debug.BuildInfo) string {
 	buildTime := getKey(bi, "vcs.time")
+
 	t, err := time.Parse("2006-01-02T15:04:05Z", buildTime)
 	if err != nil {
 		return ""
 	}
+
 	return t.Format("2006-01-02T15:04:05")
 }
 
@@ -189,11 +269,13 @@ func getKey(bi *debug.BuildInfo, key string) string {
 	if bi == nil {
 		return ""
 	}
+
 	for _, iter := range bi.Settings {
 		if iter.Key == key {
 			return iter.Value
 		}
 	}
+
 	return ""
 }
 
@@ -204,5 +286,6 @@ func firstNonEmpty(ss ...string) string {
 			return s
 		}
 	}
+
 	return ""
 }
