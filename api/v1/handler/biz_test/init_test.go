@@ -42,7 +42,7 @@ func init() {
 }
 
 func mockTestEnv() {
-	valEnvBaseURL = env_kit.FetchOsEnvStr(KeyEnvMockBaseUrl, "http://127.0.0.1:34565")
+	valEnvBaseURL = env_kit.FetchOsEnvStr(KeyEnvMockBaseUrl, "http://0.0.0.0:34565")
 }
 
 func setupTestRouter() *gin.Engine {
