@@ -205,19 +205,10 @@ endif
 dev.help: export ENV_WEB_AUTO_HOST=false
 dev.help: clean.build buildMain
 ifeq ($(OS),Windows_NT)
-	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
-else
-	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
-endif
-
-.PHONY: run.help
-run.help: export ENV_WEB_AUTO_HOST=false
-run.help:
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
-
-run.version: export ENV_WEB_AUTO_HOST=false
-run.version:
-	go run -v ${ENV_ROOT_BUILD_ENTRANCE} --version
+else
+	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_HELP_ARGS}
+endif
 
 .PHONY: dev
 dev: export GIN_MODE=debug
@@ -228,6 +219,23 @@ ifeq ($(OS),Windows_NT)
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
 else
 	go run -v ${ENV_ROOT_BUILD_ENTRANCE} ${ENV_RUN_INFO_ARGS}
+endif
+
+.PHONY: run.help
+run.help: export ENV_WEB_AUTO_HOST=false
+run.help: clean.build buildMain
+ifeq ($(OS),windows)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
+else
+	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
+endif
+
+run.version: export ENV_WEB_AUTO_HOST=false
+run.version: clean.build buildMain
+ifeq ($(OS),windows)
+	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe --version
+else
+	${ENV_ROOT_BUILD_BIN_PATH} --version
 endif
 
 .PHONY: run
