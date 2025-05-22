@@ -78,12 +78,7 @@ func GinRunMode() string {
 func initBaseConf(bdInfo pkg_kit.BuildInfo) {
 	gin.SetMode(GinRunMode())
 
-	sslEnable := false
-	if viper.GetBool(EnvHttpsEnable) {
-		sslEnable = true
-	} else {
-		sslEnable = viper.GetBool("sslEnable")
-	}
+	sslEnable := viper.GetBool(EnvHttpsEnable)
 
 	apiBase := viper.GetString("api_base")
 
