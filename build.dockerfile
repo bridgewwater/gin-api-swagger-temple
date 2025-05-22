@@ -3,7 +3,7 @@
 # Author: bridgewwater
 # dockerfile official document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
-FROM golang:1.23.8 as builder
+FROM golang:1.23.8 AS golang-builder
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -17,7 +17,7 @@ ARG GO_PATH_SOURCE_DIR=/go/src
 WORKDIR ${GO_PATH_SOURCE_DIR}
 
 RUN mkdir -p ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}
-COPY $PWD ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}
+COPY . ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}
 
 # proxy golang
 RUN go env -w "GOPROXY=https://goproxy.cn,direct"
@@ -42,7 +42,7 @@ RUN  cd ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME} && \
 # https://hub.docker.com/_/alpine
 FROM alpine:3.17
 
-ARG DOCKER_CLI_VERSION=${DOCKER_CLI_VERSION}
+#ARG DOCKER_CLI_VERSION=${DOCKER_CLI_VERSION}
 ARG GO_ENV_PACKAGE_NAME=github.com/bridgewwater/gin-api-swagger-temple
 ARG GO_ENV_ROOT_BUILD_BIN_NAME=gin-api-swagger-temple
 ARG GO_ENV_ROOT_BUILD_BIN_PATH=build/${GO_ENV_ROOT_BUILD_BIN_NAME}
@@ -56,9 +56,9 @@ ARG GO_PATH_SOURCE_DIR=/go/src
 RUN mkdir /app
 WORKDIR /app
 
-COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/${GO_ENV_ROOT_BUILD_BIN_PATH} .
-COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/conf/config.yaml ./conf/config.yaml
-COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.json ./docs/
-COPY --from=builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.yaml ./docs/
+COPY --from=golang-builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/${GO_ENV_ROOT_BUILD_BIN_PATH} .
+COPY --from=golang-builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/conf/config.yaml ./conf/config.yaml
+COPY --from=golang-builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.json ./docs/
+COPY --from=golang-builder ${GO_PATH_SOURCE_DIR}/${GO_ENV_PACKAGE_NAME}/docs/*.yaml ./docs/
 ENTRYPOINT [ "/app/gin-api-swagger-temple" ]
 # CMD ["/app/gin-api-swagger-temple", "--help"]
