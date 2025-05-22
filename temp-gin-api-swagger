@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # and this use tag
-temple_version='1.1.3'
+temple_version='1.2.0'
 new_version_for_dev='1.0.0'
 go_minimum_version='^1.23'
 
@@ -10,7 +10,10 @@ temple_url="https://github.com/bridgewwater/gin-api-swagger-temple.git"
 temple_repo_host="github.com"
 temple_group="bridgewwater"
 temple_name="gin-api-swagger-temple"
+
+# temple_branch="main"
 temple_branch="v${temple_version}"
+is_find_out_remote_temple_version=1
 
 new_repo_host=${temple_repo_host}
 new_repo_group=${temple_group}
@@ -22,9 +25,51 @@ shell_run_path=$(
   pwd
 )
 
+## need global var
+# will use global var
+# - is_find_out_remote_temple_version
+# will change global var
+# - temple_version
+# - temple_branch
+find_out_remote_temple_version() {
+  local remote_tag_url=$1
+  if [[ $is_find_out_remote_temple_version -eq 0 ]]; then
+    echo "-> pass find out remote latest version from repo: ${remote_tag_url}"
+    return 0
+  fi
+  # echo "=> start find out remote latest version from repo: ${remote_tag_url}"
+  local remote_tag_match='refs/tags/[^ ]*'
+  local remote_tag_sed_command='s#refs/tags/##'
+  local remote_latest_tag_name=$(git ls-remote --refs --tags ${remote_tag_url} | cut -f2 | grep -E "${remote_tag_match}" | sort -V | tail -n 1 | sed ${remote_tag_sed_command})
+  if [ ! $? -eq 0 ]; then
+    echo "not found remote latest tag by: ${remote_tag_url}"
+    return 1
+  else
+    # echo "remote_latest_tag_name=$remote_latest_tag_name"
+    # empty tag
+    if [[ -z "$remote_latest_tag_name" ]]; then
+      echo "-> remote tag is empty by: ${remote_tag_url}"
+      return 1
+    fi
+    if [[ $remote_latest_tag_name == v* ]]; then # Judge whether to start with v
+      temple_version=${remote_latest_tag_name:1}
+      temple_branch="v${temple_version}"
+    else
+      pW "remote latest tag not start with v, please check from: ${remote_tag_url}"
+      temple_version=${remote_latest_tag_name}
+      temple_branch="v${temple_version}"
+    fi
+  fi
+  # echo "-> find out remote tag info:"
+  # echo "temple_version =${temple_version}"
+  # echo "temple_branch  =${temple_branch}"
+  # echo "=> finish find out remote tag version"
+}
+
 function Usage() {
+  find_out_remote_temple_version ${temple_url}
   cat <<HELP
-${shell_run_name} can use fast init golang lib project with github
+${shell_run_name} can use fast init golang lib project with git
   Warning must use golang SDK ${go_minimum_version}+
   now template url is:  ${temple_url}
   now template version: ${temple_branch}
@@ -50,7 +95,7 @@ if [[ $# -eq 1 ]]; then
 fi
 
 # log debug enable 1 open 0 close
-LOG_DEBUG_ENABLE=1
+LOG_DEBUG_ENABLE=0
 # log color enable 1 open 0 close
 LOG_COLOR_ENABLE=1
 
@@ -164,10 +209,10 @@ replaceFileByRegular() {
     return 1
   fi
   if [[ "${release}" -eq "Darwin" ]]; then
-    # pD "in darwin ; word_from: ${word_from} ; word_to: ${word_to} ; target_file: ${target_file}"
+    pD "in darwin ; word_from: ${word_from} ; word_to: ${word_to} ; target_file: ${target_file}"
     sed -i "" "s#${word_from}#${word_to}#g" ${target_file}
   else
-    # pD "in other ; word_from: ${word_from} ; word_to: ${word_to} ; target_file: ${target_file}"
+    pD "in other ; word_from: ${word_from} ; word_to: ${word_to} ; target_file: ${target_file}"
     sed -i "s#${word_from}#${word_to}#g" ${target_file}
   fi
 }
@@ -237,6 +282,7 @@ removeFileByRegular() {
   find . -name "${target_file_regular}" | xargs rm -f
 }
 
+
 checkBinary git
 checkBinary make
 checkBinary go
@@ -275,6 +321,8 @@ fi
 temple_name_go_package=${temple_name//-/_}
 new_project_go_package=${new_project//-/_}
 
+find_out_remote_temple_version ${temple_url}
+
 echo -e "=> temple url: ${temple_url}
 => temple_branch:  ${temple_branch}
 -> new_repo_host:  ${new_repo_host}
@@ -283,6 +331,8 @@ echo -e "=> temple url: ${temple_url}
 -> new_project_go_package: ${new_project_go_package}
 -> new remote url: https://${new_repo_host}/${new_repo_group}/${new_project}
 "
+
+#exit 0
 
 pI "Clone from ${temple_url}"
 git clone --depth 1 ${temple_url} -b ${temple_branch} ${new_project}
@@ -302,33 +352,30 @@ replaceFileByRegular ${new_project}/doc-dev/dev.md ${temple_repo_host}\/${temple
 replaceFileByRegular ${new_project}/doc-dev/dev.md ${temple_group}\/${temple_name} ${new_repo_group}\/${new_project}
 replaceFileByRegular ${new_project}/doc-dev/dev.md ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/doc-dev/dev.md ${temple_repo_host} ${new_repo_host}
+replaceFileByRegular ${new_project}/go.mod ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
 replaceFileByRegular ${new_project}/Dockerfile ${temple_group}\/${temple_name} ${new_repo_group}\/${new_project}
 replaceFileByRegular ${new_project}/Dockerfile ${temple_group} ${new_repo_group}
 replaceFileByRegular ${new_project}/Dockerfile ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/build.dockerfile ${temple_group}\/${temple_name} ${new_repo_group}\/${new_project}
 replaceFileByRegular ${new_project}/build.dockerfile ${temple_group} ${new_repo_group}
 replaceFileByRegular ${new_project}/build.dockerfile ${temple_name} ${new_project}
-replaceFileByRegular ${new_project}/go.mod ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
-replaceFileByRegular ${new_project}/Makefile ${temple_name} ${new_project}
+#replaceFileByRegular ${new_project}/docker-compose.yml ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/Makefile ${temple_group} ${new_repo_group}
-# replaceFileByRegular ${new_project}/docker-compose.yml ${temple_name} ${new_project}
+replaceFileByRegular ${new_project}/Makefile ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/**/*.mk ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/**/*.mk ${temple_group} ${new_repo_group}
-replaceFileByRegular ${new_project}/.drone.yml ${temple_repo_host} ${new_repo_host}
-replaceFileByRegular ${new_project}/.drone.yml ${temple_group} ${new_repo_group}
-replaceFileByRegular ${new_project}/.drone.yml ${temple_name} ${new_project}
-replaceFileByRegular ${new_project}/package.json ${temple_repo_host} ${new_repo_host}
+# replaceFileByRegular ${new_project}/.drone.yml ${temple_repo_host} ${new_repo_host}
+# replaceFileByRegular ${new_project}/.drone.yml ${temple_group} ${new_repo_group}
+# replaceFileByRegular ${new_project}/.drone.yml ${temple_name} ${new_project}
+replaceFileByRegular ${new_project}/package.json ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/package.json ${temple_group} ${new_repo_group}
 replaceFileByRegular ${new_project}/package.json ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
-replaceFileByRegular ${new_project}/package.json ${temple_name} ${new_project}
+replaceFileByRegular ${new_project}/package.json ${temple_repo_host} ${new_repo_host}
 replaceFileByRegular ${new_project}/package.json "\"version\": \"${temple_version}\"," "\"version\": \"${new_version_for_dev}\","
-replaceFileByRegular ${new_project}/.github/workflows-template/docker-buildx-bake/docker-bake.hcl ${temple_name} ${new_project}
 # replace code at folder
 findFileReplaceByRegular ${new_project} "*.go" ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
 findFileReplaceByRegular ${new_project} "*.go" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.go" ${temple_name} ${new_project}
-findFileReplaceByRegular ${new_project} "*.dockerfile" ${temple_group} ${new_repo_group}
-findFileReplaceByRegular ${new_project} "*.dockerfile" ${temple_name} ${new_project}
 findFileReplaceByRegular ${new_project} "*.mk" ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
 findFileReplaceByRegular ${new_project} "*.mk" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.mk" ${temple_name} ${new_project}
@@ -340,14 +387,17 @@ findFileReplaceByRegular ${new_project} "*.hcl" ${temple_name} ${new_project}
 # replace go code at root
 replaceFileByRegular ${new_project}/resource.go ${temple_name_go_package} ${new_project_go_package}
 replaceFileByRegular ${new_project}/cmd/${temple_name}/main.go ${temple_name_go_package}.PackageJson ${new_project_go_package}.PackageJson
+replaceFileByRegular ${new_project}/command_test/example_test.go ${temple_name_go_package}.PackageJson ${new_project_go_package}.PackageJson
+
 # replace cmd build entrance
-mv ${new_project}/cmd/${temple_name} ${new_project}/cmd/${new_project}
+if [[ "${temple_name}" != "${new_project}" ]]; then
+  pI "cmd build entrance replace from ${temple_name} to ${new_project}"
+  mv ${new_project}/cmd/${temple_name} ${new_project}/cmd/${new_project}
+fi
 
 # fix go install
-findFileReplaceByRegular ${new_project} "*.mk" "go install ${new_repo_host}" "go install github.com"
 findFileReplaceByRegular ${new_project} "*.yml" "go install ${new_repo_host}" "go install github.com"
 findFileReplaceByRegular ${new_project} "*.dockerfile" "go install ${new_repo_host}" "go install github.com"
-
 # readme.md fix golang package
 readme_package_fix=(
   stretchr
@@ -358,6 +408,7 @@ readme_package_fix=(
   spf13
   convention-change
 )
+
 if [ ! -n "${readme_package_fix}" ];then
   pI "readme_package_fix is empty"
 else
@@ -378,7 +429,7 @@ mit*)
   ;;
 esac
 
-# move other LICENCE
+# move other LICENSE
 removeFileByRegular "LICENSE-*"
 # replace LICENSE by git info
 license_template_user='{name[[:space:]]of[[:space:]]copyright[[:space:]]owner}'
@@ -417,6 +468,6 @@ cd ${new_project}
 git init
 
 cd ..
-new_project="$(pwd)/${new_project}"
-echo -e "Finish make ${temple_name} project => \033[;32m${new_project}\033[0m"
-echo -e "\033[;34mFor coding, if path in \$GOPATH can set PATH GO111MODULE=on\033[0m"
+
+echo -e "Finish make ${temple_name} project => \033[;32m$(pwd)/${new_project}\033[0m"
+echo -e "new project url: https://${new_repo_host}/${new_repo_group}"
