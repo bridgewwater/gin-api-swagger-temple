@@ -387,7 +387,8 @@ findFileReplaceByRegular ${new_project} "*.hcl" ${temple_name} ${new_project}
 # replace go code at root
 replaceFileByRegular ${new_project}/resource.go ${temple_name_go_package} ${new_project_go_package}
 replaceFileByRegular ${new_project}/cmd/${temple_name}/main.go ${temple_name_go_package}.PackageJson ${new_project_go_package}.PackageJson
-replaceFileByRegular ${new_project}/command_test/example_test.go ${temple_name_go_package}.PackageJson ${new_project_go_package}.PackageJson
+replaceFileByRegular ${new_project}/cmd/${temple_name}/main.go ${temple_name_go_package} ${new_project_go_package}
+# replaceFileByRegular ${new_project}/command_test/example_test.go ${temple_name_go_package}.PackageJson ${new_project_go_package}.PackageJson
 
 # replace cmd build entrance
 if [[ "${temple_name}" != "${new_project}" ]]; then
