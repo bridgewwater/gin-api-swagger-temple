@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.8
 
 require (
-	github.com/Masterminds/semver/v3 v3.3.1
+	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/bar-counter/gin-correlation-id v1.2.0
 	github.com/bar-counter/monitor/v2 v2.3.0
 	github.com/fsnotify/fsnotify v1.9.0
