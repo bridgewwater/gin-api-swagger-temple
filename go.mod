@@ -16,7 +16,7 @@ require (
 	github.com/sebdah/goldie/v2 v2.5.5
 	github.com/sinlov-go/go-http-mock v1.1.0
 	github.com/sinlov-go/unittest-kit v1.2.1
-	github.com/spf13/pflag v1.0.6
+	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
 	github.com/sv-tools/openapi v0.2.1 // indirect
