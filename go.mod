@@ -9,7 +9,7 @@ require (
 	github.com/fsnotify/fsnotify v1.10.0
 	github.com/gin-gonic/gin v1.12.0
 	github.com/json-iterator/go v1.1.12
-	github.com/mattn/go-colorable v0.1.14
+	github.com/mattn/go-colorable v0.1.15
 	github.com/pkg/errors v0.9.1
 	github.com/sebdah/goldie/v2 v2.8.0
 	github.com/sinlov-go/go-http-mock v1.1.0
