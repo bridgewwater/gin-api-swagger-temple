@@ -149,7 +149,7 @@ jobs:
 
       -
         name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         if: ${{ inputs.push_remote_flag }}
         with:
           username: ${{ vars.ENV_DOCKERHUB_OWNER }}
@@ -157,7 +157,7 @@ jobs:
 
       -
         name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         if: ${{ inputs.push_remote_flag }}
         with:
           registry: ghcr.io
@@ -269,14 +269,14 @@ jobs:
 
       -
         name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ vars.ENV_DOCKERHUB_OWNER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       -
         name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ inputs.ghcr_package_owner_name }}
